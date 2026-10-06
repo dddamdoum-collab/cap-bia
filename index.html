@@ -4875,8 +4875,7 @@ function accTabs(mode){
     h("button",{class:"tab",type:"button",role:"tab","aria-selected":mode==="up"?"true":"false","aria-current":mode==="up"?"page":null,onclick:function(){accScreen("up");}},"Créer un compte"),
     h("button",{class:"tab",type:"button",role:"tab","aria-selected":mode==="in"?"true":"false","aria-current":mode==="in"?"page":null,onclick:function(){accScreen("in");}},"Se connecter"));}
 function accFoot(){return h("div",{class:"row",style:"margin-top:18px"},
-  h("button",{class:"link",type:"button",onclick:privacy},"Confidentialité"),
-  h("button",{class:"link",type:"button",onclick:teacher},"Espace enseignant"));}
+  h("button",{class:"link",type:"button",onclick:privacy},"Confidentialité"));}
 function accScreen(mode,msg){
   clearInterval(timer);timer=null;ses=null;window.scrollTo(0,0);mode=mode||"in";
   var err=h("p",{class:"msg",role:"alert"},msg||""),busy=false;
@@ -5151,8 +5150,8 @@ function openLook(){
   document.body.append(lookOpen);document.addEventListener("keydown",lookKey);
   var f=grid.querySelector("[aria-checked=true]");if(f)f.focus();}
 (function(){var b=h("button",{id:"lookbtn",class:"lookbtn",type:"button",onclick:openLook,"aria-haspopup":"dialog","aria-label":"Apparence : couleur de fond et papier peint",title:"Apparence"});b.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-1 2-2s-.5-1.6-.5-2.5c0-1 .8-1.5 1.8-1.5H18a3 3 0 0 0 3-3c0-5-4-9-9-9z"/><circle cx="7.5" cy="11" r="1.1"/><circle cx="10.5" cy="7" r="1.1"/><circle cx="15" cy="7.5" r="1.1"/></svg>';document.body.append(b);applyLook();})();
-function boot(){if(location.hash==="#enseignant")teacher();else if(ACC.on)accBoot();else if(P())home();else profiles();}
-window.addEventListener("hashchange",function(){if(location.hash==="#enseignant")teacher();});
+function boot(){if(ACC.on)accBoot();else if(location.hash==="#enseignant")teacher();else if(P())home();else profiles();}
+window.addEventListener("hashchange",function(){if(!ACC.on&&location.hash==="#enseignant")teacher();});
 boot();
 })();
 </script>
