@@ -28,6 +28,19 @@ Contenu du dossier
 4. Onglet « Settings » > « Domaines autorisés » : ajoute TON-PSEUDO.github.io (le lien du mot de passe oublié
    en a besoin pour revenir sur le site).
 
+ÉTAPE 2 ter — Donner le profil enseignant à un compte
+1. La personne crée d'abord un compte normal sur le site (inscription), puis se déconnecte / reconnecte si besoin.
+2. Firebase > Authentication > Users : copie la colonne « Identifiant de l'utilisateur » (UID) de son compte.
+3. Firestore > Données > « Commencer une collection » (ou « + » si elle existe déjà) :
+   - ID de la collection : teachers
+   - ID du document : colle l'UID copié
+   - un champ quelconque, par exemple  role  (chaîne)  teacher
+4. « Enregistrer ». À sa prochaine ouverture du site, le compte voit l'onglet « Ma classe » : création de classes
+   (un code à 6 caractères), suivi de la progression, modification du nom, retrait d'un élève, effacement de sa
+   progression, export CSV. Pour retirer le profil enseignant : supprime le document dans « teachers ».
+   Fais-le d'abord pour ton propre compte.
+   Les élèves saisissent le code de classe à l'inscription, ou plus tard dans « Mon compte ».
+
 ÉTAPE 3 — Récupérer les 2 valeurs
 1. Dans Firebase : roue dentée « Paramètres du projet », onglet « Général ».
 2. Plus bas, « Vos applications » : clique sur l'icône « </> » (Web), donne un nom, enregistre

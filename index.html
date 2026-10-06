@@ -4261,7 +4261,7 @@ var KEY="capbia.v2",KEY1="capbia.v1",TKEY="capbia.teacher";
 var TOT=RAW.length;
 function statT(n,p){p=p||P();var t=0,ok=0,seen=0,first=0;RAW.forEach(function(r){if(SEC[r.k].th!==n)return;t++;var q=p.q[r.id];if(q){seen++;if(q.ok)ok++;if(q.first)first++;}});return{n:t,ok:ok,seen:seen,first:first};}
 var D={cur:null,profiles:{}};
-var ACC={on:false,s:null,id:null,exp:0};
+var ACC={on:false,s:null,id:null,exp:0,teacher:false,cn:undefined};
 function loadD(){
   try{var t=localStorage.getItem(KEY);if(t){var o=JSON.parse(t);if(o&&o.profiles&&typeof o.profiles==="object"){D=o;if(!D.profiles)D.profiles={};return;}}}catch(e){}
   try{var t1=localStorage.getItem(KEY1);if(t1){var o1=JSON.parse(t1);if(o1&&o1.q&&Object.keys(o1.q).length){
@@ -4354,7 +4354,8 @@ function topbar(active){
       h("span",null,h("b",null,p.name),h("small",null,(p.cls?p.cls+" · ":"")+(ACC.on?"mon compte":"changer de profil")))),
     h("div",{class:"tabs",role:"navigation"},
       h("button",{class:"tab",type:"button","aria-current":active==="home"?"page":null,onclick:home},"S'entraîner"),
-      h("button",{class:"tab",type:"button","aria-current":active==="prog"?"page":null,onclick:progress},"Ma progression")));
+      h("button",{class:"tab",type:"button","aria-current":active==="prog"?"page":null,onclick:progress},"Ma progression"),
+      ACC.on&&ACC.teacher?h("button",{class:"tab",type:"button",onclick:function(){tdash();}},"Ma classe"):null));
 }
 
 /* ---------- profils ---------- */
@@ -4819,13 +4820,14 @@ function fsUrl(){return "https://firestore.googleapis.com/v1/projects/"+encodeUR
 function accPull(){
   return accToken().then(function(t){return fetch(fsUrl(),{headers:{Authorization:"Bearer "+t}});}).then(function(r){
     if(r.status===404)return null;if(!r.ok)throw new Error("HTTP "+r.status);return r.json();}).then(function(d){
-    if(!d||!d.fields)return null;var f=d.fields,o={prenom:f.prenom&&f.prenom.stringValue||"",nom3:f.nom3&&f.nom3.stringValue||"",prog:null};
+    if(!d||!d.fields)return null;var f=d.fields,o={prenom:f.prenom&&f.prenom.stringValue||"",nom3:f.nom3&&f.nom3.stringValue||"",cls:f.cls&&f.cls.stringValue||"",tch:f.tch&&f.tch.stringValue||"",wipe:f.wipe&&Number(f.wipe.integerValue)||0,prog:null};
     try{o.prog=JSON.parse(f.progress&&f.progress.stringValue||"null");}catch(e){}return o;});}
-function accPush(){
+function accPush(full){
   var p=ACC.s&&D.profiles[ACC.s.uid];if(!p)return Promise.resolve();
   var prog=JSON.stringify({q:p.q,hist:p.hist.slice(-300)});
-  var fields={prenom:{stringValue:String(ACC.s.prenom||"").slice(0,30)},nom3:{stringValue:String(ACC.s.nom3||"").slice(0,3)},progress:{stringValue:prog},updated:{integerValue:String(Date.now())}};
-  return accToken().then(function(t){return fetch(fsUrl(),{method:"PATCH",headers:{Authorization:"Bearer "+t,"Content-Type":"application/json"},body:JSON.stringify({fields:fields})});}).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);});}
+  var fields={progress:{stringValue:prog},updated:{integerValue:String(Date.now())}},mask=["progress","updated"];
+  if(full){fields.prenom={stringValue:String(ACC.s.prenom||"").slice(0,30)};fields.nom3={stringValue:String(ACC.s.nom3||"").slice(0,3)};fields.cls={stringValue:ACC.s.cls||""};fields.tch={stringValue:ACC.s.tch||""};mask=null;}
+  return accToken().then(function(t){return fetch(fsUrl()+(mask?"?"+mask.map(function(m){return "updateMask.fieldPaths="+m;}).join("&"):""),{method:"PATCH",headers:{Authorization:"Bearer "+t,"Content-Type":"application/json"},body:JSON.stringify({fields:fields})});}).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);});}
 var syncT=null;
 window.__capSync=function(){if(!ACC.on||!ACC.s)return;clearTimeout(syncT);syncT=setTimeout(function(){accPush().catch(function(){});},2500);};
 document.addEventListener("visibilitychange",function(){if(ACC.on&&ACC.s&&document.visibilityState==="hidden"){clearTimeout(syncT);accPush().catch(function(){});}});
@@ -4838,8 +4840,11 @@ function mergeInto(p,r){
 function accEnter(s,remote){
   ACC.s=s;accSave();var id=s.uid,p=D.profiles[id];
   if(!p)p=D.profiles[id]={id:id,name:"",cls:"",created:Date.now(),q:{},hist:[]};
-  p.name=accName(s);mergeInto(p,remote&&remote.prog);D.cur=id;saveD();}
-function accClear(){
+  p.name=accName(s);
+  if(remote){s.cls=remote.cls||"";s.tch=remote.tch||"";accSave();
+    if(remote.wipe){p.q={};p.hist=[];remote=null;fsPatch(fsUrl(),{wipe:{integerValue:"0"}},["wipe"]).catch(function(){});}}
+  mergeInto(p,remote&&remote.prog);D.cur=id;saveD();}
+function accClear(){TD.cl=null;TD.cur=null;TD.st=null;TD.sel=null;ACC.teacher=false;ACC.cn=undefined;
   if(ACC.s){delete D.profiles[ACC.s.uid];}
   D.cur=null;saveD();ACC.s=null;ACC.id=null;ACC.exp=0;accSave();}
 function pwField(id,label,ac){
@@ -4869,7 +4874,8 @@ function accScreen(mode,msg){
     var pr=fld("a-prenom","Prénom",{type:"text",autocomplete:"given-name",maxlength:"30"});
     var n3=fld("a-nom3","3 premières lettres du nom de famille",{type:"text",autocomplete:"off",maxlength:"3",style:"text-transform:uppercase"});
     var pw2=pwField("a-pw2","Confirmer le mot de passe","new-password");
-    fields=[pr.el,n3.el,em.el,pw.el,pw2.el];
+    var cc=fld("a-class","Code de classe (facultatif, donné par ton professeur)",{type:"text",autocomplete:"off",maxlength:"12",style:"text-transform:uppercase"});
+    fields=[pr.el,n3.el,em.el,pw.el,pw2.el,cc.el];
     go.addEventListener("click",function(){
       if(busy)return;
       var prenom=pr.inp.value.trim(),nom3=n3.inp.value.replace(/\s/g,"").toUpperCase(),mail=em.inp.value.trim(),a=pw.inp.value,b=pw2.inp.value;
@@ -4881,8 +4887,8 @@ function accScreen(mode,msg){
       err.textContent="";setBusy(true);
       aj(IT+"signUp?key="+encodeURIComponent(CFG.key),{email:mail,password:a,returnSecureToken:true}).then(function(j){
         ACC.id=j.idToken;ACC.exp=Date.now()+Number(j.expiresIn||3600)*1000;
-        accEnter({uid:j.localId,refresh:j.refreshToken,prenom:prenom.slice(0,30),nom3:nom3},null);
-        return accPush().catch(function(){});}).then(function(){home();},function(e){setBusy(false);err.textContent=accErr(e);});});
+        accEnter({uid:j.localId,refresh:j.refreshToken,prenom:prenom.slice(0,30),nom3:nom3,cls:"",tch:""},null);
+        return accPush(true).catch(function(){}).then(function(){var code=cleanCode(cc.inp.value);if(!code)return null;return joinClass(code).then(function(){return null;},function(){return "Ton compte est créé, mais le code de classe est introuvable. Vérifie-le avec ton professeur, puis saisis-le ici.";});});}).then(function(m){if(m)account(m);else home();},function(e){setBusy(false);err.textContent=accErr(e);});});
   }else{
     fields=[em.el,pw.el];
     go.addEventListener("click",function(){
@@ -4925,7 +4931,107 @@ function privacy(){
     h("p",null,"Ces données sont stockées chez Google (Firebase) et ne sont ni vendues, ni utilisées pour de la publicité. Le site n'utilise aucun traceur. Ton professeur ne les utilise que pour t'aider à progresser."),
     h("p",null,"Tu peux supprimer ton compte et toutes ses données à tout moment, depuis « Mon compte ». Pour toute question : "+(CFG.contact||"demande à ton professeur")+"."),
     h("p",null,h("button",{class:"btn ghost",type:"button",onclick:function(){if(ACC.s&&P())home();else accScreen("in");}},"Retour")));}
+/* ---------- classes et espace enseignant (comptes) ---------- */
+function fsBase(){return "https://firestore.googleapis.com/v1/projects/"+encodeURIComponent(CFG.project)+"/databases/(default)/documents";}
+function fsFetch(method,url,body){
+  return accToken().then(function(t){var o={method:method,headers:{Authorization:"Bearer "+t}};if(body){o.headers["Content-Type"]="application/json";o.body=JSON.stringify(body);}return fetch(url,o);}).then(function(r){
+    if(!r.ok)throw new Error("HTTP "+r.status);return r.status===204?{}:r.json().catch(function(){return {};});});}
+function fsPatch(url,fields,mask){return fsFetch("PATCH",url+(mask?"?"+mask.map(function(m){return "updateMask.fieldPaths="+m;}).join("&"):""),{fields:fields});}
+function fv(f){if(!f)return "";return f.stringValue!==undefined?f.stringValue:f.integerValue!==undefined?Number(f.integerValue):"";}
+function runQ(coll,filters){
+  var fl=filters.map(function(x){return {fieldFilter:{field:{fieldPath:x[0]},op:"EQUAL",value:{stringValue:x[1]}}};});
+  return fsFetch("POST",fsBase()+":runQuery",{structuredQuery:{from:[{collectionId:coll}],where:fl.length>1?{compositeFilter:{op:"AND",filters:fl}}:fl[0]}}).then(function(a){
+    return (Array.isArray(a)?a:[]).filter(function(x){return x.document;}).map(function(x){var f=x.document.fields||{};return {id:x.document.name.split("/").pop(),f:f};});});}
+function cleanCode(c){return String(c||"").toUpperCase().replace(/[^A-Z0-9]/g,"");}
+function getClass(code){code=cleanCode(code);if(code.length<4||code.length>12)return Promise.reject(new Error("NOCLASS"));
+  return fsFetch("GET",fsBase()+"/classes/"+code).then(function(d){var f=d.fields||{};return {code:code,owner:fv(f.owner),name:fv(f.name)};},function(){throw new Error("NOCLASS");});}
+function joinClass(code){return getClass(code).then(function(c){
+  return fsPatch(fsUrl(),{cls:{stringValue:c.code},tch:{stringValue:c.owner}},["cls","tch"]).then(function(){ACC.s.cls=c.code;ACC.s.tch=c.owner;ACC.cn=c.name;accSave();return c;});});}
+function leaveClass(){return fsPatch(fsUrl(),{cls:{stringValue:""},tch:{stringValue:""}},["cls","tch"]).then(function(){ACC.s.cls="";ACC.s.tch="";ACC.cn="";accSave();});}
+function checkTeacher(){
+  return fsFetch("GET",fsBase()+"/teachers/"+encodeURIComponent(ACC.s.uid)).then(function(){return true;},function(){return false;}).then(function(v){ACC.teacher=v;ACC.s.tc=v;accSave();});}
+var AL="ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+function genCode(){var a=new Uint8Array(6);(window.crypto||{getRandomValues:function(x){for(var i=0;i<x.length;i++)x[i]=Math.random()*256;}}).getRandomValues(a);return Array.prototype.map.call(a,function(x){return AL.charAt(x%AL.length);}).join("");}
+var TD={cl:null,cur:null,st:null,sel:null,arm:null};
+function tdash(msg){
+  if(!ACC.s||!ACC.teacher){account();return;}
+  clearInterval(timer);timer=null;ses=null;window.scrollTo(0,0);
+  var out=h("p",{class:"msg",role:"status"},msg||"");
+  if(!TD.cl){
+    show(h("div",{class:"eyebrow"},"Espace enseignant"),h("h1",null,"Mes classes"),h("p",{class:"lead"},"Chargement…"));
+    runQ("classes",[["owner",ACC.s.uid]]).then(function(a){TD.cl=a.map(function(x){return {code:x.id,name:fv(x.f.name),created:fv(x.f.created)};}).sort(function(a,b){return b.created-a.created;});if(!TD.cur&&TD.cl.length)TD.cur=TD.cl[0].code;tdash(msg);},function(e){TD.cl=null;show(h("div",{class:"eyebrow"},"Espace enseignant"),h("h1",null,"Mes classes"),h("p",{class:"msg"},"Impossible de charger les classes ("+e.message+"). Vérifie que les règles Firestore à jour sont publiées, puis réessaie."),h("button",{class:"btn ghost",type:"button",onclick:function(){tdash();}},"Réessayer"),h("p",null,h("button",{class:"link",type:"button",onclick:home},"← Retour")));});
+    return;}
+  if(TD.cur&&!TD.st){
+    var cur=TD.cur;
+    runQ("users",[["tch",ACC.s.uid],["cls",cur]]).then(function(a){
+      TD.st=a.map(function(x){var f=x.f,p={q:{},hist:[]};try{var o=JSON.parse(fv(f.progress)||"{}");p.q=o.q||{};p.hist=o.hist||[];}catch(e){}
+        return {id:x.id,prenom:fv(f.prenom),nom3:fv(f.nom3),updated:fv(f.updated),p:p};}).sort(function(a,b){return (a.prenom+a.nom3).localeCompare(b.prenom+b.nom3,"fr");});
+      if(TD.cur===cur)tdash(msg);},function(e){TD.st=[];tdash("Impossible de charger les élèves ("+e.message+").");});
+    show(h("div",{class:"eyebrow"},"Espace enseignant"),h("h1",null,"Ma classe"),h("p",{class:"lead"},"Chargement des élèves…"));return;}
+  var clsObj=TD.cl.filter(function(c){return c.code===TD.cur;})[0];
+  var nm=h("input",{id:"c-name",type:"text",maxlength:"40",placeholder:"Par exemple : 3ème BIA 2026-27"});
+  var mk=h("button",{class:"btn",type:"button",onclick:function(){
+    var n=nm.value.trim();if(!n){out.textContent="Donne un nom à la classe.";nm.focus();return;}
+    mk.disabled=true;var code=genCode();
+    fsFetch("POST",fsBase()+"/classes?documentId="+code,{fields:{owner:{stringValue:ACC.s.uid},name:{stringValue:n},created:{integerValue:String(Date.now())}}}).then(function(){TD.cl=null;TD.cur=code;TD.st=null;tdash("Classe créée. Donne le code "+code+" à tes élèves.");},function(e){mk.disabled=false;out.textContent="Création impossible ("+e.message+").";});}},"Créer la classe");
+  var sel=TD.cl.length?h("div",{class:"row"},TD.cl.map(function(c){return h("button",{class:"btn "+(c.code===TD.cur?"":"ghost"),type:"button",onclick:function(){TD.cur=c.code;TD.st=null;TD.sel=null;TD.arm=null;tdash();}},c.name);})):null;
+  var head=[h("div",{class:"top"},h("button",{class:"link",type:"button",onclick:home},"← Retour")),h("div",{class:"eyebrow"},"Espace enseignant"),h("h1",null,"Ma classe"),sel,
+    h("div",{class:"form",style:"margin-top:14px"},h("div",{class:"field",style:"max-width:340px"},h("label",{for:"c-name"},"Nouvelle classe"),nm),mk),out];
+  if(!clsObj){show(head,h("p",{class:"note"},"Crée ta première classe : un code court te sera donné, que tes élèves saisiront à l'inscription ou dans « Mon compte »."));return;}
+  var cp=h("button",{class:"btn ghost",type:"button",onclick:function(){try{navigator.clipboard.writeText(clsObj.code).then(function(){cp.textContent="Copié";},function(){});}catch(e){}}},"Copier le code");
+  var st=TD.st||[];
+  var rows=st.map(function(s){var tot=stat(null,s.p),last=0;s.p.hist.forEach(function(e){if(e.d>last)last=e.d;});s.tot=tot;s.last=last;return s;});
+  function nameOf(s){return s.prenom+(s.nom3?" "+s.nom3+".":"");}
+  var body=rows.map(function(s){
+    return h("tr",null,h("td",null,h("b",null,nameOf(s))),
+      THEMES.map(function(T){var x=statT(T.n,s.p),p=pct(x.ok,x.n);return h("td",{class:"c "+(p>=70?"c2":p>=40?"c1":"c0")},x.ok+"/"+x.n);}),
+      h("td",{class:"c"},pct(s.tot.ok,TOT)+" %"),h("td",{class:"c"},String(s.p.hist.length)),
+      h("td",null,s.last?new Date(s.last).toLocaleDateString("fr-FR"):"—"),
+      h("td",null,h("button",{class:"link",type:"button",style:"min-height:0",onclick:function(){TD.sel=TD.sel===s.id?null:s.id;TD.arm=null;tdash();}},"Gérer")));});
+  var panel=null,cs=rows.filter(function(s){return s.id===TD.sel;})[0];
+  if(cs){
+    var pi=h("input",{id:"s-prenom",type:"text",maxlength:"30"}),ni=h("input",{id:"s-nom3",type:"text",maxlength:"3",style:"text-transform:uppercase"});pi.value=cs.prenom;ni.value=cs.nom3;
+    function done(m){TD.st=null;TD.sel=null;TD.arm=null;tdash(m);}
+    panel=h("div",{class:"card",style:"margin-top:18px"},h("h3",{class:"sub"},"Gérer : "+nameOf(cs)),
+      h("div",{class:"form"},h("div",{class:"field",style:"max-width:220px"},h("label",{for:"s-prenom"},"Prénom"),pi),h("div",{class:"field",style:"max-width:140px"},h("label",{for:"s-nom3"},"3 lettres du nom"),ni),
+        h("button",{class:"btn",type:"button",onclick:function(){var a=pi.value.trim(),b=ni.value.replace(/\s/g,"").toUpperCase();
+          if(!a||!/^[A-Za-zÀ-ÿ]{2,3}$/.test(b)){out.textContent="Prénom et 2 ou 3 lettres de nom requis.";return;}
+          fsPatch(fsBase()+"/users/"+encodeURIComponent(cs.id),{prenom:{stringValue:a.slice(0,30)},nom3:{stringValue:b}},["prenom","nom3"]).then(function(){done("Nom modifié.");},function(e){out.textContent="Modification impossible ("+e.message+").";});}},"Enregistrer le nom")),
+      h("div",{class:"row",style:"margin-top:12px"},
+        h("button",{class:"btn ghost",type:"button",onclick:function(){fsPatch(fsBase()+"/users/"+encodeURIComponent(cs.id),{cls:{stringValue:""},tch:{stringValue:""}},["cls","tch"]).then(function(){done("Élève retiré de la classe.");},function(e){out.textContent="Action impossible ("+e.message+").";});}},"Retirer de la classe"),
+        h("button",{class:"btn warn",type:"button",onclick:function(){
+          if(TD.arm!==cs.id){TD.arm=cs.id;tdash();return;}
+          fsPatch(fsBase()+"/users/"+encodeURIComponent(cs.id),{progress:{stringValue:'{"q":{},"hist":[]}'},wipe:{integerValue:String(Date.now())}},["progress","wipe"]).then(function(){done("Progression effacée.");},function(e){out.textContent="Action impossible ("+e.message+").";});}},TD.arm===cs.id?"Confirmer l'effacement":"Effacer sa progression")),
+      h("p",{class:"note"},"Effacer la progression est définitif : elle sera aussi supprimée de l'appareil de l'élève à sa prochaine connexion."));}
+  var csv=h("button",{class:"btn ghost",type:"button",disabled:!rows.length,onclick:function(){
+    var hd=["Prénom","Nom (3 lettres)","Classe"].concat(THEMES.map(function(T){return "Thème "+T.n+" %";}),["Total %","Séances","Dernière séance"]);
+    var ls=[hd.join(";")].concat(rows.map(function(s){return [s.prenom,s.nom3,clsObj.name].concat(THEMES.map(function(T){var x=statT(T.n,s.p);return pct(x.ok,x.n);}),[pct(s.tot.ok,TOT),s.p.hist.length,s.last?new Date(s.last).toLocaleDateString("fr-FR"):""]).map(function(v){return '"'+String(v).replace(/"/g,'""')+'"';}).join(";");}));
+    try{var b=new Blob(["﻿"+ls.join("\r\n")],{type:"text/csv;charset=utf-8"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="cap-bia-"+cleanCode(clsObj.name||"classe")+".csv";document.body.append(a);a.click();a.remove();}catch(e){out.textContent="Téléchargement impossible sur cet appareil.";}}},"Exporter en tableau (CSV)");
+  show(head,
+    h("h3",{class:"sub"},clsObj.name),
+    h("p",null,"Code à donner aux élèves : ",h("b",{style:"font:700 20px var(--mono);letter-spacing:.12em"},clsObj.code)),
+    h("div",{class:"row"},cp,csv,h("button",{class:"btn ghost",type:"button",onclick:function(){TD.st=null;tdash();}},"Actualiser")),
+    h("h3",{class:"sub"},rows.length+" élève"+(rows.length>1?"s":"")),
+    rows.length?h("div",{class:"tblwrap"},h("table",{class:"t"},
+      h("thead",null,h("tr",null,h("th",null,"Élève"),THEMES.map(function(T){return h("th",{style:"text-align:center",title:T.t},T.opt?"Ang":"T"+T.n);}),h("th",null,"Total"),h("th",null,"Séances"),h("th",null,"Dernière séance"),h("th",null,""))),
+      h("tbody",null,body))):h("p",{class:"note"},"Aucun élève dans cette classe pour l'instant."),
+    panel);
+}
 var accDel=false;
+function classBox(err){
+  var box=h("div",null);
+  function paint(){
+    if(ACC.s.cls){
+      if(ACC.cn===undefined)getClass(ACC.s.cls).then(function(c){ACC.cn=c.name;paint();},function(){ACC.cn="";paint();});
+      box.replaceChildren(h("h3",{class:"sub"},"Ma classe"),h("p",null,"Tu es dans la classe : ",h("b",null,ACC.cn||ACC.s.cls),". Ton professeur peut voir ta progression."),
+        h("button",{class:"btn ghost",type:"button",onclick:function(){leaveClass().then(function(){paint();},function(e){err.textContent=accErr(e);});}},"Quitter la classe"));
+    }else{
+      var ci=h("input",{id:"j-code",type:"text",maxlength:"12",autocomplete:"off",style:"text-transform:uppercase"});
+      box.replaceChildren(h("h3",{class:"sub"},"Rejoindre une classe"),h("p",{class:"note",style:"margin-top:0"},"Saisis le code donné par ton professeur : il pourra alors suivre ta progression."),
+        h("div",{class:"form"},h("div",{class:"field",style:"max-width:200px"},h("label",{for:"j-code"},"Code de classe"),ci),
+          h("button",{class:"btn",type:"button",onclick:function(){err.textContent="";joinClass(ci.value).then(function(c){err.textContent="Tu as rejoint la classe « "+c.name+" ».";paint();},function(e){err.textContent=String(e.message)==="NOCLASS"?"Code de classe introuvable.":accErr(e);});}},"Rejoindre")));
+    }}
+  paint();return box;}
 function account(msg){
   clearInterval(timer);timer=null;ses=null;window.scrollTo(0,0);
   var p=P();if(!p||!ACC.s){accScreen("in");return;}
@@ -4933,8 +5039,10 @@ function account(msg){
   show(h("div",{class:"eyebrow"},"Cap BIA"),h("h1",null,"Mon compte"),
     h("p",{class:"lead"},h("b",null,p.name),"  ·  "+st.ok+" / "+st.n+" questions maîtrisées"),
     h("p",null,"Ta progression est enregistrée automatiquement."),
+    classBox(err),
     h("div",{class:"row"},
       h("button",{class:"btn",type:"button",onclick:home},"Retour à l'accueil"),
+      ACC.teacher?h("button",{class:"btn ghost",type:"button",onclick:function(){tdash();}},"Espace enseignant"):null,
       h("button",{class:"btn ghost",type:"button",onclick:function(){
         err.textContent="Enregistrement…";clearTimeout(syncT);
         accPush().then(function(){accClear();accScreen("in");},function(){err.textContent="Pas de connexion : reconnecte-toi à Internet avant de te déconnecter, pour ne pas perdre ta progression.";});}},"Me déconnecter")),
@@ -4949,10 +5057,10 @@ function account(msg){
 function accBoot(){
   accLoad();
   if(!ACC.s){accScreen("in");return;}
-  var have=!!D.profiles[ACC.s.uid];
+  var have=!!D.profiles[ACC.s.uid];ACC.teacher=!!ACC.s.tc;
   function bg(){return accPull().then(function(r){
       if(r){ACC.s.prenom=r.prenom||ACC.s.prenom;ACC.s.nom3=r.nom3||ACC.s.nom3;accEnter(ACC.s,r);}
-      else accPush().catch(function(){});});}
+      else accPush(true).catch(function(){});}).then(checkTeacher);}
   function bad(e){var m=String(e&&e.message||e);
     if(/TOKEN_EXPIRED|INVALID_REFRESH|USER_NOT_FOUND|USER_DISABLED|CREDENTIAL_TOO_OLD|INVALID_GRANT/.test(m)){accClear();accScreen("in","Ta session a expiré. Connecte-toi de nouveau.");return true;}return false;}
   if(have){D.cur=ACC.s.uid;saveD();home();bg().then(function(){if(!ses&&P()&&document.querySelector(".tb"))home();},bad);}
