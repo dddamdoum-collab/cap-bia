@@ -35,8 +35,8 @@
   --ok:#5fd394; --ok-soft:#133526; --bad:#ff8f86; --bad-soft:#3d1c1a;
   color-scheme:dark;
 }
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;padding-inline:16px;padding-block:20px 56px}
-.wrap{max-width:720px;margin-inline:auto;min-width:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;padding-inline:clamp(16px,calc((100vw - 600px) / 2),5cm);padding-block:20px 56px}
+.wrap{max-width:none;margin-inline:0;min-width:0}
 button{font:inherit;color:inherit}
 :focus-visible{outline:3px solid var(--mag);outline-offset:2px}
 .eyebrow{font:600 12px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mag)}
