@@ -7,10 +7,33 @@ service cloud.firestore {
         && exists(/databases/$(database)/documents/teachers/$(request.auth.uid));
     }
 
-    // Liste des enseignants : on y ajoute à la main (console Firebase) l'identifiant du compte. Personne ne l'écrit depuis le site.
+    function isAdmin() {
+      return request.auth != null
+        && get(/databases/$(database)/documents/teachers/$(request.auth.uid)).data.get('role','') == 'admin';
+    }
+
+    // Enseignants. Le premier administrateur (role = admin) est créé à la main dans la console Firebase.
+    // Ensuite l'administrateur accepte ou retire les enseignants depuis le site.
     match /teachers/{uid} {
-      allow get: if request.auth != null && request.auth.uid == uid;
-      allow list, write: if false;
+      allow get: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      allow list: if isAdmin();
+      allow create, update: if isAdmin()
+        && request.resource.data.keys().hasOnly(['role','prenom','nom3'])
+        && request.resource.data.role in ['teacher','admin']
+        && request.resource.data.get('prenom','').size() <= 30
+        && request.resource.data.get('nom3','').size() <= 3;
+      allow delete: if isAdmin() && request.auth.uid != uid;
+    }
+
+    // Demandes de profil enseignant : chacun peut déposer / retirer la sienne, l'administrateur les lit.
+    match /teacherRequests/{uid} {
+      allow get: if request.auth != null && (request.auth.uid == uid || isAdmin());
+      allow list: if isAdmin();
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['prenom','nom3','at'])
+        && request.resource.data.prenom is string && request.resource.data.prenom.size() <= 30
+        && request.resource.data.nom3 is string && request.resource.data.nom3.size() <= 3;
+      allow delete: if request.auth != null && (request.auth.uid == uid || isAdmin());
     }
 
     // Classes : un enseignant crée et gère les siennes. N'importe quel élève connecté peut lire une classe dont il connaît le code.

@@ -4276,7 +4276,7 @@ var KEY="capbia.v2",KEY1="capbia.v1",TKEY="capbia.teacher";
 var TOT=RAW.length;
 function statT(n,p){p=p||P();var t=0,ok=0,seen=0,first=0;RAW.forEach(function(r){if(SEC[r.k].th!==n)return;t++;var q=p.q[r.id];if(q){seen++;if(q.ok)ok++;if(q.first)first++;}});return{n:t,ok:ok,seen:seen,first:first};}
 var D={cur:null,profiles:{}};
-var ACC={on:false,s:null,id:null,exp:0,teacher:false,cn:undefined};
+var ACC={on:false,s:null,id:null,exp:0,teacher:false,admin:false,cn:undefined};
 function loadD(){
   try{var t=localStorage.getItem(KEY);if(t){var o=JSON.parse(t);if(o&&o.profiles&&typeof o.profiles==="object"){D=o;if(!D.profiles)D.profiles={};return;}}}catch(e){}
   try{var t1=localStorage.getItem(KEY1);if(t1){var o1=JSON.parse(t1);if(o1&&o1.q&&Object.keys(o1.q).length){
@@ -4859,7 +4859,7 @@ function accEnter(s,remote){
   if(remote){s.cls=remote.cls||"";s.tch=remote.tch||"";accSave();
     if(remote.wipe){p.q={};p.hist=[];remote=null;fsPatch(fsUrl(),{wipe:{integerValue:"0"}},["wipe"]).catch(function(){});}}
   mergeInto(p,remote&&remote.prog);D.cur=id;saveD();}
-function accClear(){TD.cl=null;TD.cur=null;TD.st=null;TD.sel=null;ACC.teacher=false;ACC.cn=undefined;
+function accClear(){TD.cl=null;TD.cur=null;TD.st=null;TD.sel=null;ACC.teacher=false;ACC.admin=false;ACC.cn=undefined;
   if(ACC.s){delete D.profiles[ACC.s.uid];}
   D.cur=null;saveD();ACC.s=null;ACC.id=null;ACC.exp=0;accSave();}
 function pwField(id,label,ac){
@@ -4962,12 +4962,42 @@ function getClass(code){code=cleanCode(code);if(code.length<4||code.length>12)re
 function joinClass(code){return getClass(code).then(function(c){
   return fsPatch(fsUrl(),{cls:{stringValue:c.code},tch:{stringValue:c.owner}},["cls","tch"]).then(function(){ACC.s.cls=c.code;ACC.s.tch=c.owner;ACC.cn=c.name;accSave();return c;});});}
 function checkTeacher(){
-  return fsFetch("GET",fsBase()+"/teachers/"+encodeURIComponent(ACC.s.uid)).then(function(){return true;},function(){return false;}).then(function(v){ACC.teacher=v;ACC.s.tc=v;accSave();});}
+  return fsFetch("GET",fsBase()+"/teachers/"+encodeURIComponent(ACC.s.uid)).then(function(d){ACC.teacher=true;ACC.admin=fv((d.fields||{}).role)==="admin";},function(e){if(/HTTP (403|404)/.test(String(e.message))){ACC.teacher=false;ACC.admin=false;}}).then(function(){ACC.s.tc=!!ACC.teacher;ACC.s.ad=!!ACC.admin;accSave();});}
+function runAll(coll){return fsFetch("POST",fsBase()+":runQuery",{structuredQuery:{from:[{collectionId:coll}]}}).then(function(a){return (Array.isArray(a)?a:[]).filter(function(x){return x.document;}).map(function(x){return {id:x.document.name.split("/").pop(),f:x.document.fields||{}};});});}
 var AL="ABCDEFGHJKMNPQRSTUVWXYZ23456789";
 function genCode(){var a=new Uint8Array(6);(window.crypto||{getRandomValues:function(x){for(var i=0;i<x.length;i++)x[i]=Math.random()*256;}}).getRandomValues(a);return Array.prototype.map.call(a,function(x){return AL.charAt(x%AL.length);}).join("");}
-var TD={cl:null,cur:null,st:null,sel:null,arm:null};
+var TD={cl:null,cur:null,st:null,sel:null,arm:null,view:"c",rarm:null};
+function swView(){
+  if(!ACC.admin)return null;
+  return h("div",{class:"tabs acc-tabs"},h("button",{class:"tab",type:"button","aria-current":TD.view==="c"?"page":null,onclick:function(){TD.view="c";tdash();}},"Classes"),h("button",{class:"tab",type:"button","aria-current":TD.view==="t"?"page":null,onclick:function(){TD.view="t";tdash();}},"Enseignants"));}
+function tchAdmin(msg){
+  window.scrollTo(0,0);var out=h("p",{class:"msg",role:"status"},msg||"");
+  var top=[h("div",{class:"top"},h("button",{class:"link",type:"button",onclick:home},"← Retour")),h("div",{class:"eyebrow"},"Espace enseignant"),h("h1",null,"Enseignants"),swView()];
+  show(top,h("p",{class:"lead"},"Chargement…"));
+  Promise.all([runAll("teacherRequests"),runAll("teachers")]).then(function(a){paint(a[0],a[1]);},function(e){show(top,h("p",{class:"msg"},"Impossible de charger la liste ("+e.message+"). Vérifie que les règles Firestore à jour sont publiées."),h("button",{class:"btn ghost",type:"button",onclick:function(){tchAdmin();}},"Réessayer"));});
+  function nm(f,id){var p=fv(f.prenom),n=fv(f.nom3);return p?p+(n?" "+n+".":""):"Compte "+id.slice(0,6)+"…";}
+  function paint(reqs,tch){
+    reqs.sort(function(a,b){return fv(a.f.at)-fv(b.f.at);});
+    var rl=reqs.map(function(r){return h("div",{class:"prow",style:"align-items:center"},
+      h("div",{style:"flex:1;min-width:0"},h("b",null,nm(r.f,r.id)),h("small",{style:"display:block;color:var(--muted)"},"Demande du "+new Date(fv(r.f.at)||Date.now()).toLocaleDateString("fr-FR"))),
+      h("button",{class:"btn",type:"button",onclick:function(){
+        fsPatch(fsBase()+"/teachers/"+encodeURIComponent(r.id),{role:{stringValue:"teacher"},prenom:{stringValue:fv(r.f.prenom)},nom3:{stringValue:fv(r.f.nom3)}}).then(function(){return fsFetch("DELETE",fsBase()+"/teacherRequests/"+encodeURIComponent(r.id));}).then(function(){tchAdmin(nm(r.f,r.id)+" est maintenant enseignant.");},function(e){out.textContent="Action impossible ("+e.message+").";});}},"Accepter"),
+      h("button",{class:"btn ghost",type:"button",onclick:function(){fsFetch("DELETE",fsBase()+"/teacherRequests/"+encodeURIComponent(r.id)).then(function(){tchAdmin("Demande refusée.");},function(e){out.textContent="Action impossible ("+e.message+").";});}},"Refuser"));});
+    tch.sort(function(a,b){return nm(a.f,a.id).localeCompare(nm(b.f,b.id),"fr");});
+    var tl=tch.map(function(t){var adm=fv(t.f.role)==="admin";
+      return h("div",{class:"prow",style:"align-items:center"},
+        h("div",{style:"flex:1;min-width:0"},h("b",null,nm(t.f,t.id)),h("small",{style:"display:block;color:var(--muted)"},adm?"administrateur":"enseignant")),
+        adm||t.id===ACC.s.uid?null:h("button",{class:"btn warn",type:"button",onclick:function(){
+          if(TD.rarm!==t.id){TD.rarm=t.id;tchAdmin();return;}
+          TD.rarm=null;fsFetch("DELETE",fsBase()+"/teachers/"+encodeURIComponent(t.id)).then(function(){tchAdmin("Statut enseignant retiré.");},function(e){out.textContent="Action impossible ("+e.message+").";});}},TD.rarm===t.id?"Confirmer le retrait":"Retirer le statut"));});
+    show(top,out,
+      h("h3",{class:"sub"},"Demandes en attente ("+reqs.length+")"),
+      reqs.length?h("div",{class:"plist"},rl):h("p",{class:"note",style:"margin-top:0"},"Aucune demande pour l'instant. Une personne la fait depuis « Mon compte » > « Je suis enseignant »."),
+      h("h3",{class:"sub"},"Enseignants ("+tch.length+")"),
+      tch.length?h("div",{class:"plist"},tl):h("p",{class:"note"},"Aucun enseignant."));}}
 function tdash(msg){
   if(!ACC.s||!ACC.teacher){account();return;}
+  if(TD.view==="t"&&ACC.admin){tchAdmin(msg);return;}
   clearInterval(timer);timer=null;ses=null;window.scrollTo(0,0);
   var out=h("p",{class:"msg",role:"status"},msg||"");
   if(!TD.cl){
@@ -4988,7 +5018,7 @@ function tdash(msg){
     mk.disabled=true;var code=genCode();
     fsFetch("POST",fsBase()+"/classes?documentId="+code,{fields:{owner:{stringValue:ACC.s.uid},name:{stringValue:n},created:{integerValue:String(Date.now())}}}).then(function(){TD.cl=null;TD.cur=code;TD.st=null;tdash("Classe créée. Donne le code "+code+" à tes élèves.");},function(e){mk.disabled=false;out.textContent="Création impossible ("+e.message+").";});}},"Créer la classe");
   var sel=TD.cl.length?h("div",{class:"row"},TD.cl.map(function(c){return h("button",{class:"btn "+(c.code===TD.cur?"":"ghost"),type:"button",onclick:function(){TD.cur=c.code;TD.st=null;TD.sel=null;TD.arm=null;tdash();}},c.name);})):null;
-  var head=[h("div",{class:"top"},h("button",{class:"link",type:"button",onclick:home},"← Retour")),h("div",{class:"eyebrow"},"Espace enseignant"),h("h1",null,"Ma classe"),sel,
+  var head=[h("div",{class:"top"},h("button",{class:"link",type:"button",onclick:home},"← Retour")),h("div",{class:"eyebrow"},"Espace enseignant"),h("h1",null,"Ma classe"),swView(),sel,
     h("div",{class:"form",style:"margin-top:14px"},h("div",{class:"field",style:"max-width:340px"},h("label",{for:"c-name"},"Nouvelle classe"),nm),mk),out];
   if(!clsObj){show(head,h("p",{class:"note"},"Crée ta première classe : un code court te sera donné, que tes élèves saisiront à l'inscription ou dans « Mon compte »."));return;}
   var cp=h("button",{class:"btn ghost",type:"button",onclick:function(){try{navigator.clipboard.writeText(clsObj.code).then(function(){cp.textContent="Copié";},function(){});}catch(e){}}},"Copier le code");
@@ -5031,6 +5061,17 @@ function tdash(msg){
     panel);
 }
 var accDel=false;
+function askBox(err){
+  var box=h("div",{style:"margin-top:10px"}),d=h("details",{style:"margin-top:18px"},h("summary",{style:"cursor:pointer;color:var(--accent);font-weight:600"},"Je suis enseignant"),box);
+  var url=fsBase()+"/teacherRequests/"+encodeURIComponent(ACC.s.uid);
+  function paint(has){
+    if(has){box.replaceChildren(h("p",null,"Ta demande est envoyée. Elle sera examinée par l'administrateur du site."),
+      h("button",{class:"btn ghost",type:"button",onclick:function(){fsFetch("DELETE",url).then(function(){paint(false);},function(e){err.textContent=accErr(e);});}},"Annuler ma demande"));}
+    else{box.replaceChildren(h("p",{class:"note",style:"margin-top:0"},"Pour créer des classes et suivre des élèves, demande le profil enseignant : l'administrateur du site recevra ta demande."),
+      h("button",{class:"btn ghost",type:"button",onclick:function(){err.textContent="";
+        fsPatch(url,{prenom:{stringValue:String(ACC.s.prenom||"").slice(0,30)},nom3:{stringValue:String(ACC.s.nom3||"").slice(0,3)},at:{integerValue:String(Date.now())}}).then(function(){paint(true);},function(e){err.textContent=accErr(e);});}},"Demander le profil enseignant"));}}
+  fsFetch("GET",url).then(function(){paint(true);},function(){paint(false);});
+  return d;}
 function classBox(err){
   var box=h("div",null);
   function paint(){
@@ -5075,6 +5116,7 @@ function account(msg){accDel=false;
     h("p",{class:"lead"},h("b",null,p.name),"  ·  "+st.ok+" / "+st.n+" questions maîtrisées"),
     h("p",null,"Ta progression est enregistrée automatiquement."),
     classBox(err),
+    ACC.teacher?null:askBox(err),
     h("div",{class:"row"},
       h("button",{class:"btn",type:"button",onclick:home},"Retour à l'accueil"),
       ACC.teacher?h("button",{class:"btn ghost",type:"button",onclick:function(){tdash();}},"Espace enseignant"):null,
@@ -5089,7 +5131,7 @@ function account(msg){accDel=false;
 function accBoot(){
   accLoad();
   if(!ACC.s){accScreen("in");return;}
-  var have=!!D.profiles[ACC.s.uid];ACC.teacher=!!ACC.s.tc;
+  var have=!!D.profiles[ACC.s.uid];ACC.teacher=!!ACC.s.tc;ACC.admin=!!ACC.s.ad;
   function bg(){return accPull().then(function(r){
       if(r){ACC.s.prenom=r.prenom||ACC.s.prenom;ACC.s.nom3=r.nom3||ACC.s.nom3;accEnter(ACC.s,r);}
       else accPush(true).catch(function(){});}).then(checkTeacher);}

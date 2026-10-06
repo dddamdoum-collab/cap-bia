@@ -28,18 +28,21 @@ Contenu du dossier
 4. Onglet « Settings » > « Domaines autorisés » : ajoute TON-PSEUDO.github.io (le lien du mot de passe oublié
    en a besoin pour revenir sur le site).
 
-ÉTAPE 2 ter — Donner le profil enseignant à un compte
-1. La personne crée d'abord un compte normal sur le site (inscription), puis se déconnecte / reconnecte si besoin.
-2. Firebase > Authentication > Users : copie la colonne « Identifiant de l'utilisateur » (UID) de son compte.
-3. Firestore > Données > « Commencer une collection » (ou « + » si elle existe déjà) :
-   - ID de la collection : teachers
-   - ID du document : colle l'UID copié
-   - un champ quelconque, par exemple  role  (chaîne)  teacher
-4. « Enregistrer ». À sa prochaine ouverture du site, le compte voit l'onglet « Ma classe » : création de classes
-   (un code à 6 caractères), suivi de la progression, modification du nom, retrait d'un élève, effacement de sa
-   progression, export CSV. Pour retirer le profil enseignant : supprime le document dans « teachers ».
-   Fais-le d'abord pour ton propre compte.
-   Les élèves saisissent le code de classe à l'inscription, ou plus tard dans « Mon compte ».
+ÉTAPE 2 ter — Administrateur et profils enseignants
+A) Se nommer administrateur (une seule fois, dans la console Firebase) :
+1. Crée ton compte sur le site, puis Firebase > Authentication > Users : copie ton « Identifiant de l'utilisateur » (UID).
+2. Firestore > Données > « Commencer une collection » : ID de la collection  teachers ; ID du document : ton UID ;
+   champ  role  (chaîne)  admin   > Enregistrer.
+3. Firestore > Règles : colle le contenu du fichier firestore.rules > Publier.
+B) Ensuite tout se fait depuis le site :
+- Une personne crée un compte puis, dans « Mon compte » > « Je suis enseignant », clique « Demander le profil enseignant ».
+- Toi (administrateur), tu vas dans « Ma classe » > onglet « Enseignants » : « Accepter » ou « Refuser » ; « Retirer le statut »
+  pour un enseignant. L'enseignant voit l'onglet « Ma classe » à sa prochaine ouverture du site.
+- Un enseignant crée des classes (code à 6 caractères), suit la progression, modifie un nom, retire un élève, efface une
+  progression, exporte en CSV. Les élèves saisissent le code à l'inscription ou dans « Mon compte ».
+Nota : le site est à l'adresse https://cap-bia.fr ; ajoute cap-bia.fr et www.cap-bia.fr dans Firebase > Authentication >
+Paramètres > Domaines autorisés.
+
 
 ÉTAPE 3 — Récupérer les 2 valeurs
 1. Dans Firebase : roue dentée « Paramètres du projet », onglet « Général ».
