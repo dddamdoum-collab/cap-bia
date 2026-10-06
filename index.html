@@ -4370,7 +4370,8 @@ function topbar(active){
     h("div",{class:"tabs",role:"navigation"},
       h("button",{class:"tab",type:"button","aria-current":active==="home"?"page":null,onclick:home},"S'entraîner"),
       h("button",{class:"tab",type:"button","aria-current":active==="prog"?"page":null,onclick:progress},"Ma progression"),
-      ACC.on&&ACC.teacher?h("button",{class:"tab",type:"button",onclick:function(){tdash();}},"Ma classe"):null));
+      ACC.on&&ACC.teacher?h("button",{class:"tab",type:"button",onclick:function(){TD.view="c";tdash();}},"Mes classes"):null,
+      ACC.on&&ACC.admin?h("button",{class:"tab",type:"button",onclick:function(){TD.view="t";tdash();}},"Enseignants"):null));
 }
 
 /* ---------- profils ---------- */
@@ -4992,7 +4993,7 @@ function swView(){
   return h("div",{class:"tabs acc-tabs"},h("button",{class:"tab",type:"button","aria-current":TD.view==="c"?"page":null,onclick:function(){TD.view="c";tdash();}},"Classes"),h("button",{class:"tab",type:"button","aria-current":TD.view==="t"?"page":null,onclick:function(){TD.view="t";tdash();}},"Enseignants"));}
 function tchAdmin(msg){
   window.scrollTo(0,0);var out=h("p",{class:"msg",role:"status"},msg||"");
-  var top=[h("div",{class:"top"},h("button",{class:"link",type:"button",onclick:home},"← Retour")),h("div",{class:"eyebrow"},"Espace enseignant"),h("h1",null,"Enseignants"),swView()];
+  var top=[h("div",{class:"top"},h("button",{class:"link",type:"button",onclick:home},"← Retour")),h("div",{class:"eyebrow"},"Espace enseignant"),h("h1",null,"Enseignants")];
   show(top,h("p",{class:"lead"},"Chargement…"));
   Promise.all([runAll("teacherRequests"),runAll("teachers")]).then(function(a){paint(a[0],a[1]);},function(e){show(top,h("p",{class:"msg"},"Impossible de charger la liste ("+e.message+"). Vérifie que les règles Firestore à jour sont publiées."),h("button",{class:"btn ghost",type:"button",onclick:function(){tchAdmin();}},"Réessayer"));});
   function nm(f,id){var p=fv(f.prenom),n=fv(f.nom3);return p?p+(n?" "+n+".":""):"Compte "+id.slice(0,6)+"…";}
@@ -5030,7 +5031,7 @@ function tdash(msg){
       TD.st=a.map(function(x){var f=x.f,p={q:{},hist:[]};try{var o=JSON.parse(fv(f.progress)||"{}");p.q=o.q||{};p.hist=o.hist||[];}catch(e){}
         return {id:x.id,prenom:fv(f.prenom),nom3:fv(f.nom3),updated:fv(f.updated),p:p};}).sort(function(a,b){return (a.prenom+a.nom3).localeCompare(b.prenom+b.nom3,"fr");});
       if(TD.cur===cur)tdash(msg);},function(e){TD.st=[];tdash("Impossible de charger les élèves ("+e.message+").");});
-    show(h("div",{class:"eyebrow"},"Espace enseignant"),h("h1",null,"Ma classe"),h("p",{class:"lead"},"Chargement des élèves…"));return;}
+    show(h("div",{class:"eyebrow"},"Espace enseignant"),h("h1",null,"Mes classes"),h("p",{class:"lead"},"Chargement des élèves…"));return;}
   var clsObj=TD.cl.filter(function(c){return c.code===TD.cur;})[0];
   var nm=h("input",{id:"c-name",type:"text",maxlength:"40",placeholder:"Par exemple : 3ème BIA 2026-27"});
   var mk=h("button",{class:"btn",type:"button",onclick:function(){
@@ -5038,7 +5039,7 @@ function tdash(msg){
     mk.disabled=true;var code=genCode();
     fsFetch("POST",fsBase()+"/classes?documentId="+code,{fields:{owner:{stringValue:ACC.s.uid},name:{stringValue:n},created:{integerValue:String(Date.now())}}}).then(function(){TD.cl=null;TD.cur=code;TD.st=null;tdash("Classe créée. Donne le code "+code+" à tes élèves.");},function(e){mk.disabled=false;out.textContent="Création impossible ("+e.message+").";});}},"Créer la classe");
   var sel=TD.cl.length?h("div",{class:"row"},TD.cl.map(function(c){return h("button",{class:"btn "+(c.code===TD.cur?"":"ghost"),type:"button",onclick:function(){TD.cur=c.code;TD.st=null;TD.sel=null;TD.arm=null;tdash();}},c.name);})):null;
-  var head=[h("div",{class:"top"},h("button",{class:"link",type:"button",onclick:home},"← Retour")),h("div",{class:"eyebrow"},"Espace enseignant"),h("h1",null,"Ma classe"),swView(),sel,
+  var head=[h("div",{class:"top"},h("button",{class:"link",type:"button",onclick:home},"← Retour")),h("div",{class:"eyebrow"},"Espace enseignant"),h("h1",null,"Mes classes"),sel,
     h("div",{class:"form",style:"margin-top:14px"},h("div",{class:"field",style:"max-width:340px"},h("label",{for:"c-name"},"Nouvelle classe"),nm),mk),out];
   if(!clsObj){show(head,h("p",{class:"note"},"Crée ta première classe : un code court te sera donné, que tes élèves saisiront à l'inscription ou dans « Mon compte »."));return;}
   var cp=h("button",{class:"btn ghost",type:"button",onclick:function(){try{navigator.clipboard.writeText(clsObj.code).then(function(){cp.textContent="Copié";},function(){});}catch(e){}}},"Copier le code");
