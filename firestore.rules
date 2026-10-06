@@ -39,13 +39,19 @@ service cloud.firestore {
           || (d.get('cls','') is string && d.get('cls','').size() <= 12 && d.get('cls','') != ''
               && get(/databases/$(database)/documents/classes/$(d.get('cls',''))).data.owner == d.get('tch',''));
       }
+      // Une fois rattaché à une classe, l'élève ne peut plus la quitter ni en changer : seul l'enseignant le peut.
+      function keepClass() {
+        return resource.data.get('cls','') == ''
+          || (request.resource.data.get('cls','') == resource.data.get('cls','')
+              && request.resource.data.get('tch','') == resource.data.get('tch',''));
+      }
       allow get: if request.auth != null
                  && (request.auth.uid == uid || (isTeacher() && resource.data.get('tch','') == request.auth.uid));
       allow list: if isTeacher() && resource.data.get('tch','') == request.auth.uid;
       allow create: if request.auth != null && request.auth.uid == uid
                     && shapeOk(request.resource.data) && classOk(request.resource.data);
       allow update: if request.auth != null
-                    && ((request.auth.uid == uid && shapeOk(request.resource.data) && classOk(request.resource.data))
+                    && ((request.auth.uid == uid && shapeOk(request.resource.data) && classOk(request.resource.data) && keepClass())
                      || (isTeacher() && resource.data.get('tch','') == request.auth.uid
                          && shapeOk(request.resource.data)
                          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['prenom','nom3','cls','tch','progress','wipe'])));
