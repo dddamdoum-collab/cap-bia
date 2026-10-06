@@ -5045,7 +5045,30 @@ function classBox(err){
           h("button",{class:"btn",type:"button",onclick:function(){err.textContent="";joinClass(ci.value).then(function(c){err.textContent="Tu as rejoint la classe « "+c.name+" ».";paint();},function(e){err.textContent=String(e.message)==="NOCLASS"?"Code de classe introuvable.":accErr(e);});}},"Rejoindre")));
     }}
   paint();return box;}
-function account(msg){
+function delBox(err){
+  var box=h("div",null);
+  function paint(){
+    if(!accDel){box.replaceChildren(h("button",{class:"btn warn",type:"button",onclick:function(){accDel=true;err.textContent="";paint();}},"Supprimer mon compte"));return;}
+    var a=pwField("d-pw1","Mot de passe","current-password"),b=pwField("d-pw2","Confirme ton mot de passe","current-password");
+    var go=h("button",{class:"btn warn",type:"button"},"Supprimer définitivement mon compte");
+    go.addEventListener("click",function(){
+      if(!a.inp.value||a.inp.value!==b.inp.value){err.textContent="Les deux mots de passe ne sont pas identiques.";a.inp.focus();return;}
+      go.disabled=true;err.textContent="Vérification…";
+      accToken().then(function(t){return aj(IT+"lookup?key="+encodeURIComponent(CFG.key),{idToken:t});}).then(function(j){
+        var mail=j.users&&j.users[0]&&j.users[0].email;if(!mail)throw new Error("email");
+        return aj(IT+"signInWithPassword?key="+encodeURIComponent(CFG.key),{email:mail,password:a.inp.value,returnSecureToken:true});}).then(function(j){
+        ACC.id=j.idToken;ACC.exp=Date.now()+Number(j.expiresIn||3600)*1000;
+        return fetch(fsUrl(),{method:"DELETE",headers:{Authorization:"Bearer "+j.idToken}}).then(function(r){if(!r.ok&&r.status!==404)throw new Error("HTTP "+r.status);return aj(IT+"delete?key="+encodeURIComponent(CFG.key),{idToken:j.idToken});});}).then(function(){
+        accDel=false;accClear();accScreen("up","Ton compte a été supprimé.");},function(e){
+        go.disabled=false;err.textContent=/INVALID_LOGIN|INVALID_PASSWORD|INVALID_CREDENTIAL/.test(String(e&&e.message))?"Mot de passe incorrect. Rien n'a été supprimé.":accErr(e);});});
+    box.replaceChildren(h("div",{class:"card",role:"alertdialog","aria-label":"Confirmer la suppression du compte",style:"border:1.5px solid var(--bad);border-radius:10px;padding:14px 16px;background:var(--surface)"},
+      h("p",{style:"margin-top:0"},h("b",{style:"color:var(--bad)"},"Attention : cette action est définitive. "),"Ton compte, ta progression et ton rattachement à la classe seront effacés et ne pourront pas être récupérés."),
+      h("p",{class:"note",style:"margin-top:0"},"Pour confirmer, saisis ton mot de passe deux fois."),
+      h("div",{class:"form acc"},a.el,b.el),
+      h("div",{class:"row"},go,h("button",{class:"btn ghost",type:"button",onclick:function(){accDel=false;err.textContent="";paint();}},"Annuler"))));
+    a.inp.focus();}
+  paint();return box;}
+function account(msg){accDel=false;
   clearInterval(timer);timer=null;ses=null;window.scrollTo(0,0);
   var p=P();if(!p||!ACC.s){accScreen("in");return;}
   var st=stat(null,p),err=h("p",{class:"msg",role:"status"},msg||"");
@@ -5061,11 +5084,8 @@ function account(msg){
         accPush().then(function(){accClear();accScreen("in");},function(){err.textContent="Pas de connexion : reconnecte-toi à Internet avant de te déconnecter, pour ne pas perdre ta progression.";});}},"Me déconnecter")),
     err,
     h("h3",{class:"sub"},"Supprimer mon compte"),
-    h("p",{class:"note"},"Supprime définitivement ton compte et ta progression enregistrée. Cette action est irréversible."),
-    h("button",{class:"btn warn",type:"button",onclick:function(){
-      if(!accDel){accDel=true;account();return;}
-      accDel=false;err.textContent="Suppression…";
-      accToken().then(function(t){return fetch(fsUrl(),{method:"DELETE",headers:{Authorization:"Bearer "+t}}).then(function(){return aj(IT+"delete?key="+encodeURIComponent(CFG.key),{idToken:t});});}).then(function(){accClear();accScreen("up","Ton compte a été supprimé.");},function(e){err.textContent=accErr(e);});}},accDel?"Confirmer la suppression":"Supprimer mon compte"),
+    h("p",{class:"note"},"Supprime définitivement ton compte et ta progression enregistrée. Cette action est irréversible : ton mot de passe te sera demandé deux fois."),
+    delBox(err),
     h("p",null,h("button",{class:"link",type:"button",onclick:privacy},"Confidentialité")));}
 function accBoot(){
   accLoad();
