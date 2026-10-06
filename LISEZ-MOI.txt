@@ -1,0 +1,68 @@
+CAP BIA — METTRE LE SITE EN LIGNE (GitHub Pages + Firebase, gratuit)
+
+Contenu du dossier
+- index.html .......... le site (tout est dedans)
+- config.js ........... les 2 valeurs Firebase à renseigner (étape 3)
+- firestore.rules ..... les règles de sécurité à coller dans Firebase (étape 2)
+- manifest.webmanifest, sw.js, icon-*.png ... permettent d'installer le site sur le téléphone et de l'utiliser hors connexion
+- .nojekyll ........... fichier vide nécessaire à GitHub Pages (ne pas supprimer)
+
+ÉTAPE 1 — Créer la base Firebase (5 minutes)
+1. Va sur https://console.firebase.google.com et connecte-toi avec un compte Google.
+2. « Ajouter un projet », donne un nom (par exemple cap-bia). Désactive Google Analytics (inutile).
+3. Dans le menu de gauche : « Build » puis « Firestore Database », « Créer une base de données ».
+   Choisis une région européenne (par exemple eur3 ou europe-west1) et le mode « Production ».
+
+ÉTAPE 2 — Mettre les règles de sécurité
+1. Dans Firestore, onglet « Règles ».
+2. Efface tout, copie-colle le contenu du fichier firestore.rules, puis « Publier ».
+   Ces règles autorisent les élèves à ENVOYER un signalement (sans lire ceux des autres) et chaque élève
+   connecté à lire / écrire UNIQUEMENT son propre compte (prénom, 3 lettres, progression).
+
+ÉTAPE 2 bis — Activer les comptes élèves
+1. Firebase > « Build » > « Authentication » > « Commencer ».
+2. Onglet « Sign-in method » : choisis « Adresse e-mail/Mot de passe », active la première option
+   (pas besoin du lien magique), « Enregistrer ».
+3. Onglet « Templates » > « Réinitialisation du mot de passe » : clique sur le crayon, change la langue en
+   « Français » et, si tu veux, le nom de l'expéditeur (ex. « Cap BIA »).
+4. Onglet « Settings » > « Domaines autorisés » : ajoute TON-PSEUDO.github.io (le lien du mot de passe oublié
+   en a besoin pour revenir sur le site).
+
+ÉTAPE 3 — Récupérer les 2 valeurs
+1. Dans Firebase : roue dentée « Paramètres du projet », onglet « Général ».
+2. Plus bas, « Vos applications » : clique sur l'icône « </> » (Web), donne un nom, enregistre
+   (ne coche pas « Firebase Hosting »).
+3. Tu vois un bloc de code avec apiKey et projectId.
+4. Ouvre config.js avec le Bloc-notes (ou n'importe quel éditeur de texte) :
+   - project : colle la valeur de projectId
+   - key     : colle la valeur de apiKey
+   - contact : l'adresse e-mail (ou la mention) qui apparaîtra dans la page « Confidentialité » du site
+   Enregistre. (La clé d'API Web n'est pas un secret : ce sont les règles de l'étape 2 qui protègent la base.)
+
+ÉTAPE 4 — Mettre le site sur GitHub Pages
+1. Va sur https://github.com, crée un compte si besoin, puis « New repository » (nom : cap-bia, Public).
+2. Clique « uploading an existing file » et glisse TOUS les fichiers du dossier (y compris .nojekyll),
+   puis « Commit changes ».
+3. Dans le dépôt : « Settings » puis « Pages ». Source : « Deploy from a branch », branche « main », dossier « / (root) », « Save ».
+4. Après 1 à 2 minutes, le site est à l'adresse : https://TON-PSEUDO.github.io/cap-bia/
+   Donne ce lien aux élèves.
+
+LIRE LES SIGNALEMENTS
+Firebase > Firestore Database > collection « reports » : un document par signalement, avec le champ « text »
+(question, réponse attendue, élève, précisions). Pour que je les vérifie, copie-colle-moi simplement le contenu.
+
+POUR METTRE À JOUR LE SITE
+Quand je te donne un nouvel index.html : sur GitHub, dans le dépôt, « Add file » > « Upload files »,
+glisse le nouvel index.html (il remplace l'ancien), « Commit changes ». Le site se met à jour en 1 à 2 minutes.
+Ne remplace pas config.js (il garde tes valeurs).
+
+À SAVOIR
+- COMPTES : l'élève s'inscrit avec son prénom, les 3 premières lettres de son nom, son e-mail et un mot de passe.
+  L'e-mail sert à se connecter et à recevoir le lien « mot de passe oublié » (rien d'autre). Sa progression est
+  enregistrée sur son compte et se retrouve sur tous ses appareils. Le mot de passe n'est jamais visible par toi :
+  il est géré par Firebase. Pour voir les comptes : Firebase > Authentication > Users ; pour les supprimer
+  (demande d'un élève ou d'un parent) : même écran. L'élève peut aussi supprimer son compte lui-même (« Mon compte »).
+- Les signalements contiennent le prénom + 3 lettres du compte et la question concernée. Évite d'inviter
+  les élèves à écrire des informations personnelles dans le champ « précisions ».
+- Choisis une région européenne pour Firestore (étape 1). Préviens la direction du lycée (RGPD, élèves mineurs).
+- Gratuit : GitHub Pages (site public) et l'offre Spark de Firebase suffisent largement pour une classe.
