@@ -4372,7 +4372,7 @@ function topbar(active){
       h("span",{class:"av"},(p.name||"?").charAt(0).toUpperCase()),
       h("span",null,h("b",null,p.name),h("small",null,(p.cls?p.cls+" · ":"")+(ACC.on?"mon compte":"changer de profil")))),
     h("div",{class:"tabs",role:"navigation"},
-      h("button",{class:"tab",type:"button","aria-current":active==="home"?"page":null,onclick:home},"Accueil"),
+      h("button",{class:"tab",type:"button","aria-current":active==="home"?"page":null,onclick:home},"S'entraîner"),
       h("button",{class:"tab",type:"button","aria-current":active==="prog"?"page":null,onclick:progress},"Ma progression"),
       ACC.on&&ACC.teacher?h("button",{class:"tab",type:"button",onclick:function(){TD.view="c";tdash();}},"Mes classes"):null,
       ACC.on&&ACC.admin?h("button",{class:"tab",type:"button",onclick:function(){TD.view="t";tdash();}},"Enseignants"):null));
@@ -4812,7 +4812,7 @@ function result(ok){
     h("div",{class:"row",style:"margin-top:12px"},copyBtn,
       h("button",{class:"btn ghost",type:"button",onclick:progress},"Voir ma progression"),
       h("button",{class:"btn ghost",type:"button",disabled:errs.length===0,onclick:function(){start("errors",shuffle(errs),"Mes erreurs");}},"Revoir mes erreurs ("+errs.length+")"),
-      h("button",{class:"btn ghost",type:"button",onclick:home},"Accueil"))
+      h("button",{class:"btn ghost",type:"button",onclick:home},"S'entraîner"))
   );
 }
 /* ---------- comptes (version publique : Firebase Authentication + Firestore, sans bibliothèque) ---------- */
