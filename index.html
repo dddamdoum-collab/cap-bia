@@ -4925,6 +4925,26 @@ function accScreen(mode,msg){
     h("div",{class:"form acc"},fields,go),err,
     mode==="in"?h("p",null,h("button",{class:"link",type:"button",onclick:function(){accReset(em.inp.value.trim());}},"Mot de passe oublié ?")):null,
     accFoot());}
+function accAction(q){
+  window.scrollTo(0,0);var code=q.get("oobCode")||"",mode=q.get("mode")||"";
+  function clean(){try{history.replaceState(null,"",location.pathname);}catch(e){}}
+  function done(msg){clean();show(h("div",{class:"eyebrow"},"Cap BIA"),h("h1",null,"Mot de passe"),h("p",{class:"lead"},msg),h("button",{class:"btn",type:"button",onclick:function(){accScreen("in");}},"Aller à la connexion"));}
+  if(mode!=="resetPassword"||!code){clean();boot();return;}
+  show(h("div",{class:"eyebrow"},"Cap BIA"),h("h1",null,"Nouveau mot de passe"),h("p",{class:"lead"},"Vérification du lien…"));
+  aj(IT+"resetPassword?key="+encodeURIComponent(CFG.key),{oobCode:code}).then(function(r){
+    var pw=pwField("n-pw","Nouveau mot de passe (8 caractères minimum)","new-password"),pw2=pwField("n-pw2","Confirmer le mot de passe","new-password");
+    var err=h("p",{class:"msg",role:"alert"},""),go=h("button",{class:"btn",type:"button",onclick:function(){
+      err.textContent="";if(pw.inp.value.length<8){err.textContent="Mot de passe trop court : 8 caractères minimum.";return;}
+      if(pw.inp.value!==pw2.inp.value){err.textContent="Les deux mots de passe ne sont pas identiques.";return;}
+      go.disabled=true;
+      aj(IT+"resetPassword?key="+encodeURIComponent(CFG.key),{oobCode:code,newPassword:pw.inp.value}).then(function(){done("Ton mot de passe a été modifié. Tu peux te connecter.");},function(e){go.disabled=false;
+        err.textContent=/EXPIRED|INVALID_OOB/.test(String(e.message))?"Ce lien a expiré ou a déjà été utilisé. Demande un nouveau lien.":accErr(e);});}},"Enregistrer le mot de passe");
+    show(h("div",{class:"eyebrow"},"Cap BIA"),h("h1",null,"Nouveau mot de passe"),
+      h("p",{class:"lead"},"Compte : "+(r.email||"")+". Choisis un nouveau mot de passe."),
+      h("div",{class:"form acc"},pw.el,pw2.el,go),err);
+  },function(e){clean();show(h("div",{class:"eyebrow"},"Cap BIA"),h("h1",null,"Lien non valable"),
+    h("p",{class:"lead"},"Ce lien a expiré ou a déjà été utilisé. Demande un nouveau lien."),
+    h("button",{class:"btn",type:"button",onclick:function(){accReset("");}},"Demander un nouveau lien"));});}
 function accReset(pre){
   window.scrollTo(0,0);var err=h("p",{class:"msg",role:"status"},"");
   var em=fld("r-mail","Adresse e-mail",{type:"email",autocomplete:"email",maxlength:"120"});em.inp.value=pre||"";
@@ -5192,7 +5212,7 @@ function openLook(){
   document.body.append(lookOpen);document.addEventListener("keydown",lookKey);
   var f=grid.querySelector("[aria-checked=true]");if(f)f.focus();}
 (function(){var b=h("button",{id:"lookbtn",class:"lookbtn",type:"button",onclick:openLook,"aria-haspopup":"dialog","aria-label":"Apparence : couleur de fond et papier peint",title:"Apparence"});b.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-1 2-2s-.5-1.6-.5-2.5c0-1 .8-1.5 1.8-1.5H18a3 3 0 0 0 3-3c0-5-4-9-9-9z"/><circle cx="7.5" cy="11" r="1.1"/><circle cx="10.5" cy="7" r="1.1"/><circle cx="15" cy="7.5" r="1.1"/></svg>';document.body.append(b);applyLook();})();
-function boot(){if(ACC.on)accBoot();else if(location.hash==="#enseignant")teacher();else if(P())home();else profiles();}
+function boot(){if(ACC.on){var q=new URLSearchParams(location.search);if(q.get("oobCode")&&!window.__noAct){window.__noAct=1;accAction(q);return;}accBoot();}else if(location.hash==="#enseignant")teacher();else if(P())home();else profiles();}
 window.addEventListener("hashchange",function(){if(!ACC.on&&location.hash==="#enseignant")teacher();});
 boot();
 })();
