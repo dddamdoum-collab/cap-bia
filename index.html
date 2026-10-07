@@ -230,7 +230,7 @@ table.t td.c{font-family:var(--mono);text-align:center}
 .pword{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}.pl{width:30px;height:40px;border-bottom:3px solid var(--ink);font:700 26px var(--mono);text-align:center;line-height:40px}.pl.f{color:var(--accent)}
 .phints{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:6px}.phints li{padding:8px 10px;border-radius:10px;background:var(--accent-soft);color:var(--ink)}.phints li.lk{background:transparent;border:1px dashed var(--line);color:var(--muted)}
 .kb{display:grid;gap:6px;margin:8px 0}.kr{display:flex;gap:5px;flex-wrap:wrap}.key{min-width:30px;min-height:42px;flex:1 1 28px;max-width:52px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font:700 16px var(--mono);cursor:pointer}.key.ok{background:var(--ok-soft);border-color:var(--ok)}.key.bad{background:var(--bad-soft);border-color:var(--bad);color:var(--muted)}.key:disabled{cursor:default}
-.frl{list-style:none;margin:12px 0;padding:0;display:grid;gap:8px}.fr{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}.fr.ok{border-color:var(--ok);background:var(--ok-soft)}.fr.bad{border-color:var(--bad);background:var(--bad-soft)}.frn{font:700 14px var(--mono);color:var(--muted);width:20px}.frt{flex:1;min-width:0}.fry{font-family:var(--mono);color:var(--accent)}.frb{display:flex;gap:6px}.frb .key{flex:0 0 40px;min-width:40px}.mfw{overflow-x:auto;padding-bottom:6px;--cs:64px}.mfg{display:grid;gap:2px;width:max-content;background:var(--line);border:2px solid var(--line)}.mfc{width:var(--cs);height:var(--cs);background:var(--surface);display:flex;align-items:center;justify-content:center;min-width:0}.mfc.em{background:var(--bg)}.mfc.cl{flex-direction:column;align-items:stretch;justify-content:center;gap:2px;padding:2px 3px;background:var(--accent-soft);overflow:hidden}.mfc.cl span{font:600 9.5px/1.1 var(--body);color:var(--ink);overflow-wrap:anywhere}
+.lsvg{width:100%;max-width:560px;height:auto;display:block;border:1px solid var(--line);border-radius:12px}.lset{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin:10px 0}.compass{width:96px;flex:0 0 96px}.lctl{flex:1 1 220px;display:grid;gap:6px;min-width:0}.lctl input{width:100%}.frl{list-style:none;margin:12px 0;padding:0;display:grid;gap:8px}.fr{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}.fr.ok{border-color:var(--ok);background:var(--ok-soft)}.fr.bad{border-color:var(--bad);background:var(--bad-soft)}.frn{font:700 14px var(--mono);color:var(--muted);width:20px}.frt{flex:1;min-width:0}.fry{font-family:var(--mono);color:var(--accent)}.frb{display:flex;gap:6px}.frb .key{flex:0 0 40px;min-width:40px}.mfw{overflow-x:auto;padding-bottom:6px;--cs:64px}.mfg{display:grid;gap:2px;width:max-content;background:var(--line);border:2px solid var(--line)}.mfc{width:var(--cs);height:var(--cs);background:var(--surface);display:flex;align-items:center;justify-content:center;min-width:0}.mfc.em{background:var(--bg)}.mfc.cl{flex-direction:column;align-items:stretch;justify-content:center;gap:2px;padding:2px 3px;background:var(--accent-soft);overflow:hidden}.mfc.cl span{font:600 9.5px/1.1 var(--body);color:var(--ink);overflow-wrap:anywhere}
 .mfi{width:100%;height:100%;border:0;background:transparent;text-align:center;font:700 24px var(--mono);color:var(--accent);text-transform:uppercase;padding:0;caret-color:var(--mag)}.mfi:focus{outline:2px solid var(--mag);outline-offset:-2px;background:var(--mag-soft)}.mfi.bad{background:var(--bad-soft);color:var(--bad)}
 .exbox0{margin-top:18px}.exopen{width:100%;justify-content:center}.exen{display:flex;gap:8px;align-items:center;margin-top:12px}.exen input{width:20px;height:20px}.seg3{display:flex;gap:6px;flex-wrap:wrap}
 .exbox{border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--surface);margin-top:18px}
@@ -4644,7 +4644,8 @@ function gamesPage(msg){NB=0;PG.on=false;clearInterval(timer);timer=null;ses=nul
     h("div",{class:"gcards"},
       h("button",{class:"gcard",type:"button",onclick:function(){penduStart();}},h("b",null,"Le pendu du gorille"),h("span",null,"Trouve le mot avant que le gorille n'atteigne le sommet de la tour. Des indices arrivent à chaque erreur.")),
       h("button",{class:"gcard",type:"button",onclick:function(){mfStart();}},h("b",null,"Mots fléchés"),h("span",null,"Des grilles à remplir : la flèche indique le sens de lecture de chaque mot.")),
-      h("button",{class:"gcard",type:"button",onclick:function(){friseStart();}},h("b",null,"La frise du temps"),h("span",null,"Remets dans l'ordre les grandes dates de l'histoire de l'aviation et de l'espace."))),
+      h("button",{class:"gcard",type:"button",onclick:function(){friseStart();}},h("b",null,"La frise du temps"),h("span",null,"Remets dans l'ordre les grandes dates de l'histoire de l'aviation et de l'espace.")),
+      h("button",{class:"gcard",type:"button",onclick:function(){landStart();}},h("b",null,"L'atterrissage"),h("span",null,"Réponds à la tour de contrôle, règle le cap et l'altitude, et pose l'avion sur la piste."))),
     h("p",{class:"note"},"D'autres jeux arriveront bientôt."));}
 /* --- pendu --- */
 var PMAX=7;
@@ -4712,6 +4713,63 @@ document.addEventListener("keydown",function(e){
   if(!PG.on||PG.done||e.ctrlKey||e.metaKey||e.altKey)return;
   var t=e.target;if(t&&/INPUT|TEXTAREA|SELECT/.test(t.tagName))return;
   var c=String(e.key||"").toUpperCase();if(/^[A-Z]$/.test(c))penduGuess(c);});
+/* --- atterrissage --- */
+var LD={};
+function mkSvg(vb,cls,inner,id){var w=document.createElement("div");w.innerHTML='<svg xmlns="http://www.w3.org/2000/svg" viewBox="'+vb+'" class="'+cls+'"'+(id?' id="'+id+'" role="img" aria-label="Vue de côté de l\'approche"':' aria-hidden="true"')+'>'+inner+'</svg>';return w.firstChild;}
+function landStart(){
+  var pool=RAW.filter(function(r){var t=SEC[r.k].th;return t===2||t===4||t===1;});
+  LD={rw:1+Math.floor(Math.random()*36),step:0,err:0,ph:"q",q:shuffle(pool.map(function(r){return r.id;})).slice(0,5),sel:null,done:false,fail:false,pts:0,msg:""};
+  LD.hd=((LD.rw*10+90+Math.floor(Math.random()*4)*30)%360)||0;LD.alt=2000;LD.paid=false;landDraw();}
+function landDist(){return 5-LD.step;}
+function landSvg(){
+  var X=function(d){return 28+(6-d)*(262/6);},Y=function(a){return 168-a/2000*128;},d=LD.done?0:landDist(),alt=LD.done&&!LD.fail?0:LD.alt;
+  var s='<rect width="360" height="190" fill="var(--sk,#cfe3f5)"/><rect x="0" y="168" width="360" height="22" fill="var(--gr,#6b7f8f)"/><rect x="286" y="166" width="66" height="6" fill="#444"/><text x="319" y="186" font-size="11" font-weight="700" text-anchor="middle" fill="#fff">'+(LD.rw<10?"0":"")+LD.rw+'</text>';
+  [0,500,1000,1500,2000].forEach(function(a){s+='<line x1="22" y1="'+Y(a)+'" x2="352" y2="'+Y(a)+'" stroke="#0002" stroke-dasharray="3 4"/><text x="2" y="'+(Y(a)+3)+'" font-size="9" fill="#345">'+a+'</text>';});
+  [5,4,3,2,1].forEach(function(n){s+='<line x1="'+X(n)+'" y1="162" x2="'+X(n)+'" y2="172" stroke="#345"/><text x="'+X(n)+'" y="182" font-size="9" text-anchor="middle" fill="#fff">'+n+' NM</text>';});
+  var px=X(Math.max(d,0.15)),py=Y(alt)-4;
+  s+='<g style="transform:translate('+px+'px,'+py+'px);transition:transform .8s ease-in-out"><ellipse cx="0" cy="0" rx="15" ry="4.5" fill="#f4f4f4" stroke="#334"/><path d="M-12,-1 L-18,-12 L-13,-12 L-6,-1Z" fill="#e0245e"/><path d="M-3,0 L-9,10 L-3,10 L5,0Z" fill="#9aa7b5" stroke="#334" stroke-width=".6"/><circle cx="9" cy="-1" r="1.6" fill="#7bbcff"/></g>';
+  return s;}
+function landDraw(){
+  PG.on=false;clearInterval(timer);timer=null;ses=null;NB=0;
+  var err=LD.err,left=PMAX-err,head;
+  if(err>=PMAX&&!LD.done){LD.done=true;LD.fail=true;}
+  var hints=["Repère-toi sur l'échelle d'altitude à gauche et les distances en NM sous la piste.",
+    err>=2?"Indice : le numéro peint sur la piste est le cap magnétique divisé par 10 (piste 27 → cap 270°).":"🔒 Indice dans "+(2-err)+" erreur"+(2-err>1?"s":""),
+    err>=4?"Indice : une pente de 3° correspond à environ 300 ft par mille nautique (NM) de distance à la piste.":"🔒 Indice dans "+(4-err)+" erreur"+(4-err>1?"s":"")];
+  var body;
+  if(LD.done){
+    if(!LD.paid){LD.paid=true;LD.pts=LD.fail?0:Math.max(0,140-10*err);PG.score+=LD.pts;if(PG.score>PG.best){PG.best=PG.score;try{localStorage.setItem("capbia.pgbest",String(PG.best));}catch(e){}}}
+    body=[h("p",{class:LD.fail?"msg":"delta"},LD.fail?"Remise des gaz : trop d'erreurs, l'approche est interrompue. Il fallait le cap "+(LD.rw*10)+"° et une altitude de 300 ft par mille. 0 point.":"Posé sur la piste "+(LD.rw<10?"0":"")+LD.rw+" ! "+err+" erreur"+(err>1?"s":"")+" : +"+LD.pts+" points."),
+      h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:landStart},"Nouvelle approche"),h("button",{class:"btn ghost",type:"button",onclick:function(){gamesPage();}},"Retour aux jeux"))];
+  }else if(LD.ph==="q"||LD.ph==="qf"){
+    var r=BY[LD.q[LD.step]],L="ABCD",ord=LD.ord&&LD.ordFor===LD.step?LD.ord:(LD.ord=shuffle([0,1,2,3]),LD.ordFor=LD.step,LD.ord);
+    body=[h("div",{class:"card",style:"margin-top:8px"},h("div",{class:"tag"},"Message de la tour · "+(LD.step+1)+" / 5"),h("h2",null,r.q),
+      ord.map(function(ci,pos){var cls="choice";if(LD.ph==="qf"){if(ci===r.a)cls+=" ok";else if(pos===LD.sel)cls+=" bad";else cls+=" dim";}
+        return h("button",{class:cls,type:"button",disabled:LD.ph==="qf",onclick:function(){LD.sel=pos;if(ord[pos]!==r.a)LD.err++;LD.ph="qf";LD.msg=ord[pos]===r.a?"Bonne réponse, tu reçois l'autorisation d'avancer.":"Mauvaise réponse : −10 points. "+r.s;landDraw();}},h("span",{class:"L"},L[pos]),h("span",null,r.c[ci]));})),
+      LD.ph==="qf"?h("div",null,h("p",{class:/^Bonne/.test(LD.msg)?"delta":"msg"},LD.msg),h("button",{class:"btn",type:"button",onclick:function(){LD.ph="set";LD.msg="";landDraw();}},"Régler cap et altitude")):null];
+  }else{
+    var hdOut=h("b",null,LD.hd+"°"),altOut=h("b",null,LD.alt+" ft");
+    var hs=h("input",{type:"range",min:"0",max:"355",step:"5","aria-label":"Cap en degrés"}),as=h("input",{type:"range",min:"0",max:"2000",step:"50","aria-label":"Altitude en pieds"});
+    hs.value=LD.hd;as.value=LD.alt;
+    hs.addEventListener("input",function(){LD.hd=Number(hs.value);hdOut.textContent=LD.hd+"°";var n=document.getElementById("needle");if(n)n.setAttribute("transform","rotate("+LD.hd+" 40 40)");});
+    as.addEventListener("input",function(){LD.alt=Number(as.value);altOut.textContent=LD.alt+" ft";var sv=document.getElementById("landsvg");if(sv){sv.innerHTML=landSvg();}});
+    body=[h("div",{class:"lset"},
+      mkSvg("0 0 80 80","compass",'<circle cx="40" cy="40" r="36" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/><text x="40" y="14" font-size="9" text-anchor="middle" fill="var(--ink)">N</text><text x="40" y="74" font-size="9" text-anchor="middle" fill="var(--ink)">S</text><text x="71" y="43" font-size="9" text-anchor="middle" fill="var(--ink)">E</text><text x="9" y="43" font-size="9" text-anchor="middle" fill="var(--ink)">O</text><g id="needle" transform="rotate('+LD.hd+' 40 40)"><path d="M40,12 L45,40 L35,40Z" fill="#e0245e"/><path d="M40,68 L45,40 L35,40Z" fill="var(--muted)"/></g>'),
+      h("div",{class:"lctl"},
+        h("label",null,"Cap de l'avion : ",hdOut),hs,
+        h("label",null,"Altitude : ",altOut),as)),
+      h("p",{class:"note"},"Aligne l'avion sur la piste "+(LD.rw<10?"0":"")+LD.rw+" et place-le à la bonne altitude pour une pente de descente de 3°, à "+landDist()+" NM de la piste."),
+      LD.msg?h("p",{class:"msg",role:"status"},LD.msg):null,
+      h("button",{class:"btn",type:"button",onclick:function(){
+        var okH=Math.abs(((LD.hd-LD.rw*10+540)%360)-180)<=5,okA=Math.abs(LD.alt-landDist()*300)<=100;
+        if(okH&&okA){LD.step++;LD.ph="q";LD.msg="";LD.sel=null;if(LD.step>=5){LD.done=true;}else{LD.alt=Math.min(2000,LD.alt);}landDraw();}
+        else{LD.err++;LD.msg=(okH?"Cap correct. ":"Le cap n'est pas aligné sur la piste. ")+(okA?"Altitude correcte.":"L'altitude ne correspond pas à la pente de 3° pour "+landDist()+" NM.")+" −10 points.";landDraw();}}},"Valider le réglage")];
+  }
+  var svg=mkSvg("0 0 360 190","lsvg",landSvg(),"landsvg");
+  show(topbar("games"),h("div",{class:"eyebrow"},"Jeux"),h("h1",null,"L'atterrissage"),
+    h("p",{class:"pscore"},h("b",null,"Score : "+PG.score+" pts"),h("span",null," · record "+PG.best+" · 140 points, −10 par erreur")),
+    svg,h("p",{class:"note"},LD.done?"":"Approche · "+landDist()+" NM de la piste · erreurs : "+err+" / "+PMAX),
+    h("ul",{class:"phints"},hints.map(function(t){return h("li",{class:t.indexOf("🔒")===0?"lk":""},t);})),body);}
 /* --- frise chronologique --- */
 var FEV=[[1783,"Premier vol humain en montgolfière (Pilâtre de Rozier)"],[1852,"Henri Giffard : premier dirigeable à vapeur"],[1890,"Clément Ader décolle avec l'Éole"],[1903,"Les frères Wright réussissent le premier vol motorisé"],[1906,"Santos-Dumont vole avec le 14-bis à Paris"],[1909,"Louis Blériot traverse la Manche"],[1913,"Roland Garros traverse la Méditerranée"],[1927,"Lindbergh relie New York à Paris sans escale"],[1930,"Mermoz traverse l'Atlantique Sud avec le courrier"],[1939,"Premier vol d'un avion à réaction (Heinkel He 178)"],[1947,"Chuck Yeager franchit le mur du son"],[1957,"Spoutnik 1, premier satellite artificiel"],[1961,"Gagarine, premier homme dans l'espace"],[1965,"Astérix, premier satellite français"],[1969,"Apollo 11 : premiers pas sur la Lune"],[1976,"Début du service commercial du Concorde"],[1979,"Premier lancement d'Ariane 1"],[1981,"Premier vol de la navette spatiale Columbia"],[1998,"Lancement du premier module de l'ISS"],[2005,"Premier vol de l'Airbus A380"],[2014,"Philae se pose sur une comète"],[2016,"Thomas Pesquet décolle pour l'ISS"]];
 var FR={ev:null,st:null,last:-1};
