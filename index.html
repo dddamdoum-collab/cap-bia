@@ -221,7 +221,18 @@ table.t td.c{font-family:var(--mono);text-align:center}
 .dot{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:#c0362c;color:#fff;font:700 12px/20px var(--mono,monospace);text-align:center;box-shadow:0 0 0 2px var(--bg)}
 .pill{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid currentColor}
 .pill.o-corrige{color:#12775f}.pill.o-partiel{color:#c25a00}.pill.o-inchange{color:#5b6f91}.pill.o-new{color:#fff;background:#c0362c;border-color:#c0362c}
-.qsearch{margin:16px 0}.qsearch input{flex:1;min-width:0}.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px}.galc{min-width:0;border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--surface)}.galq{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.chip2{font:600 12px var(--mono,monospace);padding:4px 8px;border-radius:8px;border:1px solid var(--line);background:transparent;color:inherit;cursor:pointer}.seg3{display:flex;gap:6px;flex-wrap:wrap}
+.qsearch{margin:16px 0}.qsearch input{flex:1;min-width:0}.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px}.galc{min-width:0;border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--surface)}.galq{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.chip2{font:600 12px var(--mono,monospace);padding:4px 8px;border-radius:8px;border:1px solid var(--line);background:transparent;color:inherit;cursor:pointer}.gcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:14px;margin:16px 0}.gcard{display:flex;flex-direction:column;gap:6px;text-align:left;padding:16px;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);cursor:pointer;font:inherit}.gcard b{font:700 20px var(--display);color:var(--accent)}.gcard span{color:var(--muted)}.gcard:hover{border-color:var(--accent)}
+.pg{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start}.pgl{flex:0 0 auto;width:min(56vw,230px);margin:0 auto}.pgr{flex:1 1 300px;min-width:0}
+.ptower{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:12px;overflow:hidden}.ptower .sky{fill:#cfe3f5}.ptower .gr{fill:#6b7f8f}.ptower .tw{fill:#8a97a6}.ptower .wn{fill:#ffe9a8}.ptower .bl{fill:#e0245e;animation:bl 1.2s infinite}.ptower .roar{font:700 20px var(--display);fill:var(--bad);animation:bl .6s infinite}
+.ptower .apeg{transition:transform .9s ease-in-out}.ptower .apeg rect,.ptower .apeg ellipse,.ptower .apeg circle{fill:#4a3a32}.ptower .apeg .fc{fill:#c8a98c}.ptower .apeg .hd{fill:#5a463c}.ptower .apeg .ey{fill:#1b1410}
+.ptower.climb .armL,.ptower.climb .legR{animation:cl .45s 2 ease-in-out}.ptower.climb .armR,.ptower.climb .legL{animation:cl .45s .22s 2 ease-in-out}.ptower.top .armL,.ptower.top .armR{animation:cl .4s infinite ease-in-out}
+@keyframes cl{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}@keyframes bl{50%{opacity:.25}}
+.pword{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}.pl{width:30px;height:40px;border-bottom:3px solid var(--ink);font:700 26px var(--mono);text-align:center;line-height:40px}.pl.f{color:var(--accent)}
+.phints{list-style:none;margin:0 0 12px;padding:0;display:grid;gap:6px}.phints li{padding:8px 10px;border-radius:10px;background:var(--accent-soft);color:var(--ink)}.phints li.lk{background:transparent;border:1px dashed var(--line);color:var(--muted)}
+.kb{display:grid;gap:6px;margin:8px 0}.kr{display:flex;gap:5px;flex-wrap:wrap}.key{min-width:34px;min-height:42px;flex:1 1 34px;max-width:52px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font:700 16px var(--mono);cursor:pointer}.key.ok{background:var(--ok-soft);border-color:var(--ok)}.key.bad{background:var(--bad-soft);border-color:var(--bad);color:var(--muted)}.key:disabled{cursor:default}
+.mfw{overflow-x:auto;padding-bottom:6px;--cs:64px}.mfg{display:grid;gap:2px;width:max-content;background:var(--line);border:2px solid var(--line)}.mfc{width:var(--cs);height:var(--cs);background:var(--surface);display:flex;align-items:center;justify-content:center;min-width:0}.mfc.em{background:var(--bg)}.mfc.cl{flex-direction:column;align-items:stretch;justify-content:center;gap:2px;padding:2px 3px;background:var(--accent-soft);overflow:hidden}.mfc.cl span{font:600 9.5px/1.1 var(--body);color:var(--ink);overflow-wrap:anywhere}
+.mfi{width:100%;height:100%;border:0;background:transparent;text-align:center;font:700 24px var(--mono);color:var(--accent);text-transform:uppercase;padding:0;caret-color:var(--mag)}.mfi:focus{outline:2px solid var(--mag);outline-offset:-2px;background:var(--mag-soft)}.mfi.bad{background:var(--bad-soft);color:var(--bad)}
+.exbox0{margin-top:18px}.exopen{width:100%;justify-content:center}.exen{display:flex;gap:8px;align-items:center;margin-top:12px}.exen input{width:20px;height:20px}.seg3{display:flex;gap:6px;flex-wrap:wrap}
 .exbox{border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--surface);margin-top:18px}
 </style></head><body>
 
@@ -4315,6 +4326,7 @@ var NB=0;
 function show(){var out=[];(function add(l){for(var i=0;i<l.length;i++){var c=l[i];if(c==null||c===false)continue;if(Array.isArray(c))add(c);else out.push(c);}})(arguments);
   var has=out.some(function(c){return c&&c.classList&&c.classList.contains("tb");});
   if(!has&&!NB&&P()&&(!ACC.on||ACC.s))out.unshift(topbar(null));
+  if(typeof PG!=="undefined"&&PG)PG.on=false;
   root.replaceChildren.apply(root,out);}
 function pct(a,b){return b?Math.round(100*a/b):0;}
 function qOf(p,id){return p.q[id];}
@@ -4380,6 +4392,7 @@ function topbar(active){
     h("div",{class:"tabs",role:"navigation"},
       h("button",{class:"tab",type:"button","aria-current":active==="home"?"page":null,onclick:home},"S'entraîner"),
       h("button",{class:"tab",type:"button","aria-current":active==="prog"?"page":null,onclick:progress},"Ma progression"),
+      gamesOK()?h("button",{class:"tab",type:"button","aria-current":active==="games"?"page":null,onclick:function(){gamesPage();}},"Jeux"):null,
       ACC.on&&ACC.teacher?h("button",{class:"tab",type:"button",onclick:function(){TD.view="c";tdash();}},"Mes classes"):null,
       ACC.on&&(ACC.teacher||ACC.admin)?h("button",{class:"tab",type:"button","aria-current":active==="gal"?"page":null,onclick:gallery},"Schémas"):null,
       ACC.on&&ACC.admin?h("button",{class:"tab",type:"button",onclick:function(){TD.view="t";tdash();}},"Enseignants"):null,
@@ -4450,7 +4463,7 @@ function home(){NB=0;
         h("h3",{class:"sub"},(T.opt?"":"Thème "+T.n+" · ")+T.t),
         h("button",{class:"link",type:"button",onclick:function(){start("theme",nextBatch(tids,30),T.opt?T.short:"Thème "+T.n,String(T.n));}},"Tout le thème · "+st.ok+" / "+st.n)),
       h("div",{class:"secs"},secs));});
-  var examBtn=examBox();
+  EXOPEN=false;var examBtn=examBox();
   var errBtn=h("button",{class:"btn ghost",type:"button",disabled:errs.length===0,onclick:function(){start("errors",shuffle(errs),"Mes erreurs");}},"Revoir mes erreurs ("+errs.length+")");
   var resetBtn=h("button",{class:"btn warn",type:"button",onclick:function(){
     if(!resetArmed){resetArmed=true;resetBtn.textContent="Confirmer l'effacement";return;}
@@ -4612,6 +4625,115 @@ function start(mode,ids,label,k,dur){
   if(mode==="exam")timer=setInterval(tick,1000);
   renderQ();
 }
+/* ---------- jeux ---------- */
+var GBANK=[["CUMULUS", 1, "Nuage de beau temps"], ["CIRRUS", 1, "Nuage de glace, haut"], ["STRATUS", 1, "Nuage en nappe basse"], ["ORAGE", 1, "Cumulonimbus en action"], ["ANTICYCLONE", 1, "Haute pression, beau temps"], ["DEPRESSION", 1, "Basse pression, mauvais temps"], ["TROPOSPHERE", 1, "Couche où se fait la météo"], ["STRATOSPHERE", 1, "Couche de l'ozone"], ["ISOBARE", 1, "Ligne de même pression"], ["BAROMETRE", 1, "Mesure la pression"], ["BRUME", 1, "Visibilité réduite, humide"], ["GIVRAGE", 1, "Glace sur les ailes"], ["TURBULENCE", 1, "Secousses en vol"], ["MOUSSON", 1, "Vent saisonnier d'Asie"], ["FOEHN", 1, "Vent chaud et sec"], ["RAFALE", 1, "Brusque coup de vent"], ["ROSEE", 1, "Condensation au sol"], ["BROUILLARD", 1, "Nuage au ras du sol"], ["PORTANCE", 2, "Soutient l'avion"], ["TRAINEE", 2, "S'oppose à l'avancée"], ["INCIDENCE", 2, "Angle corde / vent relatif"], ["DECROCHAGE", 2, "Perte de portance"], ["PROFIL", 2, "Coupe d'une aile"], ["EXTRADOS", 2, "Dessus de l'aile"], ["INTRADOS", 2, "Dessous de l'aile"], ["VENTURI", 2, "Tube qui accélère l'air"], ["BERNOULLI", 2, "Pression et vitesse d'un fluide"], ["POIDS", 2, "Force vers le bas"], ["POUSSEE", 2, "Fournie par le moteur"], ["ARCHIMEDE", 2, "Poussée du ballon"], ["MONTGOLFIERE", 2, "Ballon à air chaud"], ["HELIUM", 2, "Gaz léger non inflammable"], ["VOILURE", 2, "Ensemble des ailes"], ["FUSELAGE", 3, "Corps de l'avion"], ["AILERON", 3, "Gouverne de roulis"], ["DERIVE", 3, "Plan fixe vertical"], ["GOUVERNAIL", 3, "Gouverne de lacet"], ["PROFONDEUR", 3, "Gouverne de tangage"], ["EMPENNAGE", 3, "Queue de l'avion"], ["HELICE", 3, "Tourne et tracte"], ["TURBINE", 3, "Roue d'un réacteur"], ["REACTEUR", 3, "Moteur à éjection de gaz"], ["KEROSENE", 3, "Carburant des avions"], ["FUSEE", 3, "Lanceur spatial"], ["SATELLITE", 3, "Tourne autour de la Terre"], ["ORBITE", 3, "Trajectoire autour d'un astre"], ["APOGEE", 3, "Point le plus loin de la Terre"], ["PERIGEE", 3, "Point le plus proche"], ["PLANEUR", 3, "Avion sans moteur"], ["DIRIGEABLE", 3, "Ballon propulsé et piloté"], ["HELICOPTERE", 3, "Voilure tournante"], ["TRAIN", 3, "Atterrisseur"], ["VOLET", 3, "Augmente la portance"], ["ALTIMETRE", 4, "Indique l'altitude"], ["ANEMOMETRE", 4, "Mesure la vitesse du vent"], ["BOUSSOLE", 4, "Indique le nord"], ["RADAR", 4, "Détecte par ondes"], ["BALISE", 4, "Repère de navigation"], ["PISTE", 4, "Là où l'on atterrit"], ["CAP", 4, "Direction du nez"], ["ROUTE", 4, "Trajet suivi"], ["TOUR", 4, "Contrôle de l'aérodrome"], ["TRANSPONDEUR", 4, "Répond au radar"], ["VARIOMETRE", 4, "Indique la montée"], ["ATTERRIR", 4, "Toucher la piste"], ["DECOLLER", 4, "Quitter la piste"], ["PILOTE", 4, "Commandant de bord"], ["CARTE", 4, "OACI au 1/500 000"], ["BLERIOT", 5, "Traverse la Manche en 1909"], ["ADER", 5, "Éole, 1890"], ["MERMOZ", 5, "Aéropostale, Atlantique Sud"], ["EXUPERY", 5, "Auteur du Petit Prince"], ["GAGARINE", 5, "Premier homme dans l'espace"], ["ARMSTRONG", 5, "Premier pas sur la Lune"], ["LINDBERGH", 5, "Traversée de l'Atlantique en 1927"], ["MONTGOLFIER", 5, "Frères du premier ballon"], ["CONCORDE", 5, "Avion supersonique franco-britannique"], ["ARIANE", 5, "Fusée européenne"], ["SPOUTNIK", 5, "Premier satellite"], ["AEROPOSTALE", 5, "Courrier Toulouse - Dakar"], ["GARROS", 5, "Aviateur et tennis"], ["GUYNEMER", 5, "As de la Grande Guerre"], ["PESQUET", 5, "Spationaute français"], ["AIRBUS", 5, "Constructeur européen"]];
+var GGRIDS=[{"t": "Météo", "w": 12, "h": 9, "g": [[null, null, {"c": [{"t": "Cumulonimbus en action", "d": "d"}]}, null, null, null, null, null, {"c": [{"t": "Condensation au sol", "d": "d"}]}, null, {"c": [{"t": "Vent saisonnier d'Asie", "d": "d"}]}, null], [{"c": [{"t": "Vent chaud et sec", "d": "r"}]}, "F", "O", "E", "H", "N", null, null, "R", null, "M", null], [null, null, "R", null, null, {"c": [{"t": "Visibilité réduite, humide", "d": "d"}]}, null, null, "O", null, "O", null], [null, null, "A", null, null, "B", null, null, "S", null, "U", null], [null, {"c": [{"t": "Glace sur les ailes", "d": "r"}]}, "G", "I", "V", "R", "A", "G", "E", null, "S", null], [null, null, "E", null, null, "U", null, null, "E", null, "S", null], [null, null, null, null, null, "M", null, null, null, null, "O", null], [{"c": [{"t": "Basse pression, mauvais temps", "d": "r"}]}, "D", "E", "P", "R", "E", "S", "S", "I", "O", "N", null], [null, null, null, null, null, null, null, null, null, null, null, null]]}, {"t": "Vol et ballons", "w": 12, "h": 9, "g": [[null, null, null, null, null, {"c": [{"t": "S'oppose à l'avancée", "d": "d"}]}, null, null, null, null, {"c": [{"t": "Coupe d'une aile", "d": "d"}]}, null], [null, {"c": [{"t": "Tube qui accélère l'air", "d": "r"}]}, "V", "E", "N", "T", "U", "R", "I", null, "P", null], [null, null, null, null, null, "R", null, null, null, null, "R", null], [{"c": [{"t": "Dessous de l'aile", "d": "r"}]}, "I", "N", "T", "R", "A", "D", "O", "S", null, "O", null], [null, null, null, null, null, "I", null, null, null, null, "F", null], [null, {"c": [{"t": "Pression et vitesse d'un fluide", "d": "r"}]}, "B", "E", "R", "N", "O", "U", "L", "L", "I", null], [null, null, null, null, null, "E", null, null, null, null, "L", null], [null, null, null, {"c": [{"t": "Gaz léger non inflammable", "d": "r"}]}, "H", "E", "L", "I", "U", "M", null, null], [null, null, null, null, null, null, null, null, null, null, null, null]]}, {"t": "Aéronefs", "w": 12, "h": 9, "g": [[null, {"c": [{"t": "Roue d'un réacteur", "d": "d"}]}, null, {"c": [{"t": "Point le plus loin de la Terre", "d": "d"}]}, null, null, null, null, null, null, {"c": [{"t": "Lanceur spatial", "d": "d"}]}, null], [{"c": [{"t": "Atterrisseur", "d": "r"}]}, "T", "R", "A", "I", "N", null, null, {"c": [{"t": "Tourne et tracte", "d": "d"}]}, null, "F", null], [null, "U", null, "P", null, null, null, null, "H", null, "U", null], [null, "R", {"c": [{"t": "Trajectoire autour d'un astre", "d": "r"}]}, "O", "R", "B", "I", "T", "E", null, "S", null], [null, "B", null, "G", null, null, null, null, "L", null, "E", null], [null, "I", null, "E", {"c": [{"t": "Plan fixe vertical", "d": "r"}]}, "D", "E", "R", "I", "V", "E", null], [null, "N", null, "E", null, null, null, null, "C", null, null, null], [null, "E", null, {"c": [{"t": "Avion sans moteur", "d": "r"}]}, "P", "L", "A", "N", "E", "U", "R", null], [null, null, null, null, null, null, null, null, null, null, null, null]]}, {"t": "Navigation", "w": 12, "h": 9, "g": [[null, null, null, null, null, null, null, null, null, {"c": [{"t": "Trajet suivi", "d": "d"}]}, null, null], [{"c": [{"t": "Indique la montée", "d": "r"}]}, "V", "A", "R", "I", "O", "M", "E", "T", "R", "E", null], [null, null, null, {"c": [{"t": "Détecte par ondes", "d": "d"}]}, null, null, null, null, null, "O", null, null], [{"c": [{"t": "OACI au 1/500 000", "d": "r"}]}, "C", "A", "R", "T", "E", {"c": [{"t": "Contrôle de l'aérodrome", "d": "r"}]}, "T", "O", "U", "R", null], [null, null, null, "A", null, {"c": [{"t": "Direction du nez", "d": "d"}]}, null, null, null, "T", null, null], [null, null, {"c": [{"t": "Quitter la piste", "d": "r"}]}, "D", "E", "C", "O", "L", "L", "E", "R", null], [null, null, null, "A", null, "A", null, null, null, null, null, null], [null, null, null, "R", {"c": [{"t": "Là où l'on atterrit", "d": "r"}]}, "P", "I", "S", "T", "E", null, null], [null, null, null, null, null, null, null, null, null, null, null, null]]}, {"t": "Histoire", "w": 12, "h": 9, "g": [[null, null, {"c": [{"t": "Aéropostale, Atlantique Sud", "d": "d"}]}, null, null, null, null, null, null, null, null, null], [null, null, "M", null, null, null, null, null, null, null, {"c": [{"t": "Fusée européenne", "d": "d"}]}, null], [null, {"c": [{"t": "Auteur du Petit Prince", "d": "r"}]}, "E", "X", "U", "P", "E", "R", "Y", null, "A", null], [null, null, "R", null, null, null, null, {"c": [{"t": "Éole, 1890", "d": "d"}]}, null, null, "R", null], [null, null, "M", null, null, null, null, "A", null, null, "I", null], [{"c": [{"t": "Avion supersonique franco-britannique", "d": "r"}]}, "C", "O", "N", "C", "O", "R", "D", "E", null, "A", null], [null, null, "Z", null, null, null, null, "E", null, null, "N", null], [null, null, {"c": [{"t": "Premier homme dans l'espace", "d": "r"}]}, "G", "A", "G", "A", "R", "I", "N", "E", null], [null, null, null, null, null, null, null, null, null, null, null, null]]}, {"t": "Mélange 1", "w": 12, "h": 9, "g": [[null, {"c": [{"t": "Lanceur spatial", "d": "d"}]}, null, null, null, null, null, {"c": [{"t": "Glace sur les ailes", "d": "d"}]}, null, null, {"c": [{"t": "Force vers le bas", "d": "d"}]}, null], [{"c": [{"t": "Corps de l'avion", "d": "r"}]}, "F", "U", "S", "E", "L", "A", "G", "E", null, "P", null], [null, "U", null, null, null, null, null, "I", null, null, "O", null], [null, "S", {"c": [{"t": "Plan fixe vertical", "d": "r"}]}, "D", "E", "R", "I", "V", "E", null, "I", null], [null, "E", null, null, null, null, null, "R", null, null, "D", null], [null, "E", {"c": [{"t": "Dessus de l'aile", "d": "r"}]}, "E", "X", "T", "R", "A", "D", "O", "S", null], [null, null, null, null, null, null, null, "G", null, null, null, null], [{"c": [{"t": "Poussée du ballon", "d": "r"}]}, "A", "R", "C", "H", "I", "M", "E", "D", "E", null, null], [null, null, null, null, null, null, null, null, null, null, null, null]]}, {"t": "Mélange 2", "w": 12, "h": 9, "g": [[null, null, {"c": [{"t": "OACI au 1/500 000", "d": "d"}]}, null, {"c": [{"t": "Direction du nez", "d": "d"}]}, null, null, null, {"c": [{"t": "Gouverne de roulis", "d": "d"}]}, null, null, null], [null, null, "C", null, "C", {"c": [{"t": "Atterrisseur", "d": "r"}]}, "T", "R", "A", "I", "N", null], [{"c": [{"t": "Détecte par ondes", "d": "r"}]}, "R", "A", "D", "A", "R", null, null, "I", null, {"c": [{"t": "Contrôle de l'aérodrome", "d": "d"}]}, null], [null, null, "R", null, "P", {"c": [{"t": "Augmente la portance", "d": "r"}]}, "V", "O", "L", "E", "T", null], [null, null, "T", null, null, null, null, null, "E", null, "O", null], [{"c": [{"t": "Moteur à éjection de gaz", "d": "r"}]}, "R", "E", "A", "C", "T", "E", "U", "R", null, "U", null], [null, null, null, null, null, null, null, null, "O", null, "R", null], [{"c": [{"t": "Premier pas sur la Lune", "d": "r"}]}, "A", "R", "M", "S", "T", "R", "O", "N", "G", null, null], [null, null, null, null, null, null, null, null, null, null, null, null]]}];
+var GMIN=100;
+function gamesOK(){return !!P()&&(stat().seen>=GMIN||!!ACC.teacher||!!ACC.admin);}
+function gShuffleIdx(n,last){var a=[],i;for(i=0;i<n;i++)a.push(i);a=shuffle(a);if(a.length>1&&a[0]===last)a.push(a.shift());return a;}
+var PG={on:false,q:[],w:null,bad:[],good:[],wins:0,loss:0,anim:0};
+function gamesPage(msg){NB=0;PG.on=false;clearInterval(timer);timer=null;ses=null;window.scrollTo(0,0);
+  if(!gamesOK()){home();return;}
+  show(h("div",{class:"eyebrow"},"Détente"),h("h1",null,"Jeux"),
+    h("p",{class:"lead"},"Bravo : tu as répondu à plus de "+GMIN+" questions, la salle de jeux est ouverte. Les mots sont tous liés au programme du BIA."),
+    h("div",{class:"gcards"},
+      h("button",{class:"gcard",type:"button",onclick:function(){penduStart();}},h("b",null,"Le pendu du gorille"),h("span",null,"Trouve le mot avant que le gorille n'atteigne le sommet de la tour. Des indices arrivent à chaque erreur.")),
+      h("button",{class:"gcard",type:"button",onclick:function(){mfStart();}},h("b",null,"Mots fléchés"),h("span",null,"Des grilles à remplir : la flèche indique le sens de lecture de chaque mot."))),
+    h("p",{class:"note"},"D'autres jeux arriveront bientôt."));}
+/* --- pendu --- */
+var PMAX=7;
+function gApe(){return '<g class="ape"><g class="legL"><rect x="-12" y="14" width="8" height="14" rx="4"/></g><g class="legR"><rect x="4" y="14" width="8" height="14" rx="4"/></g><ellipse cx="0" cy="0" rx="15" ry="19"/><g class="armL"><rect x="-27" y="-24" width="9" height="30" rx="4.5"/></g><g class="armR"><rect x="18" y="-24" width="9" height="30" rx="4.5"/></g><circle cx="0" cy="-24" r="10" class="hd"/><ellipse cx="0" cy="-22" rx="6.5" ry="5.5" class="fc"/><circle cx="-3" cy="-24" r="1.3" class="ey"/><circle cx="3" cy="-24" r="1.3" class="ey"/><rect x="-3" y="-19.5" width="6" height="1.6" rx=".8" class="ey"/></g>';}
+function gTower(){var s='<rect x="0" y="0" width="240" height="440" class="sky"/><rect x="0" y="426" width="240" height="14" class="gr"/>';
+  var st=[[56,334,128,92],[70,254,100,80],[86,184,68,70],[101,126,38,58],[110,86,20,40]],i,j,k;
+  st.forEach(function(r){s+='<rect x="'+r[0]+'" y="'+r[1]+'" width="'+r[2]+'" height="'+r[3]+'" class="tw"/>';
+    for(j=r[1]+8;j<r[1]+r[3]-6;j+=12)for(k=r[0]+7;k<r[0]+r[2]-8;k+=13)s+='<rect x="'+k+'" y="'+j+'" width="5" height="6" class="wn"/>';});
+  s+='<rect x="118.5" y="22" width="3" height="64" class="tw"/><circle cx="120" cy="20" r="3.5" class="bl"/>';return s;}
+function penduStart(){
+  if(!PG.q.length)PG.q=gShuffleIdx(GBANK.length,-1);
+  var e=GBANK[PG.q.shift()];PG.w=e[0];PG.th=e[1];PG.cl=e[2];PG.bad=[];PG.good=[];PG.on=true;PG.done=false;penduDraw();}
+function penduState(){var errs=PG.bad.length,first=errs>=5?PG.w.charAt(0):"";return{errs:errs,first:first};}
+function penduDraw(climb){
+  clearInterval(timer);timer=null;ses=null;NB=0;
+  var errs=PG.bad.length,w=PG.w,won=w.split("").every(function(c){return PG.good.indexOf(c)>=0;}),lost=errs>=PMAX;
+  PG.done=won||lost;
+  var shown=w.split("").map(function(c){return(PG.good.indexOf(c)>=0||lost)?c:"_";});
+  var y=395-errs*(300/PMAX);
+  var svg=document.createElementNS("http://www.w3.org/2000/svg","svg");svg.setAttribute("viewBox","0 0 240 440");svg.setAttribute("class","ptower"+(climb?" climb":"")+(lost?" top":""));svg.setAttribute("role","img");svg.setAttribute("aria-label","Un gorille géant escalade la tour : "+errs+" erreur"+(errs>1?"s":"")+" sur "+PMAX);
+  svg.innerHTML=gTower()+'<g class="apeg" style="transform:translate(120px,'+y+'px)">'+gApe()+'</g>'+(lost?'<text x="168" y="'+(y-26)+'" class="roar">GRRR !</text>':"");
+  var THn={1:"Météo",2:"Vol",3:"Aéronefs",4:"Navigation",5:"Histoire"};
+  var hints=[
+    errs>=2?"Indice 1 · thème : "+THn[PG.th]:"🔒 Indice 1 dans "+(2-errs)+" erreur"+(2-errs>1?"s":""),
+    errs>=4?"Indice 2 · "+PG.cl:"🔒 Indice 2 dans "+(4-errs)+" erreur"+(4-errs>1?"s":""),
+    errs>=5?"Indice 3 · la première lettre est "+w.charAt(0):"🔒 Indice 3 dans "+(5-errs)+" erreur"+(5-errs>1?"s":"")];
+  var rows=["AZERTYUIOP","QSDFGHJKLM","WXCVBN"];
+  var kb=h("div",{class:"kb"},rows.map(function(r){return h("div",{class:"kr"},r.split("").map(function(c){
+    var used=PG.good.indexOf(c)>=0||PG.bad.indexOf(c)>=0,okc=PG.good.indexOf(c)>=0;
+    return h("button",{class:"key"+(used?(okc?" ok":" bad"):""),type:"button",disabled:used||PG.done,"aria-label":"Lettre "+c,onclick:function(){penduGuess(c);}},c);}));}));
+  var res=null;
+  if(won)res=h("p",{class:"delta"},"Gagné ! Le gorille est resté en bas ("+errs+" erreur"+(errs>1?"s":"")+").");
+  else if(lost)res=h("p",{class:"msg"},"Perdu : le gorille est au sommet. Le mot était « "+w+" ».");
+  show(topbar("games"),h("div",{class:"eyebrow"},"Jeux"),h("h1",null,"Le pendu du gorille"),
+    h("div",{class:"pg"},
+      h("div",{class:"pgl"},svg,h("p",{class:"note",style:"text-align:center"},errs+" / "+PMAX+" erreurs")),
+      h("div",{class:"pgr"},
+        h("div",{class:"pword","aria-label":"Mot à deviner : "+shown.join(" ")},shown.map(function(c){return h("span",{class:c==="_"?"pl":"pl f"},c==="_"?"":c);})),
+        h("ul",{class:"phints"},hints.map(function(t){return h("li",{class:t.indexOf("🔒")===0?"lk":""},t);})),
+        res,
+        PG.done?h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:function(){if(won)PG.wins++;penduStart();}},"Mot suivant"),h("button",{class:"btn ghost",type:"button",onclick:function(){gamesPage();}},"Retour aux jeux")):kb,
+        h("p",{class:"note"},"Tu peux aussi taper les lettres au clavier. Parties gagnées sur cette visite : "+PG.wins+"."))));
+  PG.on=true;
+  if(climb){setTimeout(function(){var s=document.querySelector(".ptower");if(s)s.classList.remove("climb");},1100);}
+}
+function penduGuess(c){
+  if(!PG.on||PG.done||PG.good.indexOf(c)>=0||PG.bad.indexOf(c)>=0)return;
+  var hit=PG.w.indexOf(c)>=0;
+  if(hit)PG.good.push(c);else PG.bad.push(c);
+  if(!hit&&PG.bad.length===5&&PG.good.indexOf(PG.w.charAt(0))<0)PG.good.push(PG.w.charAt(0));
+  penduDraw(!hit);
+}
+document.addEventListener("keydown",function(e){
+  if(!PG.on||PG.done||e.ctrlKey||e.metaKey||e.altKey)return;
+  var t=e.target;if(t&&/INPUT|TEXTAREA|SELECT/.test(t.tagName))return;
+  var c=String(e.key||"").toUpperCase();if(/^[A-Z]$/.test(c))penduGuess(c);});
+/* --- mots fléchés --- */
+var MF={g:null,i:-1,last:-1,st:null};
+function mfStart(){var o=gShuffleIdx(GGRIDS.length,MF.last);MF.i=o[0];MF.last=MF.i;MF.st={v:{},bad:{},done:false};PG.on=false;mfDraw();}
+function mfWords(g){var out=[];for(var r=0;r<g.h;r++)for(var c=0;c<g.w;c++){var x=g.g[r][c];if(x&&typeof x==="object")x.c.forEach(function(k){var dr=k.d==="d"?1:0,dc=k.d==="r"?1:0,p=[],rr=r+dr,cc=c+dc;while(rr<g.h&&cc<g.w&&typeof g.g[rr][cc]==="string"){p.push([rr,cc]);rr+=dr;cc+=dc;}if(p.length)out.push({d:k.d,p:p});});}return out;}
+function mfDraw(msg){
+  PG.on=false;clearInterval(timer);timer=null;ses=null;NB=0;
+  var g=GGRIDS[MF.i],S=MF.st,words=mfWords(g),inputs={};
+  function key(r,c){return r+"_"+c;}
+  var nbL=0,nbOk=0;
+  var cells=[];
+  for(var r=0;r<g.h;r++)for(var c=0;c<g.w;c++)(function(r,c){
+    var x=g.g[r][c],k=key(r,c);
+    if(typeof x==="string"){nbL++;
+      var inp=h("input",{class:"mfi"+(S.bad[k]?" bad":""),type:"text",maxlength:"1",autocomplete:"off",autocapitalize:"characters","aria-label":"Ligne "+(r+1)+", colonne "+(c+1)});
+      inp.value=S.v[k]||"";inputs[k]=inp;
+      if(S.v[k]===x)nbOk++;
+      inp.addEventListener("input",function(){
+        var v=inp.value.normalize("NFD").replace(/[^A-Za-z]/g,"").toUpperCase().slice(-1);inp.value=v;S.v[k]=v;delete S.bad[k];inp.classList.remove("bad");
+        if(v){var w=words.filter(function(w){return w.p.some(function(q){return q[0]===r&&q[1]===c;});})[0];
+          if(w){var i=0;for(;i<w.p.length;i++)if(w.p[i][0]===r&&w.p[i][1]===c)break;var n=w.p[i+1];if(n&&inputs[key(n[0],n[1])])inputs[key(n[0],n[1])].focus();}}
+        var done=true;for(var rr=0;rr<g.h;rr++)for(var cc=0;cc<g.w;cc++)if(typeof g.g[rr][cc]==="string"&&S.v[key(rr,cc)]!==g.g[rr][cc])done=false;
+        if(done&&!S.done){S.done=true;mfDraw("Grille terminée, bravo !");}});
+      inp.addEventListener("focus",function(){inp.select();});
+      cells.push(h("div",{class:"mfc"},inp));
+    }else if(x&&typeof x==="object"){
+      cells.push(h("div",{class:"mfc cl"},x.c.map(function(k2){return h("span",null,(k2.d==="r"?"→ ":"↓ ")+k2.t);})));
+    }else cells.push(h("div",{class:"mfc em"}));
+  })(r,c);
+  var grid=h("div",{class:"mfg",style:"grid-template-columns:repeat("+g.w+",var(--cs))"},cells);
+  function check(){S.bad={};var bad=0;for(var r=0;r<g.h;r++)for(var c=0;c<g.w;c++)if(typeof g.g[r][c]==="string"){var k=key(r,c);if(S.v[k]&&S.v[k]!==g.g[r][c]){S.bad[k]=1;bad++;}}mfDraw(bad?bad+" lettre"+(bad>1?"s":"")+" à corriger (en rouge).":"Aucune erreur pour l'instant, continue !");}
+  function reveal(){var l=[];for(var r=0;r<g.h;r++)for(var c=0;c<g.w;c++)if(typeof g.g[r][c]==="string"&&S.v[key(r,c)]!==g.g[r][c])l.push([r,c]);if(!l.length)return;var q=l[Math.floor(Math.random()*l.length)];S.v[key(q[0],q[1])]=g.g[q[0]][q[1]];delete S.bad[key(q[0],q[1])];mfDraw("Une lettre révélée.");}
+  function solve(){for(var r=0;r<g.h;r++)for(var c=0;c<g.w;c++)if(typeof g.g[r][c]==="string")S.v[key(r,c)]=g.g[r][c];S.bad={};mfDraw("Voici la solution.");}
+  show(topbar("games"),h("div",{class:"eyebrow"},"Jeux"),h("h1",null,"Mots fléchés"),
+    h("p",{class:"lead"},"Grille « "+g.t+" » · "+nbOk+" / "+nbL+" lettres justes. La flèche d'une case définition indique le sens du mot : → vers la droite, ↓ vers le bas."),
+    h("div",{class:"mfw"},grid),
+    h("p",{class:"msg",role:"status"},msg||""),
+    h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:check},"Vérifier"),h("button",{class:"btn ghost",type:"button",onclick:reveal},"Révéler une lettre"),h("button",{class:"btn ghost",type:"button",onclick:solve},"Solution"),h("button",{class:"btn ghost",type:"button",onclick:mfStart},"Autre grille"),h("button",{class:"link",type:"button",onclick:function(){gamesPage();}},"Retour aux jeux")));
+}
+
 function normId(t){t=String(t||"").toUpperCase().replace(/^\s*(QUESTION|QUEST\.?|Q)\s*[:.\-]?\s*/,"").replace(/\s+/g,"");var m=t.match(/^([A-Z]+)[-_.]?0*(\d+)$/);return m?m[1]+"-"+m[2]:t;}
 function findQ(t){var id=normId(t);if(BY[id])return id;var a=Object.keys(BY).filter(function(k){return k.replace(/-0+/,"-")===id;});return a[0]||null;}
 function searchBox(){
@@ -4630,23 +4752,31 @@ function gallery(){NB=0;clearInterval(timer);timer=null;ses=null;window.scrollTo
   var t=null;inp.addEventListener("input",function(){clearTimeout(t);t=setTimeout(paint,150);});
   show(P()?topbar("gal"):h("p",null,h("button",{class:"link",type:"button",onclick:teacher},"← Espace enseignant")),h("div",{class:"eyebrow"},"Enseignants"),h("h1",null,"Galerie des schémas"),h("p",{class:"lead"},"Tous les schémas du site, avec leurs animations. Touche un numéro pour ouvrir la question associée."),inp,cnt,grid);paint();}
 var EXO=[{m:30,q:4},{m:45,q:6},{m:60,q:8},{m:150,q:20}];
-function exLabel(m){return m===150?"2 h 30":m===60?"1 h":m+" min";}
+function exLabel(m){m=Math.round(m);if(m<60)return m+" min";var hh=Math.floor(m/60),mm=m%60;return hh+" h"+(mm?" "+(mm<10?"0":"")+mm:"");}
 var EXD=(function(){try{var v=Number(localStorage.getItem("capbia.exd"));if(EXO.some(function(o){return o.m===v;}))return v;}catch(e){}return 30;})();
+var EXE=(function(){try{return localStorage.getItem("capbia.exe")==="1";}catch(e){return false;}})();
+var EXOPEN=false;
 function examBox(){
   var box=h("div",{class:"exbox"});
   function paint(){
-    var cur=EXO.filter(function(o){return o.m===EXD;})[0],nq=cur.q*5;
+    box.className=EXOPEN?"exbox":"exbox0";
+    if(!EXOPEN){box.replaceChildren(h("button",{class:"btn exopen",type:"button","aria-expanded":"false",onclick:function(){EXOPEN=true;paint();}},"Lancer un examen blanc ▾"));return;}
+    var cur=EXO.filter(function(o){return o.m===EXD;})[0],nq=cur.q*5,ne=EXE?cur.q:0,tot=cur.m+(EXE?cur.m/5:0);
     var seg=h("div",{class:"seg3",role:"radiogroup","aria-label":"Durée de l'examen blanc"},EXO.map(function(o){
       return h("button",{type:"button",role:"radio","aria-checked":o.m===EXD?"true":"false",class:"btn "+(o.m===EXD?"":"ghost"),onclick:function(){EXD=o.m;try{localStorage.setItem("capbia.exd",String(o.m));}catch(e){}paint();}},exLabel(o.m)+" · "+o.q*5+" q"+(o.m===150?" (officiel)":""));}));
+    var cb=h("input",{type:"checkbox",id:"exen"});cb.checked=EXE;
+    cb.addEventListener("change",function(){EXE=cb.checked;try{localStorage.setItem("capbia.exe",EXE?"1":"0");}catch(e){}paint();});
     var go=h("button",{class:"btn",type:"button",onclick:function(){
       var ids=[];THEMES.forEach(function(T){if(T.opt)return;ids=ids.concat(shuffle(idsOf(function(r){return SEC[r.k].th===T.n;})).slice(0,cur.q));});
-      start("exam",shuffle(ids),"Examen blanc · "+exLabel(cur.m),"",cur.m);}},"Lancer l'examen blanc · "+nq+" questions · "+exLabel(cur.m));
-    var en=h("button",{class:"btn ghost",type:"button",onclick:function(){
-      var ids=shuffle(idsOf(function(r){return SEC[r.k].th===6;})).slice(0,20);
-      start("exam",ids,"Examen d'anglais (option)","",30);}},"Examen d'anglais (option) · 20 questions · 30 min");
-    box.replaceChildren(h("h3",{class:"sub",style:"margin-top:0"},"Examen blanc"),
-      h("p",{class:"note",style:"margin-top:0"},"Choisis la durée. Le nombre de questions suit le barème officiel : 100 questions en 2 h 30, soit 20 questions par thème. L'épreuve d'anglais est facultative : 20 questions en 30 min."),
-      seg,h("div",{class:"row",style:"margin-top:10px"},go,en));}
+      ids=shuffle(ids);
+      if(EXE)ids=ids.concat(shuffle(idsOf(function(r){return SEC[r.k].th===6;})).slice(0,cur.q));
+      start("exam",ids,"Examen blanc · "+exLabel(cur.m)+(EXE?" + anglais":""),"",tot);}},"Lancer · "+(nq+ne)+" questions · "+exLabel(tot));
+    box.replaceChildren(
+      h("div",{class:"thhead"},h("h3",{class:"sub",style:"margin:0"},"Examen blanc"),h("button",{class:"link",type:"button",onclick:function(){EXOPEN=false;paint();}},"Replier ▴")),
+      h("p",{class:"note",style:"margin-top:6px"},"Le nombre de questions suit le barème officiel : 100 questions en 2 h 30, soit 20 par thème. L'anglais est facultatif ; officiellement 20 questions en 30 min en plus, ici proportionnelles à la durée choisie."),
+      seg,
+      h("label",{class:"exen",for:"exen"},cb,h("span",null,"Ajouter l'épreuve d'anglais · +"+cur.q+" questions, +"+exLabel(cur.m/5))),
+      h("div",{class:"row",style:"margin-top:10px"},go));}
   paint();return box;}
 function clock(ms){var s=Math.max(0,Math.ceil(ms/1000));if(s<3600)return mmss(ms);var m=Math.floor(s/60)%60;return Math.floor(s/3600)+":"+(m<10?"0":"")+m+":"+(s%60<10?"0":"")+(s%60);}
 function mmss(ms){var s=Math.max(0,Math.ceil(ms/1000));return (s>=600?"":"0")+Math.floor(s/60)+":"+(s%60<10?"0":"")+(s%60);}
