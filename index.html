@@ -4827,7 +4827,7 @@ function friseDraw(msg){
       h("div",{class:"frc"},num));});
   var drag=null;
   var pan=h("aside",{class:"frpan",hidden:true,"aria-live":"polite"});
-  function openAnchor(k){var e=FR.anch[k],d=FDESC[e[0]];if(!d)return;pan.hidden=false;pan.replaceChildren(h("button",{class:"link x",type:"button",onclick:function(){pan.hidden=true;}},"✕ Fermer"),h("h3",{class:"sub",style:"margin-top:0"},e[3]+" · "+e[0]),photoBox(d[0],e[3]),h("p",{style:"margin:8px 0"},d[1]),h("a",{class:"link small",href:wpLink(d[0]),target:"_blank",rel:"noopener"},"Voir sur Wikipédia ↗"));}
+  function openAnchor(k){var e=FR.anch[k],d=FDESC[e[0]];if(!d)return;if(!pan.hidden&&pan.getAttribute("data-a")===String(k)){pan.hidden=true;return;}pan.setAttribute("data-a",String(k));pan.hidden=false;pan.replaceChildren(h("button",{class:"link x",type:"button",onclick:function(){pan.hidden=true;}},"✕ Fermer"),h("h3",{class:"sub",style:"margin-top:0"},e[3]+" · "+e[0]),photoBox(d[0],e[3]),h("p",{style:"margin:8px 0"},d[1]),h("a",{class:"link small",href:wpLink(d[0]),target:"_blank",rel:"noopener"},"Voir sur Wikipédia ↗"));}
   wrap.addEventListener("click",function(ev){var a=ev.target.closest&&ev.target.closest("[data-a]");if(a)openAnchor(Number(a.getAttribute("data-a")));});
   function startDrag(k,ev){drag=k;FR.drag=k;document.body.style.userSelect="none";
     function mv(e){var r=wrap.getBoundingClientRect();
