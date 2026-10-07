@@ -217,6 +217,11 @@ table.t td.c{font-family:var(--mono);text-align:center}
 .fig .tmg{fill:var(--mag);font:700 11px var(--body)}
 .fig .tgr{fill:var(--ok);font:700 11px var(--body)}
 @media (prefers-reduced-motion:no-preference){.bar i{transition:width .3s}}
+.chip{position:relative}
+.dot{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:#c0362c;color:#fff;font:700 12px/20px var(--mono,monospace);text-align:center;box-shadow:0 0 0 2px var(--bg)}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid currentColor}
+.pill.o-corrige{color:#12775f}.pill.o-partiel{color:#c25a00}.pill.o-inchange{color:#5b6f91}.pill.o-new{color:#fff;background:#c0362c;border-color:#c0362c}
+.seg3{display:flex;gap:6px;flex-wrap:wrap}
 </style></head><body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
@@ -4370,7 +4375,7 @@ function topbar(active){
   return h("div",{class:"tb"},
     h("button",{class:"chip",type:"button",onclick:function(){if(ACC.on)account();else profiles();},"aria-label":ACC.on?"Mon compte":"Changer de profil"},
       h("span",{class:"av"},(p.name||"?").charAt(0).toUpperCase()),
-      h("span",null,h("b",null,p.name),h("small",null,(p.cls?p.cls+" · ":"")+(ACC.on?"mon compte":"changer de profil")))),
+      h("span",null,h("b",null,p.name),h("small",null,(p.cls?p.cls+" · ":"")+(ACC.on?"mon compte":"changer de profil"))),ACC.on&&ACC.nrep>0?h("span",{class:"dot","aria-label":ACC.nrep+" réponse(s) à tes signalements"},String(ACC.nrep)):null),
     h("div",{class:"tabs",role:"navigation"},
       h("button",{class:"tab",type:"button","aria-current":active==="home"?"page":null,onclick:home},"S'entraîner"),
       h("button",{class:"tab",type:"button","aria-current":active==="prog"?"page":null,onclick:progress},"Ma progression"),
@@ -4637,8 +4642,11 @@ function sendFS(rec,txt){
   var c=window.CAPBIA_CFG||{};
   if(!c.project||!c.key)return Promise.reject("envoi non configuré");
   var f={q:{stringValue:rec.q},src:{stringValue:rec.src},detail:{stringValue:rec.detail.slice(0,600)},name:{stringValue:String(rec.name).slice(0,40)},at:{integerValue:String(rec.at)},text:{stringValue:txt.slice(0,1900)}};
-  return fetch("https://firestore.googleapis.com/v1/projects/"+encodeURIComponent(c.project)+"/databases/(default)/documents/reports?key="+encodeURIComponent(c.key),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({fields:f})}).then(function(r){if(!r.ok)throw new Error("erreur "+r.status);});
-}
+  var url="https://firestore.googleapis.com/v1/projects/"+encodeURIComponent(c.project)+"/databases/(default)/documents/reports?key="+encodeURIComponent(c.key);
+  function post(f,tok){var hd={"Content-Type":"application/json"};if(tok)hd.Authorization="Bearer "+tok;
+    return fetch(url,{method:"POST",headers:hd,body:JSON.stringify({fields:f})}).then(function(r){if(!r.ok)throw new Error("erreur "+r.status);});}
+  if(ACC.on&&ACC.s){return accToken().then(function(t){f.uid={stringValue:ACC.s.uid};return post(f,t);},function(){return post(f,null);});}
+  return post(f,null);}
 function closeReport(){if(repOpen){repOpen.remove();repOpen=null;document.removeEventListener("keydown",repKey);}}
 function repKey(e){if(e.key==="Escape")closeReport();}
 function openReport(id){
@@ -4979,7 +4987,7 @@ function fsFetch(method,url,body){
 function fsPatch(url,fields,mask){return fsFetch("PATCH",url+(mask?"?"+mask.map(function(m){return "updateMask.fieldPaths="+m;}).join("&"):""),{fields:fields});}
 function fv(f){if(!f)return "";return f.stringValue!==undefined?f.stringValue:f.integerValue!==undefined?Number(f.integerValue):"";}
 function runQ(coll,filters){
-  var fl=filters.map(function(x){return {fieldFilter:{field:{fieldPath:x[0]},op:"EQUAL",value:{stringValue:x[1]}}};});
+  var fl=filters.map(function(x){return {fieldFilter:{field:{fieldPath:x[0]},op:"EQUAL",value:(typeof x[1]==="boolean"?{booleanValue:x[1]}:{stringValue:x[1]})}};});
   return fsFetch("POST",fsBase()+":runQuery",{structuredQuery:{from:[{collectionId:coll}],where:fl.length>1?{compositeFilter:{op:"AND",filters:fl}}:fl[0]}}).then(function(a){
     return (Array.isArray(a)?a:[]).filter(function(x){return x.document;}).map(function(x){var f=x.document.fields||{};return {id:x.document.name.split("/").pop(),f:f};});});}
 function cleanCode(c){return String(c||"").toUpperCase().replace(/[^A-Z0-9]/g,"");}
@@ -4987,6 +4995,25 @@ function getClass(code){code=cleanCode(code);if(code.length<4||code.length>12)re
   return fsFetch("GET",fsBase()+"/classes/"+code).then(function(d){var f=d.fields||{};return {code:code,owner:fv(f.owner),name:fv(f.name)};},function(){throw new Error("NOCLASS");});}
 function joinClass(code){return getClass(code).then(function(c){
   return fsPatch(fsUrl(),{cls:{stringValue:c.code},tch:{stringValue:c.owner}},["cls","tch"]).then(function(){ACC.s.cls=c.code;ACC.s.tch=c.owner;ACC.cn=c.name;accSave();return c;});});}
+var OUT={corrige:"Corrigé",partiel:"Partiellement corrigé",inchange:"Non modifié"};
+function setDot(){var c=document.querySelector(".tb .chip");if(!c)return;var d=c.querySelector(".dot");
+  if(!(ACC.on&&ACC.nrep>0)){if(d)d.remove();return;}
+  if(!d){d=h("span",{class:"dot"});c.appendChild(d);}d.textContent=String(ACC.nrep);d.setAttribute("aria-label",ACC.nrep+" réponse(s) à tes signalements");}
+function repCheck(){if(!ACC.on||!ACC.s)return Promise.resolve();
+  return runQ("replies",[["uid",ACC.s.uid],["seen",false]]).then(function(a){ACC.nrep=a.length;setDot();},function(){});}
+function myReplies(){
+  var box=h("div",null);
+  runQ("replies",[["uid",ACC.s.uid]]).then(function(a){
+    if(!a.length)return;a.sort(function(x,y){return fv(y.f.at)-fv(x.f.at);});
+    box.replaceChildren(h("h3",{class:"sub"},"Mes signalements"),h("div",{class:"plist"},a.map(function(r){var o=fv(r.f.outcome),nw=!(r.f.seen&&r.f.seen.booleanValue);
+      return h("div",{class:"prow",style:"flex-direction:column;align-items:stretch;gap:6px"},
+        h("div",null,h("b",null,"Question "+fv(r.f.q)),h("span",{class:"pill o-"+o,style:"margin-left:8px"},OUT[o]||""),nw?h("span",{class:"pill o-new",style:"margin-left:6px"},"Nouveau"):null),
+        h("p",{style:"margin:0"},fv(r.f.message)),
+        h("small",{style:"color:var(--muted)"},new Date(fv(r.f.at)).toLocaleDateString("fr-FR")));})));
+    var un=a.filter(function(r){return !(r.f.seen&&r.f.seen.booleanValue);});
+    Promise.all(un.map(function(r){return fsPatch(fsBase()+"/replies/"+encodeURIComponent(r.id),{seen:{booleanValue:true}},["seen"]);})).then(function(){ACC.nrep=0;setDot();},function(){});
+  },function(){});
+  return box;}
 function checkTeacher(){
   return fsFetch("GET",fsBase()+"/teachers/"+encodeURIComponent(ACC.s.uid)).then(function(d){ACC.teacher=true;ACC.admin=fv((d.fields||{}).role)==="admin";},function(e){if(/HTTP (403|404)/.test(String(e.message))){ACC.teacher=false;ACC.admin=false;}}).then(function(){ACC.s.tc=!!ACC.teacher;ACC.s.ad=!!ACC.admin;accSave();});}
 function runAll(coll){return fsFetch("POST",fsBase()+":runQuery",{structuredQuery:{from:[{collectionId:coll}]}}).then(function(a){return (Array.isArray(a)?a:[]).filter(function(x){return x.document;}).map(function(x){return {id:x.document.name.split("/").pop(),f:x.document.fields||{}};});});}
@@ -5021,42 +5048,66 @@ function tchAdmin(msg){
       reqs.length?h("div",{class:"plist"},rl):h("p",{class:"note",style:"margin-top:0"},"Aucune demande pour l'instant. Une personne la fait depuis « Mon compte » > « Je suis enseignant »."),
       h("h3",{class:"sub"},"Enseignants ("+tch.length+")"),
       tch.length?h("div",{class:"plist"},tl):h("p",{class:"note"},"Aucun enseignant."));}}
-var RA={arm:null,tab:"p"};
+var RA={arm:null,tab:"p",reply:null};
 function copyOut(btn,t){var old=btn.textContent;function ok(m){btn.textContent=m;setTimeout(function(){btn.textContent=old;},2500);}
   try{navigator.clipboard.writeText(t).then(function(){ok("Copié : colle-le dans la conversation");},function(){ok("Copie refusée");});}catch(e){ok("Copie refusée");}}
+function replyTpl(o,q){
+  if(o==="corrige")return "Merci pour ton signalement sur la question "+q+" ! Tu avais raison : la question a été corrigée.";
+  if(o==="partiel")return "Merci pour ton signalement sur la question "+q+". Tu avais en partie raison : j'ai modifié la question pour la rendre plus claire, mais la réponse attendue reste la même.";
+  return "Merci pour ton signalement sur la question "+q+". Après vérification, la question et sa réponse sont correctes : elles restent donc inchangées. N'hésite pas à signaler d'autres erreurs !";}
 function repAdmin(msg){
   window.scrollTo(0,0);var out=h("p",{class:"msg",role:"status"},msg||"");
   var top=[h("div",{class:"top"},h("button",{class:"link",type:"button",onclick:home},"← Retour")),h("div",{class:"eyebrow"},"Administration"),h("h1",null,"Signalements")];
   show(top,h("p",{class:"lead"},"Chargement…"));
-  runAll("reports").then(function(a){paint(a);},function(e){show(top,h("p",{class:"msg"},"Impossible de charger les signalements ("+e.message+"). Vérifie que les règles Firestore à jour sont publiées."),h("button",{class:"btn ghost",type:"button",onclick:function(){repAdmin();}},"Réessayer"));});
+  Promise.all([runAll("reports"),runAll("replies")]).then(function(a){paint(a[0],a[1]);},function(e){show(top,h("p",{class:"msg"},"Impossible de charger les signalements ("+e.message+"). Vérifie que les règles Firestore à jour sont publiées."),h("button",{class:"btn ghost",type:"button",onclick:function(){repAdmin();}},"Réessayer"));});
   function fail(e){out.textContent="Action impossible ("+e.message+"). Vérifie que les règles Firestore à jour sont publiées.";}
   function setArch(r,v){return fsPatch(fsBase()+"/reports/"+encodeURIComponent(r.id),{archived:{booleanValue:v},archivedAt:{integerValue:String(v?Date.now():0)}},["archived","archivedAt"]);}
-  function paint(a){
+  function sendReply(r,o,m){return fsPatch(fsBase()+"/replies/"+encodeURIComponent(r.id),{uid:{stringValue:fv(r.f.uid)},q:{stringValue:fv(r.f.q)},outcome:{stringValue:o},message:{stringValue:m},at:{integerValue:String(Date.now())},seen:{booleanValue:false}});}
+  function paint(a,rp){
+    var replied={};rp.forEach(function(x){replied[x.id]=fv(x.f.outcome);});
     var pend=a.filter(function(r){return !(r.f.archived&&r.f.archived.booleanValue);}),arch=a.filter(function(r){return r.f.archived&&r.f.archived.booleanValue;});
     pend.sort(function(x,y){return fv(y.f.at)-fv(x.f.at);});arch.sort(function(x,y){return fv(y.f.archivedAt)-fv(x.f.archivedAt);});
     var inArch=RA.tab==="a",cur=inArch?arch:pend;
+    function panel(r,andArchive){
+      var q=fv(r.f.q),o="corrige",edited=false;
+      var ta=h("textarea",{id:"rp-m",maxlength:"500",rows:"4",style:"min-height:90px"});ta.value=replyTpl(o,q);
+      ta.addEventListener("input",function(){edited=true;});
+      var sel=h("div",{class:"seg3",role:"radiogroup","aria-label":"Résultat"},Object.keys(OUT).map(function(k){
+        var b=h("button",{type:"button",role:"radio","aria-checked":k===o?"true":"false",class:"btn "+(k===o?"":"ghost"),onclick:function(){o=k;if(!edited)ta.value=replyTpl(o,q);
+          Array.prototype.forEach.call(sel.children,function(x,i){var on=Object.keys(OUT)[i]===o;x.setAttribute("aria-checked",on?"true":"false");x.className="btn "+(on?"":"ghost");});}},OUT[k]);return b;}));
+      return h("div",{style:"display:grid;gap:8px;border-top:1px dashed var(--line);padding-top:8px"},
+        h("b",null,"Message à l'élève"),sel,ta,
+        h("div",{class:"row"},
+          h("button",{class:"btn",type:"button",onclick:function(){var m=ta.value.trim();if(!m)return;
+            sendReply(r,o,m).then(function(){return andArchive?setArch(r,true):null;}).then(function(){RA.reply=null;repAdmin("Réponse envoyée à l'élève"+(andArchive?" et signalement archivé.":"."));},fail);}},andArchive?"Envoyer et archiver":"Envoyer la réponse"),
+          andArchive?h("button",{class:"btn ghost",type:"button",onclick:function(){setArch(r,true).then(function(){RA.reply=null;repAdmin("Signalement archivé sans message.");},fail);}},"Archiver sans message"):null,
+          h("button",{class:"link",type:"button",onclick:function(){RA.reply=null;repAdmin();}},"Annuler")));}
     function item(r){
-      var q=fv(r.f.q),src=fv(r.f.src),det=fv(r.f.detail),nm=fv(r.f.name),at=fv(r.f.at),txt=fv(r.f.text);
-      var cp=h("button",{class:"btn ghost",type:"button",onclick:function(){copyOut(cp,"Peux-tu vérifier ce signalement envoyé par un élève de Cap BIA ? Dis-moi si l'élève a raison et, si besoin, quelle correction apporter.\n\n"+txt);}},"Copier pour Claude");
+      var q=fv(r.f.q),src=fv(r.f.src),det=fv(r.f.detail),nm=fv(r.f.name),at=fv(r.f.at),txt=fv(r.f.text),uid=fv(r.f.uid),done=replied[r.id];
+      var cp=h("button",{class:"btn ghost",type:"button",onclick:function(){copyOut(cp,"Peux-tu vérifier ce signalement envoyé par un élève de Cap BIA ? Dis-moi si l'élève a raison et, si besoin, quelle correction apporter. Rédige aussi un court message de réponse pour l'élève.\n\n"+txt);}},"Copier pour Claude");
       var acts=[cp];
-      if(!inArch)acts.push(h("button",{class:"btn",type:"button",onclick:function(){setArch(r,true).then(function(){repAdmin("Signalement archivé.");},fail);}},"Traité : archiver"));
-      else{acts.push(h("button",{class:"btn ghost",type:"button",onclick:function(){setArch(r,false).then(function(){repAdmin("Signalement remis en attente.");},fail);}},"Remettre en attente"));
+      if(!inArch){
+        acts.push(h("button",{class:"btn",type:"button",onclick:function(){if(uid){RA.reply=r.id;repAdmin();}else setArch(r,true).then(function(){repAdmin("Signalement archivé.");},fail);}},"Traité : archiver"));
+      }else{
+        if(uid&&!done)acts.push(h("button",{class:"btn",type:"button",onclick:function(){RA.reply=r.id;repAdmin();}},"Répondre à l'élève"));
+        acts.push(h("button",{class:"btn ghost",type:"button",onclick:function(){setArch(r,false).then(function(){repAdmin("Signalement remis en attente.");},fail);}},"Remettre en attente"));
         acts.push(h("button",{class:"btn warn",type:"button",onclick:function(){
           if(RA.arm!==r.id){RA.arm=r.id;repAdmin();return;}
           RA.arm=null;fsFetch("DELETE",fsBase()+"/reports/"+encodeURIComponent(r.id)).then(function(){repAdmin("Signalement supprimé définitivement.");},fail);}},RA.arm===r.id?"Confirmer la suppression":"Supprimer définitivement"));}
       return h("div",{class:"prow",style:"flex-direction:column;align-items:stretch;gap:8px"},
-        h("div",null,h("b",null,"Question "+q),src?h("small",{style:"margin-left:8px;color:var(--muted)"},src):null),
-        h("small",{style:"color:var(--muted)"},(nm||"?")+" · "+(at?new Date(at).toLocaleString("fr-FR"):"")+(inArch&&fv(r.f.archivedAt)?" · archivé le "+new Date(fv(r.f.archivedAt)).toLocaleDateString("fr-FR"):"")),
+        h("div",null,h("b",null,"Question "+q),src?h("small",{style:"margin-left:8px;color:var(--muted)"},src):null,
+          done?h("span",{class:"pill o-"+done,style:"margin-left:8px"},"Réponse envoyée : "+OUT[done]):null),
+        h("small",{style:"color:var(--muted)"},(nm||"?")+" · "+(at?new Date(at).toLocaleString("fr-FR"):"")+(uid?" · compte élève : réponse possible":" · sans compte : pas de réponse possible")+(inArch&&fv(r.f.archivedAt)?" · archivé le "+new Date(fv(r.f.archivedAt)).toLocaleDateString("fr-FR"):"")),
         h("p",{style:"margin:0"},det||"(aucune précision)"),
         h("details",null,h("summary",{style:"cursor:pointer;color:var(--accent)"},"Voir l'énoncé et la réponse attendue"),h("pre",{style:"white-space:pre-wrap;font:inherit;font-size:14px;margin:8px 0 0"},txt)),
-        h("div",{class:"row"},acts));}
-    function tab(k,label,n){return h("button",{class:"tab",type:"button","aria-current":RA.tab===k?"page":null,onclick:function(){RA.tab=k;RA.arm=null;repAdmin();}},label+" ("+n+")");}
+        RA.reply===r.id?panel(r,!inArch):h("div",{class:"row"},acts));}
+    function tab(k,label,n){return h("button",{class:"tab",type:"button","aria-current":RA.tab===k?"page":null,onclick:function(){RA.tab=k;RA.arm=null;RA.reply=null;repAdmin();}},label+" ("+n+")");}
     var body;
     if(!cur.length)body=h("p",{class:"note"},inArch?"Aucun signalement archivé.":"Aucun signalement en attente.");
-    else{var all=h("button",{class:"btn",type:"button",onclick:function(){copyOut(all,"Peux-tu vérifier ces "+cur.length+" signalements envoyés par des élèves de Cap BIA ? Pour chacun, dis-moi si l'élève a raison et quelle correction apporter.\n\n"+cur.map(function(r,i){return "--- Signalement "+(i+1)+" ---\n"+fv(r.f.text)+(fv(r.f.detail)?"\n(Précisions : "+fv(r.f.detail)+")":"");}).join("\n\n"));}},"Copier tous pour Claude");
+    else{var all=h("button",{class:"btn",type:"button",onclick:function(){copyOut(all,"Peux-tu vérifier ces "+cur.length+" signalements envoyés par des élèves de Cap BIA ? Pour chacun, dis-moi si l'élève a raison, quelle correction apporter, et rédige un court message de réponse pour l'élève.\n\n"+cur.map(function(r,i){return "--- Signalement "+(i+1)+" ---\n"+fv(r.f.text)+(fv(r.f.detail)?"\n(Précisions : "+fv(r.f.detail)+")":"");}).join("\n\n"));}},"Copier tous pour Claude");
       body=h("div",null,h("div",{style:"margin-bottom:12px"},all),h("div",{class:"plist"},cur.map(item)));}
     show(top,h("div",{class:"tabs acc-tabs"},tab("p","En attente",pend.length),tab("a","Archivés",arch.length)),out,
-      h("p",{class:"lead"},inArch?"Signalements traités, rangés ici. Tu peux les remettre en attente ou les supprimer définitivement.":"Vérifie la réponse, corrige la question si l'élève a raison, puis archive le signalement."),body);}}
+      h("p",{class:"lead"},inArch?"Signalements traités, rangés ici. Tu peux les remettre en attente ou les supprimer définitivement.":"Vérifie la réponse, corrige la question si l'élève a raison, puis archive le signalement en écrivant un message à l'élève."),body);}}
 function tdash(msg){
   if(!ACC.s||!ACC.teacher){account();return;}
   if(TD.view==="t"&&ACC.admin){tchAdmin(msg);return;}
@@ -5179,6 +5230,7 @@ function account(msg){accDel=false;
     h("p",{class:"lead"},h("b",null,p.name),"  ·  "+st.ok+" / "+st.n+" questions maîtrisées"),
     h("p",null,"Ta progression est enregistrée automatiquement."),
     classBox(err),
+    myReplies(),
     ACC.teacher?null:askBox(err),
     h("div",{class:"row"},
       h("button",{class:"btn",type:"button",onclick:home},"Retour à l'accueil"),
@@ -5197,7 +5249,7 @@ function accBoot(){
   var have=!!D.profiles[ACC.s.uid];ACC.teacher=!!ACC.s.tc;ACC.admin=!!ACC.s.ad;
   function bg(){return accPull().then(function(r){
       if(r){ACC.s.prenom=r.prenom||ACC.s.prenom;ACC.s.nom3=r.nom3||ACC.s.nom3;accEnter(ACC.s,r);}
-      else accPush(true).catch(function(){});}).then(checkTeacher);}
+      else accPush(true).catch(function(){});}).then(checkTeacher).then(repCheck);}
   function bad(e){var m=String(e&&e.message||e);
     if(/TOKEN_EXPIRED|INVALID_REFRESH|USER_NOT_FOUND|USER_DISABLED|CREDENTIAL_TOO_OLD|INVALID_GRANT/.test(m)){accClear();accScreen("in","Ta session a expiré. Connecte-toi de nouveau.");return true;}return false;}
   if(have){D.cur=ACC.s.uid;saveD();home();bg().then(function(){if(!ses&&P()&&document.querySelector(".tb"))home();},bad);}

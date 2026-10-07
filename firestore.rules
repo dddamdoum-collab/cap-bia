@@ -81,16 +81,31 @@ service cloud.firestore {
       allow delete: if request.auth != null && request.auth.uid == uid;
     }
 
-    // Signalements d'erreur : tout le monde peut ENVOYER, seul l'administrateur les lit, les archive et les supprime (depuis le site ou la console Firebase).
+    // Signalements d'erreur : tout le monde peut ENVOYER, seul l'administrateur les lit, les archive et les supprime. Un élève connecté ajoute son identifiant pour pouvoir recevoir une réponse (depuis le site ou la console Firebase).
     match /reports/{id} {
-      allow create: if request.resource.data.keys().hasOnly(['q','src','detail','name','at','text'])
+      allow create: if request.resource.data.keys().hasOnly(['q','src','detail','name','at','text','uid'])
                     && request.resource.data.q is string && request.resource.data.q.size() < 20
                     && request.resource.data.detail is string && request.resource.data.detail.size() <= 600
                     && request.resource.data.text is string && request.resource.data.text.size() <= 2000
-                    && request.resource.data.name is string && request.resource.data.name.size() <= 40;
+                    && request.resource.data.name is string && request.resource.data.name.size() <= 40
+                    && (request.resource.data.get('uid','') == ''
+                        || (request.auth != null && request.auth.uid == request.resource.data.uid));
       allow read, delete: if isAdmin();
       allow update: if isAdmin()
                     && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['archived','archivedAt']);
+    }
+
+    // Réponses aux signalements : l'administrateur les écrit, l'élève concerné les lit et peut seulement les marquer comme lues.
+    match /replies/{id} {
+      allow get, list: if request.auth != null && (resource.data.uid == request.auth.uid || isAdmin());
+      allow create, update: if isAdmin()
+                    && request.resource.data.keys().hasOnly(['uid','q','outcome','message','at','seen'])
+                    && request.resource.data.uid is string
+                    && request.resource.data.outcome in ['corrige','partiel','inchange']
+                    && request.resource.data.message is string && request.resource.data.message.size() <= 500;
+      allow update: if request.auth != null && resource.data.uid == request.auth.uid
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['seen']);
+      allow delete: if isAdmin();
     }
   }
 }
