@@ -5022,6 +5022,8 @@ function tchAdmin(msg){
       h("h3",{class:"sub"},"Enseignants ("+tch.length+")"),
       tch.length?h("div",{class:"plist"},tl):h("p",{class:"note"},"Aucun enseignant."));}}
 var RA={arm:null};
+function copyOut(btn,t){var old=btn.textContent;function ok(m){btn.textContent=m;setTimeout(function(){btn.textContent=old;},2500);}
+  try{navigator.clipboard.writeText(t).then(function(){ok("Copié : colle-le dans la conversation");},function(){ok("Copie refusée");});}catch(e){ok("Copie refusée");}}
 function repAdmin(msg){
   window.scrollTo(0,0);var out=h("p",{class:"msg",role:"status"},msg||"");
   var top=[h("div",{class:"top"},h("button",{class:"link",type:"button",onclick:home},"← Retour")),h("div",{class:"eyebrow"},"Administration"),h("h1",null,"Signalements")];
@@ -5031,7 +5033,7 @@ function repAdmin(msg){
     a.sort(function(x,y){return fv(y.f.at)-fv(x.f.at);});
     var list=a.map(function(r){
       var q=fv(r.f.q),src=fv(r.f.src),det=fv(r.f.detail),nm=fv(r.f.name),at=fv(r.f.at),txt=fv(r.f.text);
-      var cp=h("button",{class:"btn ghost",type:"button",onclick:function(){try{navigator.clipboard.writeText(txt).then(function(){cp.textContent="Copié";},function(){cp.textContent="Copie refusée";});}catch(e){cp.textContent="Copie refusée";}}},"Copier le signalement");
+      var cp=h("button",{class:"btn ghost",type:"button",onclick:function(){copyOut(cp,"Peux-tu vérifier ce signalement envoyé par un élève de Cap BIA ? Dis-moi si l'élève a raison et, si besoin, quelle correction apporter.\n\n"+txt);}},"Copier pour Claude");
       return h("div",{class:"prow",style:"flex-direction:column;align-items:stretch;gap:8px"},
         h("div",null,h("b",null,"Question "+q),src?h("small",{style:"margin-left:8px;color:var(--muted)"},src):null),
         h("small",{style:"color:var(--muted)"},(nm||"?")+" · "+(at?new Date(at).toLocaleString("fr-FR"):"")),
@@ -5041,7 +5043,7 @@ function repAdmin(msg){
           if(RA.arm!==r.id){RA.arm=r.id;repAdmin();return;}
           RA.arm=null;fsFetch("DELETE",fsBase()+"/reports/"+encodeURIComponent(r.id)).then(function(){repAdmin("Signalement supprimé.");},function(e){out.textContent="Action impossible ("+e.message+").";});}},RA.arm===r.id?"Confirmer la suppression":"Traité : supprimer")));});
     show(top,out,h("p",{class:"lead"},a.length+" signalement"+(a.length>1?"s":"")+" en attente. Vérifie la réponse, corrige la question si l'élève a raison, puis supprime le signalement."),
-      a.length?h("div",{class:"plist"},list):h("p",{class:"note"},"Aucun signalement pour l'instant."));}}
+      a.length?(function(){var all=h("button",{class:"btn",type:"button",onclick:function(){copyOut(all,"Peux-tu vérifier ces "+a.length+" signalements envoyés par des élèves de Cap BIA ? Pour chacun, dis-moi si l'élève a raison et quelle correction apporter.\n\n"+a.map(function(r,i){return "--- Signalement "+(i+1)+" ---\n"+fv(r.f.text)+(fv(r.f.detail)?"\n(Précisions : "+fv(r.f.detail)+")":"");}).join("\n\n"));}},"Copier tous pour Claude");return h("div",null,h("div",{style:"margin-bottom:12px"},all),h("div",{class:"plist"},list));})():h("p",{class:"note"},"Aucun signalement pour l'instant."));}}
 function tdash(msg){
   if(!ACC.s||!ACC.teacher){account();return;}
   if(TD.view==="t"&&ACC.admin){tchAdmin(msg);return;}
