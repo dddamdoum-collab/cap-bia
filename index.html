@@ -221,7 +221,8 @@ table.t td.c{font-family:var(--mono);text-align:center}
 .dot{position:absolute;top:-6px;right:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:#c0362c;color:#fff;font:700 12px/20px var(--mono,monospace);text-align:center;box-shadow:0 0 0 2px var(--bg)}
 .pill{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:99px;border:1px solid currentColor}
 .pill.o-corrige{color:#12775f}.pill.o-partiel{color:#c25a00}.pill.o-inchange{color:#5b6f91}.pill.o-new{color:#fff;background:#c0362c;border-color:#c0362c}
-.seg3{display:flex;gap:6px;flex-wrap:wrap}
+.qsearch{margin:16px 0}.qsearch input{flex:1;min-width:0}.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px}.galc{min-width:0;border:1px solid var(--line);border-radius:12px;padding:10px;background:var(--surface)}.galq{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.chip2{font:600 12px var(--mono,monospace);padding:4px 8px;border-radius:8px;border:1px solid var(--line);background:transparent;color:inherit;cursor:pointer}.seg3{display:flex;gap:6px;flex-wrap:wrap}
+.exbox{border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--surface);margin-top:18px}
 </style></head><body>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
@@ -4380,6 +4381,7 @@ function topbar(active){
       h("button",{class:"tab",type:"button","aria-current":active==="home"?"page":null,onclick:home},"S'entraîner"),
       h("button",{class:"tab",type:"button","aria-current":active==="prog"?"page":null,onclick:progress},"Ma progression"),
       ACC.on&&ACC.teacher?h("button",{class:"tab",type:"button",onclick:function(){TD.view="c";tdash();}},"Mes classes"):null,
+      ACC.on&&(ACC.teacher||ACC.admin)?h("button",{class:"tab",type:"button","aria-current":active==="gal"?"page":null,onclick:gallery},"Schémas"):null,
       ACC.on&&ACC.admin?h("button",{class:"tab",type:"button",onclick:function(){TD.view="t";tdash();}},"Enseignants"):null,
       ACC.on&&ACC.admin?h("button",{class:"tab",type:"button",onclick:function(){TD.view="r";tdash();}},"Signalements"):null));
 }
@@ -4448,9 +4450,7 @@ function home(){NB=0;
         h("h3",{class:"sub"},(T.opt?"":"Thème "+T.n+" · ")+T.t),
         h("button",{class:"link",type:"button",onclick:function(){start("theme",nextBatch(tids,30),T.opt?T.short:"Thème "+T.n,String(T.n));}},"Tout le thème · "+st.ok+" / "+st.n)),
       h("div",{class:"secs"},secs));});
-  var examBtn=h("button",{class:"btn",type:"button",onclick:function(){
-    var ids=[];THEMES.forEach(function(T){if(T.opt)return;ids=ids.concat(shuffle(idsOf(function(r){return SEC[r.k].th===T.n;})).slice(0,4));});
-    start("exam",shuffle(ids),"Examen blanc");}},"Examen blanc · 20 questions · 30 min");
+  var examBtn=examBox();
   var errBtn=h("button",{class:"btn ghost",type:"button",disabled:errs.length===0,onclick:function(){start("errors",shuffle(errs),"Mes erreurs");}},"Revoir mes erreurs ("+errs.length+")");
   var resetBtn=h("button",{class:"btn warn",type:"button",onclick:function(){
     if(!resetArmed){resetArmed=true;resetBtn.textContent="Confirmer l'effacement";return;}
@@ -4466,7 +4466,7 @@ function home(){NB=0;
     msg,
     h("div",{class:"total"},h("b",null,all.ok+" / "+all.n),h("span",null,"questions maîtrisées (dernière réponse juste)")),
     h("div",{class:"bar"},h("i",{style:"width:"+pct(all.ok,all.n)+"%"})),
-    h("div",{class:"row",style:"margin-top:18px"},examBtn,errBtn),
+    examBtn,searchBox(),h("div",{class:"row",style:"margin-top:12px"},errBtn),
     blocks,
     h("p",{class:"note"},"Les questions des thèmes 1 à 5 combinent des questions originales et des questions des annales officielles du BIA (2015 à 2025, repérées par « BIA 20xx » au-dessus de l'énoncé ; le signe ✓ indique que la réponse a été vérifiée avec le corrigé officiel du ministère). Chaque série propose en priorité les questions que tu n'as pas encore maîtrisées. Pour approfondir : manuel BIA. Ta progression est enregistrée sur cet appareil : va dans « Ma progression » pour la voir séance après séance et récupérer ton code de sauvegarde."),
     h("div",{style:"margin-top:18px"},resetBtn)
@@ -4579,7 +4579,7 @@ function teacher(note){NB=1;
       h("td",{class:"c"},r.ex?r.ex.ok+"/"+r.ex.n:"—"),
       h("td",null,h("button",{class:"link",type:"button",style:"min-height:0",onclick:function(){delete TS.e[r.o.i];saveT();teacher();}},"Retirer")));});
   var csvBtn=h("button",{class:"btn ghost",type:"button",disabled:!rows.length,onclick:function(){
-    var head=["Prénom","Classe"].concat(THEMES.map(function(T){return "Thème "+T.n+" %";}),["Total %","Séances","Dernière activité","Dernier examen /20"]);
+    var head=["Prénom","Classe"].concat(THEMES.map(function(T){return "Thème "+T.n+" %";}),["Total %","Séances","Dernière activité","Dernier examen"]);
     var lines=[head.join(";")].concat(rows.map(function(r){return [r.o.n,r.o.c].concat(THEMES.map(function(T){return pct(r.sec[T.n].ok,r.sec[T.n].n);}),[pct(r.tot,TOT),r.sessions,r.last?new Date(r.last).toLocaleDateString("fr-FR"):"",r.ex?r.ex.ok:""]).join(";");}));
     var t=h("textarea",{readonly:true,"aria-label":"CSV"});t.value=lines.join("\n");csvBox.replaceChildren(t);copyText(t,csvBtn,"CSV copié");}},"Copier en CSV");
   var csvBox=h("div",{style:"margin-top:10px"});
@@ -4600,23 +4600,60 @@ function teacher(note){NB=1;
       h("thead",null,h("tr",null,h("th",null,"Élève"),THEMES.map(function(T){return h("th",{style:"text-align:center",title:T.t},T.opt?"Ang":"T"+T.n);}),h("th",null,"Total"),h("th",null,"Séances"),h("th",null,"Activité"),h("th",null,"Examen"),h("th"))),
       h("tbody",null,body))):h("p",{class:"note"},"Aucun élève pour l'instant."),
     rows.length?h("p",{class:"cap"},"Thèmes : "+THEMES.map(function(T){return (T.opt?"Ang":"T"+T.n)+" = "+T.t;}).join(" · ")+". Vert ≥ 70 %, bleu 40–69 %, rouge < 40 % de questions dont la dernière réponse est juste."):null,
-    h("div",{class:"row",style:"margin-top:14px"},csvBtn,clr),csvBox
+    h("div",{class:"row",style:"margin-top:14px"},csvBtn,clr,h("button",{class:"btn ghost",type:"button",onclick:gallery},"Galerie des schémas")),csvBox
   );
 }
 
 /* ---------- séance ---------- */
 var ses=null,timer=null;
-function start(mode,ids,label,k){
+function start(mode,ids,label,k,dur){
   clearInterval(timer);timer=null;resetArmed=false;
-  ses={mode:mode,label:label,k:k||"",ids:ids,i:0,items:[],t0:Date.now(),m0:mastered(P()),deadline:mode==="exam"?Date.now()+30*60000:0,cur:null,order:null,sel:null,locked:false,hint:false,course:false,quitArmed:false,h:null,skipped:{},passed:0};
+  ses={mode:mode,label:label,k:k||"",ids:ids,i:0,items:[],t0:Date.now(),m0:mastered(P()),deadline:mode==="exam"?Date.now()+(dur||30)*60000:0,dur:dur||0,cur:null,order:null,sel:null,locked:false,hint:false,course:false,quitArmed:false,h:null,skipped:{},passed:0};
   if(mode==="exam")timer=setInterval(tick,1000);
   renderQ();
 }
+function normId(t){t=String(t||"").toUpperCase().replace(/^\s*(QUESTION|QUEST\.?|Q)\s*[:.\-]?\s*/,"").replace(/\s+/g,"");var m=t.match(/^([A-Z]+)[-_.]?0*(\d+)$/);return m?m[1]+"-"+m[2]:t;}
+function findQ(t){var id=normId(t);if(BY[id])return id;var a=Object.keys(BY).filter(function(k){return k.replace(/-0+/,"-")===id;});return a[0]||null;}
+function searchBox(){
+  var inp=h("input",{id:"qsearch",type:"search",placeholder:"Ex. : Question H-13",autocomplete:"off","aria-label":"Numéro de question"}),msg=h("p",{class:"msg",role:"status",style:"margin:6px 0 0"});
+  function go(){var id=findQ(inp.value);if(!inp.value.trim()){msg.textContent="";return;}if(!id){msg.textContent="Aucune question « "+inp.value.trim()+" ». Le numéro ressemble à H-13 (section, tiret, numéro).";return;}start("single",[id],"Question "+id,BY[id].k);}
+  inp.addEventListener("keydown",function(e){if(e.key==="Enter")go();});
+  return h("div",{class:"qsearch"},h("label",{for:"qsearch",class:"sub",style:"display:block;margin:0 0 6px"},"Aller à une question"),h("div",{class:"row"},inp,h("button",{class:"btn ghost",type:"button",onclick:go},"Ouvrir")),msg);}
+function gallery(){NB=0;clearInterval(timer);timer=null;ses=null;window.scrollTo(0,0);
+  var by={};Object.keys(FIG).forEach(function(id){(by[FIG[id]]=by[FIG[id]]||[]).push(id);});
+  var keys=Object.keys(FIGS);
+  var inp=h("input",{type:"search",placeholder:"Filtrer (mot du titre, numéro de question…)","aria-label":"Filtrer les schémas"}),grid=h("div",{class:"gal"}),cnt=h("p",{class:"note"},"");
+  function card(k){var f=FIGS[k],e=document.createElement("figure");e.className="fig";var sv=f.s;if(ANIMS[k]){try{sv=ANIMS[k](sv);}catch(x){sv=f.s;}}e.innerHTML=sv+"<figcaption>"+f.c+"</figcaption>";if(sv!==f.s){var el=e.querySelector("svg");e.insertBefore(playBtn(el),e.querySelector("figcaption"));}
+    var ids=(by[k]||[]).sort();
+    return h("div",{class:"galc"},e,h("div",{class:"galq"},ids.length?ids.map(function(id){return h("button",{class:"chip2",type:"button",onclick:function(){start("single",[id],"Question "+id,BY[id].k);}},id);}):h("small",null,"Non rattaché à une question")));}
+  function paint(){var q=inp.value.trim().toLowerCase(),n=0;grid.replaceChildren();keys.forEach(function(k){var f=FIGS[k],hay=(k+" "+f.c+" "+(by[k]||[]).join(" ")).toLowerCase();if(q&&hay.indexOf(q)<0)return;n++;grid.appendChild(card(k));});cnt.textContent=n+" schéma"+(n>1?"s":"")+" affiché"+(n>1?"s":"")+" sur "+keys.length+" · "+Object.keys(ANIMS).length+" animés.";}
+  var t=null;inp.addEventListener("input",function(){clearTimeout(t);t=setTimeout(paint,150);});
+  show(P()?topbar("gal"):h("p",null,h("button",{class:"link",type:"button",onclick:teacher},"← Espace enseignant")),h("div",{class:"eyebrow"},"Enseignants"),h("h1",null,"Galerie des schémas"),h("p",{class:"lead"},"Tous les schémas du site, avec leurs animations. Touche un numéro pour ouvrir la question associée."),inp,cnt,grid);paint();}
+var EXO=[{m:30,q:4},{m:45,q:6},{m:60,q:8},{m:150,q:20}];
+function exLabel(m){return m===150?"2 h 30":m===60?"1 h":m+" min";}
+var EXD=(function(){try{var v=Number(localStorage.getItem("capbia.exd"));if(EXO.some(function(o){return o.m===v;}))return v;}catch(e){}return 30;})();
+function examBox(){
+  var box=h("div",{class:"exbox"});
+  function paint(){
+    var cur=EXO.filter(function(o){return o.m===EXD;})[0],nq=cur.q*5;
+    var seg=h("div",{class:"seg3",role:"radiogroup","aria-label":"Durée de l'examen blanc"},EXO.map(function(o){
+      return h("button",{type:"button",role:"radio","aria-checked":o.m===EXD?"true":"false",class:"btn "+(o.m===EXD?"":"ghost"),onclick:function(){EXD=o.m;try{localStorage.setItem("capbia.exd",String(o.m));}catch(e){}paint();}},exLabel(o.m)+" · "+o.q*5+" q"+(o.m===150?" (officiel)":""));}));
+    var go=h("button",{class:"btn",type:"button",onclick:function(){
+      var ids=[];THEMES.forEach(function(T){if(T.opt)return;ids=ids.concat(shuffle(idsOf(function(r){return SEC[r.k].th===T.n;})).slice(0,cur.q));});
+      start("exam",shuffle(ids),"Examen blanc · "+exLabel(cur.m),"",cur.m);}},"Lancer l'examen blanc · "+nq+" questions · "+exLabel(cur.m));
+    var en=h("button",{class:"btn ghost",type:"button",onclick:function(){
+      var ids=shuffle(idsOf(function(r){return SEC[r.k].th===6;})).slice(0,20);
+      start("exam",ids,"Examen d'anglais (option)","",30);}},"Examen d'anglais (option) · 20 questions · 30 min");
+    box.replaceChildren(h("h3",{class:"sub",style:"margin-top:0"},"Examen blanc"),
+      h("p",{class:"note",style:"margin-top:0"},"Choisis la durée. Le nombre de questions suit le barème officiel : 100 questions en 2 h 30, soit 20 questions par thème. L'épreuve d'anglais est facultative : 20 questions en 30 min."),
+      seg,h("div",{class:"row",style:"margin-top:10px"},go,en));}
+  paint();return box;}
+function clock(ms){var s=Math.max(0,Math.ceil(ms/1000));if(s<3600)return mmss(ms);var m=Math.floor(s/60)%60;return Math.floor(s/3600)+":"+(m<10?"0":"")+m+":"+(s%60<10?"0":"")+(s%60);}
 function mmss(ms){var s=Math.max(0,Math.ceil(ms/1000));return (s>=600?"":"0")+Math.floor(s/60)+":"+(s%60<10?"0":"")+(s%60);}
 function tick(){
   if(!ses||ses.done)return;
   var left=ses.deadline-Date.now();
-  var t=document.getElementById("timer");if(t)t.textContent=mmss(left);
+  var t=document.getElementById("timer");if(t)t.textContent=clock(left);
   if(left<=0){commitExamCurrent();finish();}
 }
 function commitExamCurrent(){
@@ -4706,7 +4743,7 @@ function renderQ(){
   var nodes=[
     h("div",{class:"top"},
       h("button",{class:"link",type:"button",onclick:quit},ses.quitArmed?"Abandonner l'examen ?":"← Quitter"),
-      h("div",{class:"meta"},exam?h("span",{class:"timer",id:"timer"},mmss(ses.deadline-Date.now())):null,h("span",null,(ses.i+1)+" / "+ses.ids.length))),
+      h("div",{class:"meta"},exam?h("span",{class:"timer",id:"timer"},clock(ses.deadline-Date.now())):null,h("span",null,(ses.i+1)+" / "+ses.ids.length))),
     h("div",{class:"bar"},h("i",{style:"width:"+pct(ses.i,ses.ids.length)+"%"})),
     h("div",{class:"card"},
       h("div",{class:"tag"},id+" · "+SEC[r.k].p+(r.src?" · "+r.src:"")),
@@ -4773,7 +4810,7 @@ function finish(){
     ses.ids.forEach(function(id){if(!done[id])ses.items.push({id:id,ok:false,chosen:null});});
     ses.items.forEach(function(x){recordAnswer(x.id,x.ok);});
     var okE=ses.items.filter(function(x){return x.ok;}).length;
-    p.hist.unshift({d:Date.now(),m:"e",k:"",l:"Examen blanc",ok:okE,n:ses.items.length,mt:mastered(p)});
+    p.hist.unshift({d:Date.now(),m:"e",k:"",l:ses.label,ok:okE,n:ses.items.length,mt:mastered(p)});
     if(p.hist.length>60)p.hist.length=60;
   }
   saveD();
@@ -4811,7 +4848,7 @@ function result(ok){
   var errs=errorIds(),now=mastered(p),dl=now-ses.m0;
   window.scrollTo(0,0);
   show(
-    h("div",{class:"eyebrow"},ses.label+(exam?" · terminé en "+mmss(Date.now()-ses.t0):"")),
+    h("div",{class:"eyebrow"},ses.label+(exam?" · terminé en "+clock(Date.now()-ses.t0):"")),
     h("div",{class:"score"},ok+" ",h("small",null,"/ "+n)),
     h("p",{class:"lead"},pct(ok,n)+" % de réussite."+(wrong.length?" Les questions ratées sont ci-dessous avec leur point de cours.":" Aucune erreur, bravo.")),
     h("p",{class:dl>=0?"delta":"msg"},"Questions maîtrisées : "+ses.m0+" → "+now+" sur "+TOT+(dl>0?" (+"+dl+")":"")+"."),
