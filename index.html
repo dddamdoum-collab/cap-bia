@@ -4752,10 +4752,17 @@ function landDraw(){
     var hdOut=h("b",null,LD.hd+"°"),altOut=h("b",null,LD.alt+" ft");
     var hs=h("input",{type:"range",min:"0",max:"355",step:"5","aria-label":"Cap en degrés"}),as=h("input",{type:"range",min:"0",max:"2000",step:"50","aria-label":"Altitude en pieds"});
     hs.value=LD.hd;as.value=LD.alt;
-    hs.addEventListener("input",function(){LD.hd=Number(hs.value);hdOut.textContent=LD.hd+"°";var n=document.getElementById("needle");if(n)n.setAttribute("transform","rotate("+LD.hd+" 40 40)");});
+    var lastH=LD.hd,bt=null;
+    hs.addEventListener("input",function(){var v=Number(hs.value),d=((v-lastH+540)%360)-180,bank=Math.max(-30,Math.min(30,d*3));lastH=v;LD.hd=v;hdOut.textContent=LD.hd+"°";
+      var n=document.getElementById("needle");if(n)n.style.transform="rotate("+LD.hd+"deg)";
+      var hz=document.getElementById("hz");if(hz)hz.style.transform="rotate("+(-bank)+"deg)";
+      var bl=document.getElementById("bankl");if(bl)bl.textContent=bank===0?"Ailes à plat":"Inclinaison : "+Math.abs(Math.round(bank))+"° à "+(bank>0?"droite":"gauche");
+      clearTimeout(bt);bt=setTimeout(function(){var h2=document.getElementById("hz"),b2=document.getElementById("bankl");if(h2)h2.style.transform="rotate(0deg)";if(b2)b2.textContent="Ailes à plat";},800);});
     as.addEventListener("input",function(){LD.alt=Number(as.value);altOut.textContent=LD.alt+" ft";var sv=document.getElementById("landsvg");if(sv){sv.innerHTML=landSvg();}});
     body=[h("div",{class:"lset"},
-      mkSvg("0 0 80 80","compass",'<circle cx="40" cy="40" r="36" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/><text x="40" y="14" font-size="9" text-anchor="middle" fill="var(--ink)">N</text><text x="40" y="74" font-size="9" text-anchor="middle" fill="var(--ink)">S</text><text x="71" y="43" font-size="9" text-anchor="middle" fill="var(--ink)">E</text><text x="9" y="43" font-size="9" text-anchor="middle" fill="var(--ink)">O</text><g id="needle" transform="rotate('+LD.hd+' 40 40)"><path d="M40,12 L45,40 L35,40Z" fill="#e0245e"/><path d="M40,68 L45,40 L35,40Z" fill="var(--muted)"/></g>'),
+      mkSvg("0 0 80 80","compass",'<circle cx="40" cy="40" r="36" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/><text x="40" y="12" font-size="8" text-anchor="middle" fill="var(--ink)">N</text><text x="40" y="76" font-size="8" text-anchor="middle" fill="var(--ink)">S</text><text x="72" y="43" font-size="8" text-anchor="middle" fill="var(--ink)">E</text><text x="8" y="43" font-size="8" text-anchor="middle" fill="var(--ink)">O</text>'+(err>=2?'<g style="transform:rotate('+(LD.rw*10)+'deg);transform-origin:40px 40px"><rect x="37" y="12" width="6" height="56" fill="#555" opacity=".55"/><path d="M40,16 V64" stroke="#fff" stroke-dasharray="3 3"/></g>':'')+'<g id="needle" style="transform:rotate('+LD.hd+'deg);transform-origin:40px 40px;transition:transform .35s"><ellipse cx="40" cy="40" rx="2.6" ry="13" fill="#e0245e"/><path d="M40,36 L60,46 L60,49 L40,43 L20,49 L20,46Z" fill="#e0245e"/><path d="M40,50 L46,57 L46,59 L40,56 L34,59 L34,57Z" fill="#e0245e"/></g>'),
+      mkSvg("0 0 80 80","compass",'<defs><clipPath id="hzc"><circle cx="40" cy="40" r="36"/></clipPath></defs><g clip-path="url(#hzc)"><g id="hz" style="transform:rotate(0deg);transform-origin:40px 40px;transition:transform .35s"><rect x="-40" y="-40" width="160" height="80" fill="#5aa9e6"/><rect x="-40" y="40" width="160" height="80" fill="#8a6a3d"/><line x1="-40" y1="40" x2="120" y2="40" stroke="#fff" stroke-width="1.5"/></g></g><circle cx="40" cy="40" r="36" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M14,42 H32 M48,42 H66 M40,42 V50" stroke="#ff9f1c" stroke-width="3" fill="none"/><circle cx="40" cy="42" r="2.4" fill="#ff9f1c"/>'),
+      h("p",{class:"note",id:"bankl",style:"flex:1 1 100%;margin:0"},"Ailes à plat"),
       h("div",{class:"lctl"},
         h("label",null,"Cap de l'avion : ",hdOut),hs,
         h("label",null,"Altitude : ",altOut),as)),
