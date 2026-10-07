@@ -81,14 +81,15 @@ service cloud.firestore {
       allow delete: if request.auth != null && request.auth.uid == uid;
     }
 
-    // Signalements d'erreur : tout le monde peut ENVOYER, seul le propriétaire du projet les lit (console Firebase).
+    // Signalements d'erreur : tout le monde peut ENVOYER, seul l'administrateur les lit et les supprime (depuis le site ou la console Firebase).
     match /reports/{id} {
       allow create: if request.resource.data.keys().hasOnly(['q','src','detail','name','at','text'])
                     && request.resource.data.q is string && request.resource.data.q.size() < 20
                     && request.resource.data.detail is string && request.resource.data.detail.size() <= 600
                     && request.resource.data.text is string && request.resource.data.text.size() <= 2000
                     && request.resource.data.name is string && request.resource.data.name.size() <= 40;
-      allow read, update, delete: if false;
+      allow read, delete: if isAdmin();
+      allow update: if false;
     }
   }
 }

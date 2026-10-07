@@ -4375,7 +4375,8 @@ function topbar(active){
       h("button",{class:"tab",type:"button","aria-current":active==="home"?"page":null,onclick:home},"S'entraîner"),
       h("button",{class:"tab",type:"button","aria-current":active==="prog"?"page":null,onclick:progress},"Ma progression"),
       ACC.on&&ACC.teacher?h("button",{class:"tab",type:"button",onclick:function(){TD.view="c";tdash();}},"Mes classes"):null,
-      ACC.on&&ACC.admin?h("button",{class:"tab",type:"button",onclick:function(){TD.view="t";tdash();}},"Enseignants"):null));
+      ACC.on&&ACC.admin?h("button",{class:"tab",type:"button",onclick:function(){TD.view="t";tdash();}},"Enseignants"):null,
+      ACC.on&&ACC.admin?h("button",{class:"tab",type:"button",onclick:function(){TD.view="r";tdash();}},"Signalements"):null));
 }
 
 /* ---------- profils ---------- */
@@ -5020,9 +5021,31 @@ function tchAdmin(msg){
       reqs.length?h("div",{class:"plist"},rl):h("p",{class:"note",style:"margin-top:0"},"Aucune demande pour l'instant. Une personne la fait depuis « Mon compte » > « Je suis enseignant »."),
       h("h3",{class:"sub"},"Enseignants ("+tch.length+")"),
       tch.length?h("div",{class:"plist"},tl):h("p",{class:"note"},"Aucun enseignant."));}}
+var RA={arm:null};
+function repAdmin(msg){
+  window.scrollTo(0,0);var out=h("p",{class:"msg",role:"status"},msg||"");
+  var top=[h("div",{class:"top"},h("button",{class:"link",type:"button",onclick:home},"← Retour")),h("div",{class:"eyebrow"},"Administration"),h("h1",null,"Signalements")];
+  show(top,h("p",{class:"lead"},"Chargement…"));
+  runAll("reports").then(function(a){paint(a);},function(e){show(top,h("p",{class:"msg"},"Impossible de charger les signalements ("+e.message+"). Vérifie que les règles Firestore à jour sont publiées."),h("button",{class:"btn ghost",type:"button",onclick:function(){repAdmin();}},"Réessayer"));});
+  function paint(a){
+    a.sort(function(x,y){return fv(y.f.at)-fv(x.f.at);});
+    var list=a.map(function(r){
+      var q=fv(r.f.q),src=fv(r.f.src),det=fv(r.f.detail),nm=fv(r.f.name),at=fv(r.f.at),txt=fv(r.f.text);
+      var cp=h("button",{class:"btn ghost",type:"button",onclick:function(){try{navigator.clipboard.writeText(txt).then(function(){cp.textContent="Copié";},function(){cp.textContent="Copie refusée";});}catch(e){cp.textContent="Copie refusée";}}},"Copier le signalement");
+      return h("div",{class:"prow",style:"flex-direction:column;align-items:stretch;gap:8px"},
+        h("div",null,h("b",null,"Question "+q),src?h("small",{style:"margin-left:8px;color:var(--muted)"},src):null),
+        h("small",{style:"color:var(--muted)"},(nm||"?")+" · "+(at?new Date(at).toLocaleString("fr-FR"):"")),
+        h("p",{style:"margin:0"},det||"(aucune précision)"),
+        h("details",null,h("summary",{style:"cursor:pointer;color:var(--accent)"},"Voir l'énoncé et la réponse attendue"),h("pre",{style:"white-space:pre-wrap;font:inherit;font-size:14px;margin:8px 0 0"},txt)),
+        h("div",{class:"row"},cp,h("button",{class:"btn warn",type:"button",onclick:function(){
+          if(RA.arm!==r.id){RA.arm=r.id;repAdmin();return;}
+          RA.arm=null;fsFetch("DELETE",fsBase()+"/reports/"+encodeURIComponent(r.id)).then(function(){repAdmin("Signalement supprimé.");},function(e){out.textContent="Action impossible ("+e.message+").";});}},RA.arm===r.id?"Confirmer la suppression":"Traité : supprimer")));});
+    show(top,out,h("p",{class:"lead"},a.length+" signalement"+(a.length>1?"s":"")+" en attente. Vérifie la réponse, corrige la question si l'élève a raison, puis supprime le signalement."),
+      a.length?h("div",{class:"plist"},list):h("p",{class:"note"},"Aucun signalement pour l'instant."));}}
 function tdash(msg){
   if(!ACC.s||!ACC.teacher){account();return;}
   if(TD.view==="t"&&ACC.admin){tchAdmin(msg);return;}
+  if(TD.view==="r"&&ACC.admin){repAdmin(msg);return;}
   clearInterval(timer);timer=null;ses=null;window.scrollTo(0,0);
   var out=h("p",{class:"msg",role:"status"},msg||"");
   if(!TD.cl){
