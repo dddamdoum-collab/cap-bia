@@ -2132,8 +2132,13 @@ hypersustentateurs:function(s){
   return repl(s,'<g transform="translate(26,8) rotate(18 52 3)"><path class="ac3" d="M44,-4 L112,6 L44,11Z"/></g>','<g>'+an("translate","0 0;26 8;26 8;0 0")+'<g>'+an("rotate","0 52 3;18 52 3;18 52 3;0 52 3")+'<path class="ac3" d="M44,-4 L112,6 L44,11Z"/></g></g>');},
 gaz:function(s){function fd(p,n,dur,cls,r){var o="",i;for(i=0;i<n;i++)o+='<circle r="'+r+'" class="'+cls+'"><animateMotion dur="'+dur+'s" begin="-'+(i*dur/n).toFixed(2)+'s" repeatCount="indefinite" path="'+p+'"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.15;.7;1" dur="'+dur+'s" begin="-'+(i*dur/n).toFixed(2)+'s" repeatCount="indefinite"/></circle>';return o;}
   return s.replace("</svg>",fd("M160,44 L160,28 L198,18",3,2.4,"dm",2.4)+fd("M160,146 L160,176",3,1.8,"dt",2.2)+"</svg>");},
-rentree:function(s){function fd(p,n,dur,cls,r){var o="",i;for(i=0;i<n;i++)o+='<circle r="'+r+'" class="'+cls+'"><animateMotion dur="'+dur+'s" begin="-'+(i*dur/n).toFixed(2)+'s" repeatCount="indefinite" path="'+p+'"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.15;.8;1" dur="'+dur+'s" begin="-'+(i*dur/n).toFixed(2)+'s" repeatCount="indefinite"/></circle>';return o;}
-  return s.replace("</svg>",fd("M150,176 L150,100 Q150,88 114,80 L104,44",3,3,"dm",2.4)+fd("M186,150 L186,100 Q186,88 226,80 L236,56",3,3,"dm",2.4)+"</svg>");},
+rentree:function(s){function fd(p,n,dur,cls,r){var o="",i;for(i=0;i<n;i++)o+='<circle r="'+r+'" class="'+cls+'"><animateMotion dur="'+dur+'s" begin="-'+(i*dur/n).toFixed(2)+'s" repeatCount="indefinite" path="'+p+'"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.85;1" dur="'+dur+'s" begin="-'+(i*dur/n).toFixed(2)+'s" repeatCount="indefinite"/></circle>';return o;}
+  var o="",xs=[104,118,132,146,158,170,182,194,208,222,236],i,x,l,ex,ey;
+  for(i=0;i<xs.length;i++){x=xs[i];l=x<170;ex=l?x-62:x+62;ey=l?60+i*3:60+(10-i)*3;
+    o+=fd("M"+x+",4 L"+x+","+(x>120&&x<220?(88+Math.abs(x-170)*0.45):70)+" Q"+(l?x-8:x+8)+",100 "+ex+","+ey,3,1.1+(i%3)*0.2,"dm",2.2);}
+  var arcs=["M128,88 Q170,128 212,88","M118,98 Q170,152 222,98","M110,108 Q170,172 230,108"],glow='<ellipse cx="170" cy="96" rx="64" ry="26" class="dm" opacity=".1"><animate attributeName="opacity" values=".05;.4;.05" dur=".5s" repeatCount="indefinite"/><animate attributeName="ry" values="22;32;22" dur=".5s" repeatCount="indefinite"/></ellipse>',pul="";
+  arcs.forEach(function(d,k){pul+='<path d="'+d+'" class="mg" fill="none" stroke-width="4"><animate attributeName="opacity" values=".1;1;.1" dur=".45s" begin="-'+(k*.15)+'s" repeatCount="indefinite"/></path>';});
+  return s.replace('<path class="fl"',glow+'<path class="fl"').replace("</svg>",pul+o+"</svg>");},
 frontfroid:function(s){return s.replace("</svg>",
   dts("M14,141 L186,141",4,5,"dp",2.6)+dts("M214,142 L204,128 L168,70 L162,62",3,3.6,"dm",2.6)+"</svg>");},
 autorot:function(s){return s.replace("</svg>",
