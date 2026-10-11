@@ -5122,7 +5122,7 @@ function flAskDraw(c,W,H,F){var T=F.th2,L=F.qL;if(!L)return;c.save();c.fillStyle
   c.fillStyle="#ffc93c";c.lineWidth=5;rr(c,L.px+22,L.py-6,330,46,22);c.fill();c.stroke();
   c.textAlign="left";c.fillStyle=INK;c.font="700 26px "+T.disp;c.fillText("QUESTION · JEU EN PAUSE",L.px+40,L.py+27);
   c.fillStyle=INK;c.font="700 34px "+T.body;L.ql.forEach(function(t,i){c.fillText(t,L.px+28,L.qy+i*42);});
-  if(L.hbtn){var b=L.hbtn;c.fillStyle="rgba(0,0,0,.2)";rr(c,b.x+4,b.y+6,b.w,b.h,18);c.fill();c.fillStyle="#ffe08a";c.strokeStyle=BR;c.lineWidth=5;rr(c,b.x,b.y,b.w,b.h,18);c.fill();c.stroke();c.fillStyle=INK;c.font="700 26px "+T.body;c.textAlign="center";c.fillText("Indice (sans pénalité)",b.x+b.w/2,b.y+b.h/2+9);c.textAlign="left";}
+  if(L.hbtn){var b=L.hbtn;c.fillStyle="rgba(0,0,0,.2)";rr(c,b.x+4,b.y+6,b.w,b.h,18);c.fill();c.fillStyle="#ffe08a";c.strokeStyle=BR;c.lineWidth=5;rr(c,b.x,b.y,b.w,b.h,18);c.fill();c.stroke();c.fillStyle=INK;c.font="700 26px "+T.body;c.textAlign="center";c.fillText("Indice",b.x+b.w/2,b.y+b.h/2+9);c.textAlign="left";}
   if(L.hbox){var hb=L.hbox;c.fillStyle="#ffe9a6";c.strokeStyle="#c79a2e";c.lineWidth=4;rr(c,L.px+28,hb.y,L.pw-56,hb.h,16);c.fill();c.stroke();c.fillStyle=INK;c.font="italic 600 26px "+T.body;L.hl.forEach(function(t,i){c.fillText(t,L.px+44,hb.y+14+26+i*32-4);});}
   F.qa.o.forEach(function(oi,i){var r=L.rects[i],sel=F.qSel>=0,isOk=i===F.qa.ok,fill="#cfe8ff",st="#3a7bd5",tx=INK,bd="#ffc93c";
     if(sel){if(isOk){fill="#d6f7d0";st="#2e9e47";bd="#58d36b";}else if(i===F.qSel){fill="#ffd9d4";st="#d9453b";bd="#ff8a7e";}else{fill="#f3ecd8";st="#cdbf9e";tx="#8a7a62";bd="#e6d9b5";}}
