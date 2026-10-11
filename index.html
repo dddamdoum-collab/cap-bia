@@ -4781,9 +4781,13 @@ function landDraw(){
     h("ul",{class:"phints"},hints.map(function(t){return h("li",{class:t.indexOf("🔒")===0?"lk":""},t);})),body);}
 /* --- vol libre --- */
 var FLK=function(){var p=P();return "capbia.fly."+(p?p.id:"x");};
-function flLoad(){var d={coins:0,rec:0,up:{w:0,p:0,l:0,c:0},n:0,type:"wood"};try{var j=JSON.parse(localStorage.getItem(FLK())||"null");if(j&&j.up){d=j;}}catch(e){}d.up.c=d.up.c||0;d.type=d.type==="paper"?"paper":"wood";d.up.k=d.type;return d;}
-function flSave(d){try{localStorage.setItem(FLK(),JSON.stringify(d));}catch(e){}}
-var FLUP=[["w","Ailes","Ailes plus longues et plus fines à chaque niveau : l'avion perd moins d'altitude (bandes rouges dès le niv. 2, ailerons relevés dès le niv. 4)."],["p","Hélice","Hélice au nez : plus grande, avec plus de pales à chaque niveau. Elle aide à garder la vitesse."],["l","Catapulte","Plateforme plus haute, plus d'élastiques et lancement plus puissant."],["c","Carlingue","Carlingue renforcée : chaque niveau réduit de 12 % les dégâts d'un choc (bandes d'acier, nez blindé, rivets, patins)."]];
+function flZ(){return{w:0,p:0,l:0,c:0,r:0};}
+function flLoad(){var d={coins:0,rec:0,n:0,type:"wood",ups:{wood:flZ(),paper:flZ()}};try{var j=JSON.parse(localStorage.getItem(FLK())||"null");if(j){d.coins=j.coins||0;d.rec=j.rec||0;d.n=j.n||0;d.type=j.type==="paper"?"paper":"wood";
+    if(j.ups){["wood","paper"].forEach(function(k){var u=j.ups[k]||{};d.ups[k]={w:u.w||0,p:u.p||0,l:u.l||0,c:u.c||0,r:u.r||0};});}
+    else if(j.up){var u=j.up;d.ups.wood={w:u.w||0,p:u.p||0,l:u.l||0,c:u.c||0,r:0};}}}catch(e){}
+  d.up=d.ups[d.type];d.up.k=d.type;return d;}
+function flSave(d){try{localStorage.setItem(FLK(),JSON.stringify({coins:d.coins,rec:d.rec,n:d.n,type:d.type,ups:d.ups}));}catch(e){}}
+var FLUP=[["w","Ailes","Ailes plus longues et plus fines à chaque niveau : l'avion perd moins d'altitude (bandes rouges dès le niv. 2, ailerons relevés dès le niv. 4)."],["p","Hélice","Hélice au nez : plus grande, avec plus de pales à chaque niveau. Elle aide à garder la vitesse."],["l","Catapulte","Plateforme plus haute, plus d'élastiques et lancement plus puissant."],["r","Réacteur","Vitesse maximale +20 km/h par niveau (tuyère et flamme bleue de plus en plus grandes)."],["c","Carlingue","Carlingue renforcée : chaque niveau réduit de 12 % les dégâts d'un choc (bandes d'acier, nez blindé, rivets, patins)."]];
 function flCost(l){return 40+40*l;}
 function flMenu(msg){NB=0;PG.on=false;FL=null;clearInterval(timer);timer=null;ses=null;window.scrollTo(0,0);
   if(!gamesOK()){home();return;}
@@ -4791,8 +4795,8 @@ function flMenu(msg){NB=0;PG.on=false;FL=null;clearInterval(timer);timer=null;se
   show(topbar("games"),h("div",{class:"eyebrow"},"Jeux"),h("h1",null,"Vol libre"),
     h("p",{class:"pscore"},h("b",null,d.coins+" pièces"),h("span",null," · record "+d.rec+" m · "+d.n+" vol"+(d.n>1?"s":""))),
     h("p",{class:"lead"},"Ton avion (en bois ou en papier) n'a pas de moteur : il est catapulté depuis la plateforme, puis il plane. Relâche la catapulte dans la zone verte. Comme un vrai planeur : en montant tu perds de la vitesse, en piquant tu en regagnes, et sous la vitesse de décrochage le nez tombe. Traverse les anneaux dorés pour un boost de vitesse, évite les ballons et les oiseaux (plus tu avances, plus il y en a ; chaque choc coûte 50 % de dégâts : à 100 % l'avion est détruit), ramasse les kits de réparation, et réponds aux questions : toutes les 5 secondes le jeu se met en pause, et une bonne réponse donne un boost ×2 pendant 3 secondes. Doigt ou souris : glisse sur l'écran. Clavier : flèches."),
-    h("div",{class:"row",style:"margin:6px 0"},[["wood","Avion en bois"],["paper","Avion en papier"]].map(function(tp){return h("button",{class:"btn "+(d.type===tp[0]?"":"ghost"),type:"button","aria-pressed":d.type===tp[0]?"true":"false",onclick:function(){d.type=tp[0];d.up.k=tp[0];flSave(d);flMenu();}},tp[1]);})),
-    h("p",{class:"note",style:"margin:0"},d.type==="paper"?"Papier origami : léger, il plane mieux (finesse +1) mais il est fragile (+30 % de dégâts par choc).":"Bois : robuste, c'est l'avion de référence. Les améliorations s'appliquent aussi à l'avion en papier."),
+    h("div",{class:"row",style:"margin:6px 0"},[["wood","Avion en bois"],["paper","Avion en papier"]].map(function(tp){return h("button",{class:"btn "+(d.type===tp[0]?"":"ghost"),type:"button","aria-pressed":d.type===tp[0]?"true":"false",onclick:function(){d.type=tp[0];d.up=d.ups[tp[0]];d.up.k=tp[0];flSave(d);flMenu();}},tp[1]);})),
+    h("p",{class:"note",style:"margin:0"},d.type==="paper"?"Papier origami : léger, il plane mieux (finesse +1) mais il est fragile (+30 % de dégâts par choc).":"Bois : robuste, c'est l'avion de référence. Chaque avion a ses propres améliorations."),
     h("canvas",{class:"flpv",width:"720",height:"560","aria-label":"Ton avion et ta catapulte actuels"}),
     h("div",{class:"flup"},FLUP.map(function(u){var l=d.up[u[0]],max=l>=5,c=flCost(l);
       return h("div",{class:"flu"},h("b",null,u[1]+" · niv. "+l+" / 5"),h("small",null,u[2]),
@@ -4839,7 +4843,7 @@ function flStep(dt){
   if(F.stall)cmd=-34;else{var ay=Math.max(-1,Math.min(1,F.ay+(F.glT>0?F.glv:0))),inp=ay>0?ay*20:ay*42,nat=-3+Math.max(-16,Math.min(12,(V-V0)*1.6));cmd=inp+nat*(1-.75*Math.abs(ay));}
   F.pit+=(cmd-F.pit)*Math.min(1,dt*(F.stall?3.5:2.2)*(1-.5*Dm));
   var gam=F.pit*Math.PI/180,Dr=(g/GR)*Math.pow(V/V0,2),thr=(F.v<95?d.up.p*.22*(1-Dm):0)+(F.boostT>0?2.78:0);
-  V+=(-g*Math.sin(gam)-Dr+thr)*dt;V=Math.max(5.5,Math.min(38.9,V));F.v=V*3.6;
+  V+=(-g*Math.sin(gam)-Dr+thr)*dt;V=Math.max(5.5,Math.min((140+20*(d.up.r||0))/3.6,V));F.v=V*3.6;
   var vsp=V*Math.sin(gam)+(F.therm>0?3.5:0);F.vs+=(vsp-F.vs)*Math.min(1,dt*6);F.h+=vsp*dt;F.therm=Math.max(0,F.therm-dt);if(F.h>140)F.h=140;
   F.inv=Math.max(0,F.inv-dt);F.boostX=Math.max(0,F.boostX-dt);F.mul+=((F.boostX>0?2:1)-F.mul)*Math.min(1,dt*6);
   var vz=F.v/3.6*F.mul;F.dist+=vz*dt*1.2;
@@ -4866,7 +4870,7 @@ function flStep(dt){
 window._fl=function(){return FL;};
 function flEnd(r){FL.over=true;FL.reason=r;FL.tEnd=performance.now()+1100;FL.flash=FL.stall?"DÉCROCHAGE":"FIN DU VOL";FL.flashT=3;}
 function flReport(F){
-  var d=F.d,coins=Math.round(F.dist/12)+F.gCoins,rec=Math.round(F.dist)>d.rec,pts=Math.round(F.dist/25)+10*F.gOk;
+  var d=F.d,coins=Math.round(F.dist/10)+F.gCoins,rec=Math.round(F.dist)>d.rec,pts=Math.round(F.dist/25)+10*F.gOk;
   d.coins+=coins;d.n++;if(Math.round(F.dist)>d.rec)d.rec=Math.round(F.dist);flSave(d);
   PG.score+=pts;if(PG.score>PG.best){PG.best=PG.score;try{localStorage.setItem("capbia.pgbest",String(PG.best));}catch(e){}}
   NB=0;window.scrollTo(0,0);
@@ -4952,6 +4956,9 @@ function flSprite(c,o,x,y,k){
 function flGate(c,x,y,k,ok){var w=4.4*k,h2=5*k;c.strokeStyle="#ffc93c";c.lineWidth=Math.max(2,.3*k);c.strokeRect(x-w*1.5,y-h2-1.4*k,w*3,h2);
   for(var i=0;i<3;i++){c.fillStyle="#ffffff44";c.fillRect(x-w*1.5+i*w+2,y-h2-1.4*k+2,w-4,h2-4);c.fillStyle="#fff";c.font="700 "+Math.max(10,1.8*k)+"px Barlow Semi Condensed,Arial,sans-serif";c.textAlign="center";c.fillText("ABC"[i],x-w+i*w,y-h2*.45-1.4*k);}}
 function flBez(a,b,c2,t){var u=1-t;return u*u*a+2*u*t*b+t*t*c2;}
+function flJet(c,x,y,r,t){if(r<=0)return;var n=r>=3?2:1,L=26+13*r,rx=11+2.5*r,ry=9+1.8*r;for(var k=0;k<n;k++){var jx=n===2?x+(k?1:-1)*(16+3*r):x,fl=.75+.25*Math.sin(t*40+k*2),g=c.createLinearGradient(0,y,0,y+L*fl);g.addColorStop(0,"rgba(255,255,255,.95)");g.addColorStop(.35,"rgba(120,190,255,.85)");g.addColorStop(1,"rgba(60,110,255,0)");
+    c.fillStyle=g;c.beginPath();c.moveTo(jx-rx*.8,y);c.quadraticCurveTo(jx,y+L*fl*1.1,jx+rx*.8,y);c.closePath();c.fill();
+    c.fillStyle="#4b5560";c.strokeStyle="#262d35";c.lineWidth=3;c.beginPath();c.ellipse(jx,y,rx,ry,0,0,7);c.fill();c.stroke();c.fillStyle="#10151b";c.beginPath();c.ellipse(jx,y+1,rx*.62,ry*.6,0,0,7);c.fill();}}
 function flPaperBody(c,up,t,dmg){var S=175+22*up.w,w=up.w,pr=up.p,hu=up.c||0,nf=Math.min(1+w,5);c.lineJoin="round";c.lineCap="round";
   [-1,1].forEach(function(sg){c.fillStyle=sg<0?"#f3f0e8":"#e4e0d5";c.strokeStyle="#9a958a";c.lineWidth=4;c.beginPath();c.moveTo(0,-112);c.lineTo(sg*S,34);c.lineTo(sg*S*.3,40);c.lineTo(0,6);c.closePath();c.fill();c.stroke();
     c.strokeStyle="#c6c1b3";c.lineWidth=2.5;for(var i=1;i<=nf;i++){var u=i/(nf+1);c.beginPath();c.moveTo(0,-84);c.lineTo(sg*(S*.3+S*.7*u),38-4*u);c.stroke();}
@@ -4966,6 +4973,7 @@ function flPaperBody(c,up,t,dmg){var S=175+22*up.w,w=up.w,pr=up.p,hu=up.c||0,nf=
   if(dmg>=25){c.fillStyle="rgba(40,30,25,"+Math.min(.55,dmg/160)+")";c.beginPath();c.ellipse(-S*.4,6,34+dmg*.2,12,0,0,7);c.fill();if(dmg>=50){c.beginPath();c.ellipse(S*.45,8,28+dmg*.2,10,0,0,7);c.fill();}}
   if(dmg>=50){c.strokeStyle="#3a352b";c.lineWidth=4;c.beginPath();c.moveTo(-S*.55,12);c.lineTo(-S*.47,26);c.lineTo(-S*.52,36);c.stroke();}
   if(dmg>=75){var fl=.6+.4*Math.sin(t*30);c.fillStyle="rgba(255,150,30,"+fl+")";c.beginPath();c.moveTo(-18,40);c.quadraticCurveTo(0,40+58*fl,18,40);c.quadraticCurveTo(0,10,-18,40);c.fill();}
+  flJet(c,0,34,up.r||0,t);
   if(pr<=0){c.fillStyle="#9a958a";c.beginPath();c.arc(0,-112,6,0,7);c.fill();}
   else{var L=22+9*pr,a=t*(10+pr*6),cols=["#d94f3f","#3a7bd5","#f0b43a","#58b83c"];for(var i=0;i<4;i++){var a0=a+i*Math.PI/2;c.fillStyle=cols[i];c.beginPath();c.moveTo(0,-112);c.lineTo(L*Math.cos(a0),-112+L*.4*Math.sin(a0));c.lineTo(L*Math.cos(a0+.8),-112+L*.4*Math.sin(a0+.8));c.closePath();c.fill();}
     c.fillStyle="#555";c.beginPath();c.arc(0,-112,5,0,7);c.fill();}}
@@ -4990,6 +4998,7 @@ function flPlane(c,x,y,s,rot,up,t,pit,dmg){up=up||{w:0,p:0,l:0};t=t||0;dmg=dmg||
   if(dmg>=25){c.fillStyle="rgba(40,30,25,"+Math.min(.55,dmg/160)+")";c.beginPath();c.ellipse(-S*.45,-8,36+dmg*.2,12,0,0,7);c.fill();if(dmg>=50){c.beginPath();c.ellipse(S*.5,-6,30+dmg*.2,10,0,0,7);c.fill();}}
   if(dmg>=50){c.strokeStyle="#fff";c.lineWidth=5;c.beginPath();c.moveTo(-S*.4,-30);c.lineTo(-S*.34,-8);c.lineTo(-S*.42,2);c.lineTo(-S*.36,16);c.stroke();}
   if(dmg>=75){var fl=.6+.4*Math.sin(t*30);c.fillStyle="rgba(255,150,30,"+fl+")";c.beginPath();c.moveTo(-20,70);c.quadraticCurveTo(0,70+60*fl,20,70);c.quadraticCurveTo(0,40,-20,70);c.fill();}
+  flJet(c,0,72,up.r||0,t);
   /* hélice au nez */
   if(pr<=0){c.fillStyle="#6b4a2b";c.beginPath();c.arc(0,-84,8,0,7);c.fill();}
   else{var L=34+9*pr,n=pr>=3?3:2,a0=t*28;
@@ -5055,15 +5064,15 @@ function flAskLayout(){var F=FL,c=FLCTX,W=720,H=1280,T=F.th2||(F.th2=flTheme()),
   if(F.qSel<0){if(F.hintOn){L.hbox={y:y,h:L.hl.length*32+28};y+=L.hbox.h+14;}else{L.hbtn={x:px+pad,y:y,w:iw,h:62};y+=62+16;}}
   else if(F.hintOn){L.hbox={y:y,h:L.hl.length*32+28};y+=L.hbox.h+14;}
   L.rects=[];L.opts.forEach(function(o,i){L.rects.push({x:px+pad,y:y,w:iw,h:o.h});y+=o.h+16;});
-  c.font="600 25px "+T.body;L.fl=flLines(c,F.qSel<0?"Touche la bonne réponse (ou A, B, C)":(F.qSel===F.qa.ok?"Bravo ! Boost ×2 pendant "+(F.hintUsed?2:3)+" s. Touche l'écran pour continuer.":"Raté : la bonne réponse est en vert. Touche l'écran pour continuer."),iw);
+  c.font="600 25px "+T.body;L.fl=flLines(c,F.qSel<0?"Touche la bonne réponse (ou A, B, C)":(F.qSel===F.qa.ok?"Bravo ! Boost ×2 pendant "+(F.hintUsed?2:3)+" s. Touche l'écran pour continuer.":"Raté (+15 % de dégâts) : la bonne réponse est en vert. Touche l'écran pour continuer."),iw);
   y+=4;L.fy=y+26;y+=L.fl.length*32+pad-6;L.ph=y;L.px=px;L.pw=pw;L.py=Math.max(70,Math.round((H-y)/2));
   var dy=L.py;L.rects.forEach(function(r){r.y+=dy;});if(L.hbtn)L.hbtn.y+=dy;if(L.hbox)L.hbox.y+=dy;L.fy+=dy;L.qy=dy+pad+46+34-4;c.restore();F.qL=L;}
 function flAsk(){var F=FL,r=FLQ[Math.floor(Math.random()*FLQ.length)],wr=shuffle([0,1,2,3].filter(function(i){return i!==r.a;})).slice(0,2),ops=shuffle([r.a].concat(wr));
   F.qa={r:r,o:ops,ok:ops.indexOf(r.a)};F.qSel=-1;F.hintOn=false;F.hintUsed=false;F.th2=flTheme();F.ph="ask";F.keys={};F.joy=null;F.ax=0;F.ay=0;flAskLayout();}
 function flHint(){var F=FL;if(!F||F.ph!=="ask"||F.qSel>=0||F.hintOn)return;F.hintOn=true;F.hintUsed=true;flAskLayout();}
-function flAnswer(i){var F=FL;if(!F||F.ph!=="ask"||F.qSel>=0||i<0||i>2)return;F.qSel=i;F.qTimer=4;F.gTot++;if(i===F.qa.ok){F.gOk++;F.gCoins+=10;}flAskLayout();}
+function flAnswer(i){var F=FL;if(!F||F.ph!=="ask"||F.qSel>=0||i<0||i>2)return;F.qSel=i;F.qTimer=4;F.gTot++;if(i===F.qa.ok){F.gOk++;F.gCoins+=30;}else{F.dmg=Math.min(100,F.dmg+15);F.dmgAsk=1;}flAskLayout();}
 function flResume(){var F=FL,good=F.qSel===F.qa.ok;F.ph="fly";F.inv=good?2:1;F.qT=5;F.last=performance.now();
-  if(good){F.boostX=F.hintUsed?2:3;F.fx=.9;F.flash="BONNE RÉPONSE · VITESSE ×2";}else F.flash="MAUVAISE RÉPONSE";F.flashT=1.6;}
+  if(good){F.boostX=F.hintUsed?2:3;F.fx=.9;F.flash="BONNE RÉPONSE · VITESSE ×2";}else F.flash="MAUVAISE RÉPONSE · +15 % DE DÉGÂTS";F.flashT=1.6;if(F.dmg>=100){flEnd("Avion détruit : trop de dégâts. Renforce la carlingue et ramasse les kits de réparation.");FL.flash="AVION DÉTRUIT";}}
 function flAskDraw(c,W,H,F){var T=F.th2,L=F.qL;if(!L)return;c.save();c.fillStyle="rgba(0,0,0,.5)";c.fillRect(0,0,W,H);
   c.fillStyle=T.surface;c.strokeStyle=T.accent;c.lineWidth=6;rr(c,L.px,L.py,L.pw,L.ph,26);c.fill();c.stroke();
   c.textAlign="left";c.fillStyle=T.accent;c.font="700 26px "+T.disp;c.fillText("QUESTION · LE JEU EST EN PAUSE",L.px+28,L.py+28+30);
