@@ -4801,7 +4801,7 @@ var FL=null,FLQ=null;
 function flStart(){
   if(!FLQ)FLQ=RAW.filter(function(r){var t=SEC[r.k].th;return t>=1&&t<=4&&r.q.length<=95&&r.c.every(function(c){return c.length<=34;});});
   var d=flLoad(),W=720,H=1280;
-  FL={d:d,ph:"aim",hold:false,hp:0,dragPull:0,dragOy:null,pull:0,st:0,p0:0,bo:[],nextBo:80,nBo:0,burst:0,v:0,h:48+5*d.up.l,x:0,dist:0,p:0,ax:0,ay:0,t:0,stall:false,gate:null,nextGate:260,th:[],nextTh:140,joy:null,flash:"",flashT:0,gOk:0,gTot:0,gCoins:0,over:false,reason:"",tEnd:0,paused:false,keys:{},last:performance.now(),therm:0};
+  FL={d:d,ph:"aim",hold:false,ht:0,g:0,pull:0,st:0,p0:0,bo:[],nextBo:80,nBo:0,burst:0,v:0,h:48+5*d.up.l,x:0,dist:0,p:0,ax:0,ay:0,t:0,stall:false,gate:null,nextGate:260,th:[],nextTh:140,joy:null,flash:"",flashT:0,gOk:0,gTot:0,gCoins:0,over:false,reason:"",tEnd:0,paused:false,keys:{},last:performance.now(),therm:0};
   FL.objs=[];for(var i=0;i<46;i++)FL.objs.push({z:i*5.5+20+Math.random()*4,x:(Math.random()<.5?-1:1)*(7+Math.random()*18),k:Math.random()<.28?"ruin":"tree",h:.8+Math.random()*.7});
   var cv=h("canvas",{id:"flcv",width:String(W),height:String(H),class:"flcv","aria-label":"Jeu de vol : fais glisser ton doigt ou utilise les flèches pour piloter"});
   NB=1;PG.on=false;
@@ -4812,16 +4812,16 @@ function flStart(){
     h("p",{class:"note",style:"text-align:center"},"Glisse vers le haut pour monter, vers le bas pour piquer, de côté pour tourner.")));
   var ctx=cv.getContext("2d");
   function pt(e){var r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)/r.width,y:(e.clientY-r.top)/r.height};}
-  cv.addEventListener("pointerdown",function(e){e.preventDefault();try{cv.setPointerCapture(e.pointerId);}catch(x){}var q=pt(e);if(FL.ph==="aim"){FL.hold=true;FL.dragOy=q.y;FL.dragPull=0;return;}if(FL.ph!=="fly")return;FL.joy={ox:q.x,oy:q.y,x:q.x,y:q.y};});
-  cv.addEventListener("pointermove",function(e){if(FL&&FL.ph==="aim"&&FL.hold&&FL.dragOy!=null){FL.dragPull=Math.max(0,Math.min(1,(pt(e).y-FL.dragOy)/.2));return;}if(!FL||!FL.joy)return;var q=pt(e);FL.joy.x=q.x;FL.joy.y=q.y;FL.ax=Math.max(-1,Math.min(1,(q.x-FL.joy.ox)/.18));FL.ay=Math.max(-1,Math.min(1,-(q.y-FL.joy.oy)/.12));});
-  function up(){if(FL){if(FL.ph==="aim"&&FL.hold){FL.hold=false;flRelease();FL.dragPull=0;return;}FL.joy=null;FL.ax=0;FL.ay=0;}}
+  cv.addEventListener("pointerdown",function(e){e.preventDefault();try{cv.setPointerCapture(e.pointerId);}catch(x){}var q=pt(e);if(FL.ph==="aim"){FL.hold=true;FL.ht=0;return;}if(FL.ph!=="fly")return;FL.joy={ox:q.x,oy:q.y,x:q.x,y:q.y};});
+  cv.addEventListener("pointermove",function(e){if(FL&&FL.ph==="aim")return;if(!FL||!FL.joy)return;var q=pt(e);FL.joy.x=q.x;FL.joy.y=q.y;FL.ax=Math.max(-1,Math.min(1,(q.x-FL.joy.ox)/.18));FL.ay=Math.max(-1,Math.min(1,-(q.y-FL.joy.oy)/.12));});
+  function up(){if(FL){if(FL.ph==="aim"){if(FL.hold)flRelease();return;}FL.joy=null;FL.ax=0;FL.ay=0;}}
   cv.addEventListener("pointerup",up);cv.addEventListener("pointercancel",up);
-  function kd(e){if(!FL)return;var k=e.key;if(FL.ph==="aim"){if(k===" "||/^(ArrowDown|s)$/i.test(k)){e.preventDefault();if(e.type==="keydown"&&!FL.hold){FL.hold=true;FL.dragOy=null;FL.dragPull=0;}else if(e.type==="keyup"&&FL.hold){FL.hold=false;flRelease();FL.dragPull=0;}}return;}if(/^Arrow|^[wasdzqWASDZQ]$/.test(k)){FL.keys[k.toLowerCase()]=e.type==="keydown";e.preventDefault();var K=FL.keys;FL.ax=((K.arrowright||K.d)?1:0)-((K.arrowleft||K.a||K.q)?1:0);FL.ay=((K.arrowup||K.w||K.z)?1:0)-((K.arrowdown||K.s)?1:0);}}
+  function kd(e){if(!FL)return;var k=e.key;if(FL.ph==="aim"){if(k===" "||/^(ArrowDown|s)$/i.test(k)){e.preventDefault();if(e.type==="keydown"&&!FL.hold){FL.hold=true;FL.ht=0;}else if(e.type==="keyup"&&FL.hold){flRelease();}}return;}if(/^Arrow|^[wasdzqWASDZQ]$/.test(k)){FL.keys[k.toLowerCase()]=e.type==="keydown";e.preventDefault();var K=FL.keys;FL.ax=((K.arrowright||K.d)?1:0)-((K.arrowleft||K.a||K.q)?1:0);FL.ay=((K.arrowup||K.w||K.z)?1:0)-((K.arrowdown||K.s)?1:0);}}
   window.addEventListener("keydown",kd);window.addEventListener("keyup",kd);
   function loop(n){
     if(!document.getElementById("flcv")||!FL){window.removeEventListener("keydown",kd);window.removeEventListener("keyup",kd);return;}
     var dt=Math.max(0,Math.min(.05,(n-FL.last)/1000));FL.last=n;
-    if(!FL.paused&&!FL.over){if(FL.ph==="aim"){FL.t+=dt;FL.hp=FL.hold?Math.min(1,FL.hp+dt*.85):Math.max(0,FL.hp-dt*2.5);FL.pull=Math.max(FL.hp,FL.dragPull);FL.flashT=Math.max(0,FL.flashT-dt);}else if(FL.ph==="slide"){FL.t+=dt;FL.st+=dt;FL.flashT=Math.max(0,FL.flashT-dt);if(FL.st>=1)FL.ph="fly";}else flStep(dt);}
+    if(!FL.paused&&!FL.over){if(FL.ph==="aim"){FL.t+=dt;if(FL.hold){FL.ht+=dt;var pp=(FL.ht*.85)%2;FL.g=pp<1?pp:2-pp;}else FL.g=Math.max(0,FL.g-dt*3);FL.pull=FL.g;FL.flashT=Math.max(0,FL.flashT-dt);}else if(FL.ph==="slide"){FL.t+=dt;FL.st+=dt;FL.flashT=Math.max(0,FL.flashT-dt);var su=Math.min(1,FL.st/1.5),vs=FL.v/3.6*su*su;FL.dist+=vs*dt*1.2;FL.objs.forEach(function(o){o.z-=vs*dt*.5;if(o.z<14){o.z+=250;o.x=(Math.random()<.5?-1:1)*(7+Math.random()*18);}});if(FL.st>=1.5)FL.ph="fly";}else flStep(dt);}
     flDraw(ctx,W,H,dt);
     if(FL.over&&performance.now()>FL.tEnd){var m=FL;FL=null;flReport(m);return;}
     requestAnimationFrame(loop);}
@@ -4882,9 +4882,12 @@ function flDraw(c,W,H,dt){
   if(F.gate&&F.gate.z>6&&F.gate.z<170){var k2=K/F.gate.z,gx=W/2-camX*k2,gy=hz+camH*k2;flGate(c,gx,gy,k2,F.gate.ok);}
   var up=F.d.up,py=H*.66-F.p*50,px=W/2+(F.x-camX)*60,tilt=F.ax*.3+(F.stall?.12*Math.sin(F.t*20):0),ry=H*.66-40,by=H*.66+60+Math.min(F.h,100)*1.6;
   if(F.ph==="aim"){flLaunch(c,W/2,ry,by,up,F.pull,F.t,0,1,true);}
-  else if(F.ph==="slide"){var u=F.st,a0=Math.min(1,u/.4),b0=Math.max(0,Math.min(1,(u-.4)/.6)),e1=a0*a0,e2=b0*b0*(3-2*b0),y0=ry+F.p0*(100+12*up.l),yy,sc;
-    if(u<.4){yy=y0+(ry-110-y0)*e1;sc=(.62+.14*F.p0)+(.5-(.62+.14*F.p0))*e1;}else{yy=ry-110+(py-(ry-110))*e2;sc=.5+.12*e2;}
-    flLaunch(c,W/2,ry,by,up,Math.max(0,F.p0*(1-u*4)),F.t,u*u*320,Math.max(0,1-u*.9),false);flPlane(c,W/2,yy,sc,0,up,F.t);}
+  else if(F.ph==="slide"){var u=Math.min(1,F.st/1.5),sm=u*u*(3-2*u),bump=Math.pow(Math.sin(Math.PI*Math.pow(u,.6)),1.4),sc0=.62+.14*F.p0,
+      y0=ry+F.p0*(100+12*up.l),yy=y0+(py-y0)*sm-210*bump,sc=sc0*(1-sm)+.62*sm-.1*bump;
+    c.save();c.translate(W/2,by);var ps=1-.5*sm;c.scale(ps,ps);c.translate(-W/2,-by);
+    flLaunch(c,W/2,ry,by,up,Math.max(0,F.p0*(1-u*6)),F.t,sm*260,Math.max(0,1-u*1.1),false);c.restore();
+    c.strokeStyle="rgba(255,255,255,"+(.5*bump)+")";c.lineWidth=5;c.lineCap="round";for(var si=0;si<7;si++){var sx=W/2+(si-3)*70+Math.sin(si*7)*20,sy=yy+60+((F.t*900+si*130)%320);c.beginPath();c.moveTo(sx,sy);c.lineTo(sx,sy+90*bump);c.stroke();}
+    flPlane(c,W/2,yy,sc,-.06*bump,up,F.t);}
   else{
   for(var bi=0;bi<F.bo.length;bi++){var o=F.bo[bi];if(o.got||o.z>175||o.z<4)continue;var q=12/o.z,bsx=W/2+(o.x-camX)*60*q,bsy=hz+(H*.66-hz)*q-(o.a-F.h)*2.2*q;flBonus(c,bsx,bsy,Math.min(120,Math.max(9,32*q)),F.t,o.z<12?Math.max(.15,o.z/12):1);}
   c.fillStyle="#0003";c.beginPath();c.ellipse(px,by,100-F.h*.4,22-F.h*.1,0,0,7);c.fill();
@@ -4892,11 +4895,16 @@ function flDraw(c,W,H,dt){
   if(F.burst>0){c.strokeStyle="rgba(255,236,120,"+(F.burst*2)+")";c.lineWidth=10;c.beginPath();c.arc(px,py,60+(.5-F.burst)*320,0,7);c.stroke();}}
   /* HUD */
   c.save();
-  if(F.ph!=="fly"){c.textAlign="center";c.fillStyle="#10243dcc";rr(c,30,40,W-170,150,22);c.fill();c.fillStyle="#fff";c.font="700 34px Barlow Semi Condensed,Arial Narrow,sans-serif";c.fillText(F.ph==="aim"?"Tends l'élastique, puis relâche":"Catapulté !",30+(W-170)/2,86);c.font="600 22px Source Sans 3,Arial,sans-serif";c.fillText(F.ph==="aim"?"Maintiens appuyé ou tire vers le bas":"Bonne chance pour le vol",30+(W-170)/2,124);if(F.ph==="aim")c.fillText("Départ à "+Math.round(F.h)+" m · jusqu'à "+Math.round(78+4*F.d.up.l)+" km/h",30+(W-170)/2,160);
-    if(F.ph==="aim"){var gx=W-62,gy=260,gh=520;c.fillStyle="#10243d99";c.fillRect(gx,gy,34,gh);var gg=c.createLinearGradient(0,gy+gh,0,gy);gg.addColorStop(0,"#58d36b");gg.addColorStop(.6,"#ffc93c");gg.addColorStop(1,"#ff5a5a");c.fillStyle=gg;c.fillRect(gx,gy+gh*(1-F.pull),34,gh*F.pull);c.strokeStyle="#fff";c.lineWidth=4;c.strokeRect(gx,gy,34,gh);c.fillStyle="#fff";c.font="700 20px Arial";c.fillText("FORCE",gx+10,gy-12);}
-    if(F.flashT>0){c.globalAlpha=Math.min(1,F.flashT);c.font="700 56px Barlow Semi Condensed,Arial Narrow,sans-serif";c.fillStyle="#7dffb0";c.fillText(F.flash,W/2,H*.3);c.globalAlpha=1;}
+  if(F.ph!=="fly"){c.textAlign="center";
+    if(F.ph==="aim"){c.fillStyle="#10243dcc";rr(c,30,40,W-170,150,22);c.fill();c.fillStyle="#fff";c.font="700 34px Barlow Semi Condensed,Arial Narrow,sans-serif";c.fillText("Relâche dans la zone verte",30+(W-170)/2,86);c.font="600 22px Source Sans 3,Arial,sans-serif";c.fillText("Maintiens appuyé (ou Espace)",30+(W-170)/2,124);c.fillText("Départ à "+Math.round(F.h)+" m · jusqu'à "+Math.round(78+4*F.d.up.l)+" km/h",30+(W-170)/2,160);
+      var gx=W-70,gy=250,gh=560,zs=[[0,.2,"#e0463d"],[.2,.38,"#f0a33a"],[.38,.62,"#4fd36b"],[.62,.8,"#f0a33a"],[.8,1,"#e0463d"]];
+      c.fillStyle="#10243d";c.fillRect(gx-6,gy-6,46,gh+12);zs.forEach(function(z){c.fillStyle=z[2];c.fillRect(gx,gy+gh*(1-z[1]),34,gh*(z[1]-z[0])+1);});
+      var my=gy+gh*(1-F.g);c.fillStyle="#fff";c.strokeStyle="#10243d";c.lineWidth=5;c.beginPath();c.moveTo(gx-30,my-16);c.lineTo(gx-2,my);c.lineTo(gx-30,my+16);c.closePath();c.fill();c.stroke();c.fillRect(gx-2,my-3,38,6);
+      c.fillStyle="#fff";c.font="700 20px Arial";c.fillText("FORCE",gx+17,gy-20);}
+    if(F.flashT>0){c.globalAlpha=Math.min(1,F.flashT);c.font="700 56px Barlow Semi Condensed,Arial Narrow,sans-serif";c.fillStyle=/PARFAIT|BON/.test(F.flash)?"#7dffb0":"#ffd1a1";c.fillText(F.flash,W/2,H*.3);c.globalAlpha=1;}
     if(F.paused){c.fillStyle="#0008";c.fillRect(0,0,W,H);c.fillStyle="#fff";c.font="700 64px Barlow Semi Condensed,Arial Narrow,sans-serif";c.fillText("PAUSE",W/2,H/2);}
-    c.restore();return;}c.font="700 40px Barlow Semi Condensed,Arial Narrow,sans-serif";c.textAlign="center";
+    c.restore();return;}
+  c.font="700 40px Barlow Semi Condensed,Arial Narrow,sans-serif";c.textAlign="center";
   c.fillStyle="#10243dcc";c.strokeStyle=F.stall&&Math.floor(F.t*4)%2?"#ff5a5a":"#cfe3f5";c.lineWidth=7;c.beginPath();c.arc(90,100,66,0,7);c.fill();c.stroke();
   c.fillStyle="#fff";c.fillText(String(Math.round(F.v)),90,112);c.font="700 18px Arial";c.fillText("KM/H",90,138);
   c.font="700 28px Barlow Semi Condensed,Arial Narrow,sans-serif";c.textAlign="left";c.fillStyle="#fff";c.fillText("Alt. "+Math.round(F.h)+" m",30,205);
@@ -4964,8 +4972,10 @@ function flBonus(c,x,y,r,t,al){c.save();c.globalAlpha=al;var g=c.createRadialGra
   c.fillStyle="#ffc93c";c.strokeStyle="#fff";c.lineWidth=Math.max(2,r*.12);c.beginPath();c.arc(x,y,r,0,7);c.fill();c.stroke();
   c.fillStyle="#7a4b00";c.beginPath();c.moveTo(x+r*.1,y-r*.7);c.lineTo(x-r*.45,y+r*.1);c.lineTo(x-r*.03,y+r*.1);c.lineTo(x-r*.15,y+r*.7);c.lineTo(x+r*.45,y-r*.1);c.lineTo(x+r*.03,y-r*.1);c.closePath();c.fill();
   c.strokeStyle="rgba(255,255,255,"+(.6+.4*Math.sin(t*8))+")";c.lineWidth=Math.max(1,r*.08);c.beginPath();c.arc(x,y,r*(1.25+.1*Math.sin(t*8)),0,7);c.stroke();c.restore();}
-function flRelease(){var F=FL;if(!F||F.ph!=="aim")return;if(F.pull<.12){F.hp=0;F.dragPull=0;F.hold=false;return;}
-  F.v=48+(30+4*F.d.up.l)*F.pull;F.p0=F.pull;F.ph="slide";F.st=0;F.hold=false;F.flash="CATAPULTÉ !";F.flashT=1.4;}
+function flRelease(){var F=FL;if(!F||F.ph!=="aim")return;F.hold=false;if(F.ht<.15){F.g=0;return;}
+  var dv=Math.abs(F.g-.5),q=1-dv/.5,f=Math.min(1,.3+q),perfect=dv<.12;
+  F.v=48+(30+4*F.d.up.l)*f;F.p0=F.g;F.ph="slide";F.st=0;
+  if(perfect){F.flash="LANCER PARFAIT !";F.gCoins+=5;F.perf=1;}else if(dv<.3)F.flash="BON LANCER";else F.flash="LANCER FAIBLE";F.flashT=1.6;}
 /* --- frise chronologique --- */
 var FEV=[[1783,"Premier vol humain en montgolfière (Pilâtre de Rozier)","balloon","Montgolfière"],[1852,"Henri Giffard : premier dirigeable à vapeur","airship","Dirigeable de Giffard"],[1890,"Clément Ader décolle avec l'Éole","bat","Éole"],[1903,"Les frères Wright réussissent le premier vol motorisé","bip","Flyer"],[1906,"Santos-Dumont vole avec le 14-bis à Paris","bip","14-bis"],[1909,"Louis Blériot traverse la Manche","mono","Blériot XI"],[1913,"Roland Garros traverse la Méditerranée","mono","Avion de Garros"],[1919,"Alcock et Brown traversent l'Atlantique Nord sans escale","mono","Vickers Vimy"],[1927,"Lindbergh relie New York à Paris sans escale","mono2","Spirit of St. Louis"],[1930,"Mermoz traverse l'Atlantique Sud avec le courrier","mono2","Laté 28"],[1937,"Catastrophe du dirigeable Hindenburg","airship","Hindenburg"],[1939,"Premier vol d'un avion à réaction (Heinkel He 178)","jet","He 178"],[1947,"Chuck Yeager franchit le mur du son","jet","Bell X-1"],[1957,"Spoutnik 1, premier satellite artificiel","sput","Spoutnik 1"],[1961,"Gagarine, premier homme dans l'espace","capsule","Vostok 1"],[1965,"Astérix, premier satellite français","sput","Astérix"],[1969,"Apollo 11 : premiers pas sur la Lune","apollo","Apollo 11"],[1976,"Début du service commercial du Concorde","conc","Concorde"],[1979,"Premier lancement d'Ariane 1","rocket","Ariane 1"],[1981,"Premier vol de la navette spatiale Columbia","shut","Navette Columbia"],[1990,"Lancement du télescope spatial Hubble","probe","Hubble"],[1998,"Lancement du premier module de l'ISS","iss","Station spatiale"],[2005,"Premier vol de l'Airbus A380","liner","Airbus A380"],[2014,"Philae se pose sur une comète","probe","Philae"],[2016,"Thomas Pesquet décolle pour l'ISS","iss","Pesquet (ISS)"]];
 function fIcon(k){
