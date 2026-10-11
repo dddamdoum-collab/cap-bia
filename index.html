@@ -4288,6 +4288,523 @@ Q("O","En vol, si la météo devait se dégrader fortement devant vous, votre in
 Q("R","Le premier vol de l'Airbus A380 a eu lieu en :",["2005.","2000.","2010.","1995."],0,"Le premier vol a eu lieu au milieu des années 2000, à Toulouse.","L'Airbus A380 a effectué son premier vol le 27 avril 2005 à Toulouse. Sa mise en service commerciale date de 2007.","","BIA 2025 · 5.13 ✓");
 Q("Q","Le premier vol commercial d'Ariane 6 a eu lieu en :",["2025.","2020.","2018.","2010."],0,"Le premier vol d'essai a eu lieu un an plus tôt.","Ariane 6 a effectué son premier vol d'essai en juillet 2024. Son premier vol commercial, avec le satellite CSO-3, a eu lieu en mars 2025.","","BIA 2025 · 5.20 ✓");
 Q("S","La couverture nuageuse correspondant au terme anglais « Overcast » est :",["ciel clair.","ciel partiellement couvert.","ciel totalement couvert.","visibilité réduite."],2,"OVC correspond à la couverture la plus importante.","« Overcast » (OVC) correspond à un ciel totalement couvert, soit 8 octas.","","BIA 2025 · S10 ✓");
+/* ---------- Compléments issus des cours BIA (ajoutés en fin de liste pour ne pas changer les numéros existants) ---------- */
+Q("F","À nos latitudes, l'épaisseur moyenne de la troposphère est d'environ :",["30 km.", "50 km.", "11 km.", "3 km."],2,
+ "C'est aussi l'altitude de la tropopause en atmosphère standard.",
+ "La troposphère s'étend du sol jusqu'à une limite comprise entre 8 et 16 km : plus épaisse à l'équateur qu'aux pôles, elle mesure environ 11 km à la latitude de la France. Elle contient environ 80 % de la masse de l'atmosphère et c'est là que se déroule la quasi-totalité des vols.","","Cours BIA");
+Q("F","La troposphère contient environ quelle part de la masse de l'atmosphère ?",["20 %.", "99 %.", "80 %.", "50 %."],2,
+ "Cette couche contient presque toute l'eau de l'atmosphère et tous les nuages.",
+ "La troposphère représente environ 80 % de la masse de l'atmosphère. Avec la basse stratosphère, 99 % de la masse se trouve dans les 30 premiers kilomètres d'altitude.","","Cours BIA");
+Q("F","Dans la stratosphère, la température :",["diminue régulièrement avec l'altitude.", "reste d'abord constante puis augmente avec l'altitude (absorption des ultraviolets).", "augmente brutalement dès la tropopause.", "est toujours égale à 15 °C."],1,
+ "L'absorption des rayons ultraviolets du Soleil réchauffe cette couche.",
+ "À la tropopause la température atteint environ −56,5 °C. Elle reste ensuite constante (isothermie) puis remonte jusqu'à environ 0 °C vers 50 km, du fait de l'absorption des ultraviolets du Soleil.","","Cours BIA");
+Q("F","Quelle couche de l'atmosphère est la plus mal connue, car trop haute pour les avions et trop basse pour les satellites ?",["La stratosphère.", "La thermosphère.", "La troposphère.", "La mésosphère."],3,
+ "Elle se situe entre 50 et 80 km d'altitude.",
+ "La mésosphère (de 50 à 80 km) est une zone de transition vers l'espace. Les aéronefs ne peuvent pas y monter et les satellites orbitent bien plus haut : on y a très peu mesuré. La température y redescend jusqu'à environ −90 °C.","","Cours BIA");
+Q("F","Quelle est la dernière couche de l'atmosphère, qui commence vers 400 km et se raréfie jusqu'à l'espace interplanétaire ?",["L'exosphère.", "La tropopause.", "La thermosphère.", "La mésosphère."],0,
+ "Son nom évoque l'extérieur.",
+ "L'exosphère est la couche la plus haute. Les particules y sont si rares que le freinage est très faible : c'est la zone privilégiée des satellites, qui y gardent une longue durée de vie.","","Cours BIA");
+Q("F","Pour convertir approximativement une altitude de pieds en mètres, on divise par :",["5.", "3.", "2.", "10."],1,
+ "1000 m correspondent à environ 3000 ft.",
+ "1 ft = 0,3048 m, donc 1 m ≈ 3,28 ft. Pour aller vite : altitude (m) ≈ altitude (ft) / 3, et altitude (ft) ≈ 3 × altitude (m).","","Cours BIA");
+Q("F","Un terrain est à 371 ft d'altitude. Cela représente environ :",["1 200 m.", "113 m.", "37 m.", "371 m."],1,
+ "Divise par 3, ou multiplie par 0,3048.",
+ "371 × 0,3048 ≈ 113 m. Le calcul rapide (371 / 3 ≈ 124 m) donne le bon ordre de grandeur.","","Cours BIA");
+Q("F","En atmosphère standard, le gradient de température dans la troposphère est d'environ :",["2 °C par 1000 ft.", "15 °C par 1000 ft.", "6,5 °C par 100 m.", "0,65 °C par 1000 ft."],0,
+ "Il vaut 6,5 °C par 1000 m, ce qui fait environ un tiers de cette valeur par 1000 ft.",
+ "ΔT = 6,5 °C/1000 m, soit environ 2 °C/1000 ft (car 1000 m ≈ 3281 ft). C'est la règle à retenir pour calculer la température standard en altitude.","","Cours BIA");
+Q("F","À 10 000 ft, un pilote mesure 0 °C alors que l'atmosphère standard donne −5 °C. On dit que la température est :",["ISA +5.", "ISA −5.", "ISA +10.", "ISA."],0,
+ "L'écart se compte par rapport à la valeur standard, dans le sens mesuré moins standard.",
+ "L'écart à l'ISA vaut 0 − (−5) = +5 °C : on parle d'une température ISA +5. L'atmosphère réelle s'écarte presque toujours du modèle standard.","","Cours BIA");
+Q("F","Le soir, la pression passe de 1015 hPa (QNH) à 1010 hPa pendant la nuit, et l'altimètre de l'avion n'est pas touché. Au matin, il indique environ :",["15 ft de plus que la veille.", "150 ft de plus que la veille.", "la même altitude que la veille.", "150 ft de moins que la veille."],1,
+ "Au niveau de la mer, 1 hPa correspond à environ 30 ft. Quand la pression baisse, l'altimètre « croit » que l'avion a monté.",
+ "Une baisse de 5 hPa représente environ 5 × 30 = 150 ft. L'altimètre indique donc 150 ft de plus. C'est pourquoi il faut recaler l'altimètre avant chaque vol.","","Cours BIA");
+Q("F","Pourquoi faut-il recaler l'altimètre avant chaque vol ?",["Parce que le QNH est fixé une fois pour toutes en France.", "Parce que la pression atmosphérique varie avec le temps et avec le lieu.", "Parce que l'altimètre se dérègle à chaque démarrage du moteur.", "Parce que l'altitude de l'aérodrome change d'un jour à l'autre."],1,
+ "Pense à ce que mesure réellement un altimètre.",
+ "Un altimètre est un baromètre gradué en altitude. Comme la pression locale évolue au fil des heures (passage d'une dépression, d'un anticyclone) et d'un lieu à l'autre, il faut régler le calage avant le vol et le mettre à jour en route.","","Cours BIA");
+Q("F","Sur un terrain situé en altitude, le QFE est généralement :",["sans lien avec le QNH.", "égal au QNH.", "supérieur au QNH.", "inférieur au QNH."],3,
+ "Le QFE est la pression au niveau du terrain, donc plus haut que la mer.",
+ "La pression diminue avec l'altitude : QFE = QNH + Δp, avec Δp négatif (environ −1 hPa par 27 ft). Par exemple, à Orly (291 ft) avec un QNH de 1024 hPa, le QFE vaut environ 1013 hPa.","","Cours BIA");
+Q("F","À quelle altitude (standard) la pression vaut-elle la moitié de celle du sol, soit environ 500 hPa ?",["5 000 ft.", "36 000 ft.", "10 000 ft.", "18 000 ft."],3,
+ "La moitié de la masse de l'atmosphère est située sous cette altitude.",
+ "À 18 000 ft (environ 5500 m) la pression est d'environ 500 hPa : la moitié de la masse de l'atmosphère se trouve en dessous.","","Cours BIA");
+Q("F","Pourquoi l'altitude cabine d'un avion de ligne est-elle limitée à 8000 ft (2438 m) au maximum ?",["Pour réduire le bruit des moteurs.", "Pour garder une température agréable.", "Pour que la structure de l'avion ne se déforme pas.", "Pour limiter les effets du manque d'oxygène sur les passagers."],3,
+ "L'air s'appauvrit en oxygène (en pression partielle) quand l'altitude augmente.",
+ "Dans un avion pressurisé, on maintient une pression plus élevée qu'à l'extérieur. La réglementation impose une altitude cabine maximale de 8000 ft, liée au manque d'oxygène à plus haute altitude.","","Cours BIA");
+Q("F","À 0 K (zéro absolu), la température en degrés Celsius vaut :",["+273,15 °C.", "0 °C.", "−100 °C.", "−273,15 °C."],3,
+ "La relation est T(K) = T(°C) + 273,15.",
+ "0 K correspond à l'absence d'agitation des particules : c'est la température la plus basse possible, soit −273,15 °C.","","Cours BIA");
+Q("F","Dans l'échelle Fahrenheit, l'eau gèle et bout respectivement à :",["32 °F et 212 °F.", "0 °F et 100 °F.", "0 °F et 212 °F.", "32 °F et 100 °F."],0,
+ "La formule est T(°F) = 1,8 × T(°C) + 32.",
+ "0 °C correspond à 32 °F et 100 °C à 212 °F. Les États-Unis expriment encore leurs températures en degrés Fahrenheit.","","Cours BIA");
+Q("F","Quelle est, en moyenne et sans mouvement de masse d'air, l'heure la plus froide de la journée ?",["Minuit.", "Environ une demi-heure après le lever du soleil.", "Le coucher du soleil.", "Midi solaire."],1,
+ "Le sol a rayonné toute la nuit et le Soleil bas apporte encore très peu de chaleur.",
+ "Le minimum de température se situe environ 30 minutes après le lever du Soleil : ses rayons traversent une grande épaisseur d'atmosphère et chauffent peu une surface au sol quand il est bas.","","Cours BIA");
+Q("F","Quel est, en moyenne, le moment le plus chaud de la journée ?",["Environ deux heures après le passage du Soleil au zénith.", "À minuit.", "Au coucher du Soleil.", "Au passage du Soleil au zénith."],0,
+ "Le sol continue de se réchauffer tant que l'énergie reçue dépasse l'énergie perdue.",
+ "Le maximum est atteint environ deux heures après le zénith du Soleil : il apporte encore assez d'énergie pour réchauffer le sol.","","Cours BIA");
+Q("F","Quand l'humidité relative atteint 100 %, l'air est :",["à la température du zéro absolu.", "sans vapeur d'eau.", "saturé : un nuage ou du brouillard peut se former.", "très sec."],2,
+ "Le « verre est plein » : l'air ne peut plus contenir davantage de vapeur d'eau.",
+ "L'humidité relative est le rapport entre la quantité réelle de vapeur d'eau et la quantité saturante, en pourcentage. À 100 %, l'air est saturé et la vapeur se condense en fines gouttelettes.","","Cours BIA");
+Q("F","Comparé à de l'air froid, de l'air chaud peut contenir :",["davantage de vapeur d'eau.", "moins de vapeur d'eau.", "autant de vapeur d'eau.", "aucune vapeur d'eau."],0,
+ "C'est pourquoi l'air est très sec quand il fait très froid.",
+ "La quantité maximale de vapeur d'eau (vapeur saturante) augmente avec la température. En refroidissant, un air humide finit par atteindre la saturation et par former des nuages.","","Cours BIA");
+Q("F","Le point de rosée est la température à laquelle il faut refroidir l'air, à pression constante, pour :",["atteindre la saturation.", "le faire geler.", "le rendre plus sec.", "annuler le vent."],0,
+ "À cette température, l'humidité relative atteint 100 %.",
+ "Quand la température de l'air descend jusqu'au point de rosée, la vapeur d'eau se condense : rosée sur les feuilles au sol, ou brouillard dans l'air.","","Cours BIA");
+Q("F","Un soir d'hiver, ciel clair, vent nul, la température est proche du point de rosée et continue à baisser. Quel phénomène est à craindre ?",["Du brouillard.", "Un orage.", "Un décrochage.", "Une onde de montagne."],0,
+ "Le refroidissement nocturne rapproche la température du point de rosée.",
+ "Le refroidissement du sol fait baisser la température de l'air jusqu'au point de rosée : c'est le brouillard de rayonnement, le plus fréquent. Un écart faible entre la température et le point de rosée doit alerter avant un vol.","","Cours BIA");
+Q("F","Quelle formule donne la force F exercée par une pression P sur une surface S ?",["F = P × S.", "F = P / S.", "F = S / P.", "F = P + S."],0,
+ "La pression est une force par unité de surface.",
+ "P = F / S, donc F = P × S, avec F en newtons, P en pascals et S en m². C'est ainsi qu'on calcule la force qui s'exerce sur un tympan ou sur une aile.","","Cours BIA");
+Q("F","1 bar est égal à :",["100 hPa.", "1000 hPa.", "10 000 hPa.", "10 hPa."],1,
+ "Le bar est très proche de la pression standard au niveau de la mer.",
+ "1 bar = 100 000 Pa = 1000 hPa, proche de 1013,25 hPa. Le millibar est égal à l'hectopascal : 1 mbar = 1 hPa.","","Cours BIA");
+Q("G","L'Autan est un vent :",["de nord-ouest qui souffle dans la vallée de l'Aude.", "de sud-est qui touche surtout le Midi toulousain et le Tarn.", "de nord qui souffle dans la vallée du Rhône.", "d'ouest qui souffle sur la Bretagne."],1,
+ "Il est turbulent et se rencontre vers Toulouse.",
+ "Les trois vents régionaux à connaître : le Mistral (nord, vallée du Rhône), la Tramontane (nord-ouest, vallée de l'Aude) et l'Autan (sud-est, région toulousaine). Le relief canalise l'air et l'accélère : c'est l'effet tunnel.","","Cours BIA");
+Q("G","À quelle hauteur sont placés les instruments de mesure du vent en surface (anémomètre, girouette) ?",["100 m.", "2 m.", "10 m.", "50 m."],2,
+ "Il s'agit d'éviter la couche de frottement près du sol.",
+ "Les instruments sont placés sur un pylône à 10 m pour limiter l'effet des frottements de l'air sur le sol et des obstacles.","","Cours BIA");
+Q("G","À quelles heures sont lancés les ballons-sondes météorologiques dans le monde ?",["8 h et 20 h locales.", "0 h et 12 h UTC.", "Seulement à midi.", "6 h et 18 h UTC."],1,
+ "Les lancers ont lieu deux fois par jour, à heures fixes en temps universel.",
+ "Plus de 1000 ballons-sondes sont lancés chaque jour à 0 h et 12 h UTC. Ils mesurent pression, température, humidité et vent en altitude.","","Cours BIA");
+Q("G","Dans l'hémisphère nord, quand on s'élève dans les basses couches de l'atmosphère, le vent :",["tourne vers la gauche et se renforce.", "tourne vers la gauche et faiblit.", "tourne vers la droite et se renforce.", "ne change pas."],2,
+ "Près du sol, les frottements ralentissent le vent et le dévient moins.",
+ "Le frottement freine le vent au sol, qui est donc moins dévié par la force de Coriolis. En s'élevant, le vent devient plus rapide et tourne progressivement vers la droite (hémisphère nord).","","Cours BIA");
+Q("G","Les cellules de Hadley sont des circulations verticales de l'air entre l'équateur et une latitude d'environ :",["10°.", "30°.", "90°.", "60°."],1,
+ "Le fort rayonnement solaire à l'équateur y génère une convection intense.",
+ "L'air chaud monte à l'équateur et redescend vers 30° de latitude : ce sont les cellules de Hadley. Aux pôles, l'air froid descend (cellule polaire) et entre les deux, nos latitudes sont le lieu du conflit des masses d'air polaire et tropicale.","","Cours BIA");
+Q("G","Une masse d'air est une zone de l'atmosphère :",["où la température, la pression et l'humidité sont homogènes.", "uniquement située au-dessus de la mer.", "toujours plus froide que l'air voisin.", "où il n'y a jamais de vent."],0,
+ "Pense à « air de même nature ».",
+ "Une masse d'air présente des caractéristiques physiques homogènes. On parle de masse d'air chaud ou froid par comparaison avec la masse d'air voisine. Leur rencontre forme un front.","","Cours BIA");
+Q("G","À l'arrivée d'un front froid, on observe le plus souvent :",["un mur de nuages et des précipitations parfois orageuses.", "un plafond qui s'abaisse très doucement pendant des heures.", "un ciel parfaitement dégagé.", "uniquement des cirrus."],0,
+ "L'air froid pousse et soulève très rapidement l'air chaud devant lui.",
+ "Au passage d'un front froid, l'air chaud est soulevé brutalement : mur de nuages, averses voire orages, vent qui tourne. À l'inverse, l'arrivée d'un front chaud se traduit par un plafond qui descend progressivement.","","Cours BIA");
+Q("G","L'occlusion d'une perturbation se forme quand :",["le front froid rattrape le front chaud.", "le Soleil réchauffe fortement le sol.", "deux anticyclones fusionnent.", "le vent tombe complètement."],0,
+ "Le front froid avance plus vite que le front chaud.",
+ "Quand le front froid rattrape le front chaud, on parle d'occlusion : c'est une zone très nuageuse avec des plafonds bas.","","Cours BIA");
+Q("G","La traîne qui suit le passage d'un front froid se caractérise par :",["de la pluie verglaçante systématique.", "un ciel stable et sans nuage.", "des cumulus plus ou moins désorganisés et des averses (air froid instable).", "un brouillard persistant."],2,
+ "L'air postérieur est froid et instable.",
+ "Derrière le front froid, l'air froid est souvent instable : cumulus, averses, éclaircies. Si des orages s'y développent, on dit que la traîne est « active ».","","Cours BIA");
+Q("H","Un cirrostratus qui donne un halo autour du Soleil annonce généralement :",["du brouillard immédiat.", "l'arrivée d'une perturbation dans les 24 à 48 heures.", "un temps stable durable.", "de la grêle dans l'heure."],1,
+ "Ce voile de cristaux de glace précède souvent un front chaud.",
+ "Le cirrostratus est un voile ténu de cristaux de glace dans lequel le Soleil présente souvent un halo. C'est un nuage annonciateur de l'arrivée d'une perturbation.","","Cours BIA");
+Q("G","Dans l'effet de Foehn, de l'autre côté de la montagne (côté sous le vent), l'air est :",["identique à celui du côté au vent.", "plus chaud et plus sec.", "plus froid et plus humide.", "saturé et pluvieux."],1,
+ "L'air a perdu une partie de son eau en montant côté au vent.",
+ "Côté au vent, l'air monte, se refroidit, sature et perd de l'eau par précipitations. En redescendant, il se réchauffe en air sec (environ 1 °C/100 m) et se retrouve plus chaud et moins nuageux : c'est le Foehn.","","Cours BIA");
+Q("G","En montant le long d'une montagne en air saturé (dans un nuage), l'air se refroidit d'environ :",["3 °C par 100 m.", "0,5 °C par 100 m.", "1 °C par 100 m.", "6,5 °C par 100 m."],1,
+ "La condensation libère de la chaleur : le refroidissement est plus lent qu'en air sec.",
+ "Détente adiabatique : environ 1 °C/100 m en air sec et environ 0,5 °C/100 m en air saturé.","","Cours BIA");
+Q("G","Quel nuage en forme de lentille signale souvent la présence d'une onde derrière un relief ?",["Cumulonimbus.", "Cirrus.", "Stratus.", "Altocumulus lenticulaire."],3,
+ "Son nom évoque la forme d'une lentille.",
+ "Les nuages lenticulaires (Altocumulus lenticularis) se forment au sommet des ondes orographiques. En présence d'onde, on rencontre de fortes turbulences, en particulier dans les rotors sous les crêtes.","","Cours BIA");
+Q("G","Les rues de nuages sont des alignements de cumulus :",["en cercles autour des anticyclones.", "parallèles au vent.", "uniquement verticaux.", "perpendiculaires au vent."],1,
+ "Elles apparaissent quand le vent est soutenu et augmente régulièrement avec l'altitude, sous une inversion.",
+ "Les rues de nuages sont orientées dans le sens du vent. Entre elles, l'air descend ; sous elles, des ascendances régulières permettent aux planeurs de voler longtemps en ligne droite.","","Cours BIA");
+Q("H","Les nuages de l'étage supérieur (au-dessus de 6000 m) sont composés :",["de poussières.", "uniquement de gouttes d'eau liquide.", "de vapeur d'eau invisible.", "uniquement de cristaux de glace."],3,
+ "Ils ont le préfixe « cirro ».",
+ "Au-dessus de 6000 m, la température est très basse : les cirrus, cirrocumulus et cirrostratus sont faits de cristaux de glace. Ils laissent passer la lumière du Soleil, qui projette encore une ombre au sol.","","Cours BIA");
+Q("H","Les nuages en forme de strates (stratus, altostratus, nimbostratus) traduisent :",["une atmosphère instable.", "une inversion absente.", "une atmosphère sans humidité.", "une atmosphère stable."],3,
+ "Ils s'étendent horizontalement, en nappes.",
+ "Les nuages stratiformes sont associés à une masse d'air stable. Les nuages bourgeonnants (cumulus) indiquent au contraire une masse d'air instable et une convection importante.","","Cours BIA");
+Q("H","Le nuage bas le plus souvent à l'origine de bruine, de nébulosité généralement 8/8, est :",["l'altocumulus.", "le cumulonimbus.", "le stratus.", "le cirrus."],2,
+ "Il ressemble à un brouillard qui ne touche pas le sol.",
+ "Le stratus (ST) est un nuage bas en nappe uniforme. Il peut donner de la bruine, limite fortement l'activité aérienne et se lève avec le réchauffement du Soleil.","","Cours BIA");
+Q("H","Jusqu'à quelle altitude s'étend généralement un cumulonimbus à nos latitudes ?",["Environ 1 km.", "Environ 3 km.", "Jusqu'à 50 km.", "Jusqu'à la tropopause, soit près de 10 km."],3,
+ "Le nuage monte tant que l'air est instable.",
+ "Un cumulonimbus s'étend du voisinage du sol jusqu'à la tropopause, où l'inversion de température stoppe la convection : près de 10 km de hauteur. Il est synonyme d'orage, de forte turbulence, de givrage fort et de grêle.","","Cours BIA");
+Q("H","Dans un orage, les courants verticaux ascendants peuvent atteindre :",["200 à 400 m/s.", "moins de 0,1 m/s.", "1 à 2 m/s.", "20 à 40 m/s."],3,
+ "Un avion peut être aspiré vers le haut sans pouvoir descendre.",
+ "Les courants ascendants d'un cumulonimbus sont de l'ordre de 20 à 40 m/s, avec des courants descendants tout aussi violents sous les averses. On évite de voler à proximité des orages, même à plusieurs dizaines de kilomètres.","","Cours BIA");
+Q("H","Le grésil est constitué de petits grêlons de diamètre inférieur à :",["5 mm.", "0,5 mm.", "5 cm.", "20 cm."],0,
+ "Au-delà de cette taille, on parle de grêle.",
+ "Le grésil tombe des cumulus congestus et des cumulonimbus. Au-delà de 5 mm, on parle de grêle, qui tombe exclusivement des cumulonimbus.","","Cours BIA");
+Q("H","La bruine (DZ) est une précipitation composée de gouttes de diamètre :",["de 5 cm.", "inférieur à 0,5 mm.", "variable, jamais mesuré.", "supérieur à 5 mm."],1,
+ "Ce sont des gouttelettes très fines, souvent avec du brouillard.",
+ "La bruine est faite de petites gouttes d'eau de diamètre inférieur à 0,5 mm. Elle ne provient que d'un stratus. La pluie (RA) a des gouttes de plus de 0,5 mm.","","Cours BIA");
+Q("H","Les averses (SH) tombent exclusivement de nuages :",["lenticulaires.", "cumuliformes.", "stratiformes.", "élevés."],1,
+ "Elles sont brutales, intenses, localisées et de courte durée.",
+ "Une averse est une précipitation brutale, intense, localisée et de courte durée. Elle tombe exclusivement d'un nuage cumuliforme (cumulus, cumulus congestus ou cumulonimbus).","","Cours BIA");
+Q("H","Le brouillard de rayonnement se forme :",["par fort vent et ciel couvert.", "à 10 000 ft au-dessus des montagnes.", "la nuit par ciel clair et vent faible, par refroidissement du sol.", "uniquement sur la mer en été."],2,
+ "Le sol se refroidit et refroidit l'air qui le touche.",
+ "C'est le brouillard le plus fréquent : le refroidissement nocturne du sol, par ciel clair et vent faible, amène l'air en contact avec lui à son point de rosée.","","Cours BIA");
+Q("H","Le givrage du carburateur peut survenir :",["uniquement par temps sec.", "uniquement quand il gèle.", "même par temps doux (autour de +15 °C) si l'humidité est forte.", "seulement sur les avions à injection."],2,
+ "La détente de l'air dans le venturi et l'évaporation de l'essence refroidissent fortement l'air.",
+ "Le givre peut se former dans le carburateur même à +15 °C avec une humidité proche de 100 %. Il est plus probable quand le moteur ne tourne pas en régime de croisière. Les moteurs à injection n'ont pas de carburateur.","","Cours BIA");
+Q("H","L'utilisation du réchauffage carburateur entraîne :",["aucun effet visible.", "une légère perte de régime moteur.", "l'arrêt immédiat du moteur.", "une forte hausse de puissance."],1,
+ "L'air chaud est moins dense : il contient moins d'oxygène.",
+ "En envoyant de l'air chaud dans le carburateur, on diminue la masse d'oxygène admise : le régime baisse légèrement. Ce réchauffage doit être préventif : si le carburateur est déjà bouché par la glace, l'air chaud n'y passera plus.","","Cours BIA");
+Q("H","La pluie verglaçante est dangereuse car ses gouttes en surfusion :",["ne tombent qu'en été.", "n'ont aucun effet sur les profils d'aile.", "sont très chaudes.", "se congèlent au contact de l'avion et le recouvrent de glace en quelques secondes."],3,
+ "Il suffit d'un léger apport d'énergie, comme un choc sur l'aile, pour qu'elles gèlent.",
+ "Les gouttes liquides à température négative gèlent instantanément au choc. La glace modifie les profils, alourdit l'avion, couvre le pare-brise et peut bloquer les commandes : un avion peut devenir incapable de voler en quelques secondes.","","Cours BIA");
+Q("I","Les cartes TEMSI donnent à un pilote :",["les caractéristiques des pistes.", "les fréquences radio des aérodromes.", "uniquement la liste des NOTAM.", "le temps significatif : nuages, phénomènes dangereux, fronts, jet-streams."],3,
+ "TEMSI signifie « temps significatif ».",
+ "Les cartes TEMSI présentent les phénomènes significatifs : types de nuages et altitudes de leurs bases et sommets, précipitations, fronts, givrage, turbulence, jet-streams. Les pilotes les consultent sur le site officiel de Météo-France.","","Cours BIA");
+Q("I","La carte WINTEM donne les vents et les températures à quelles altitudes ?",["FL200, FL300 et FL400.", "500, 1000 et 1500 ft.", "Uniquement au sol.", "2000, 5000 et 10 000 ft."],3,
+ "Elle propose trois niveaux : 2000 ft, 5000 ft et 10 000 ft.",
+ "La carte WINTEM présente les vents et températures prévus à FL020, FL050 et FL100, c'est-à-dire environ 2000, 5000 et 10 000 ft (calage 1013).","","Cours BIA");
+Q("I","Dans un METAR, le groupe « 24021G33KT » signifie :",["vent du 240° à 21 kt avec rafales à 33 kt.", "vent du 24° à 21 kt, visibilité 33 km.", "température 24 °C et point de rosée 21 °C.", "QNH 2402 hPa."],0,
+ "Le vent est donné par la direction d'où il vient, la vitesse moyenne puis les rafales.",
+ "24021G33KT : direction de provenance 240°, vitesse moyenne 21 kt, rafales (G pour Gust) à 33 kt, en nœuds (KT).","","Cours BIA");
+Q("I","Dans un TAF, que signifie « BECMG » ?",["Brouillard en formation.", "Le temps ou le vent va devenir (évolution durable).", "Temporairement.", "Visibilité réduite."],1,
+ "Il vient de l'anglais « becoming ».",
+ "BECMG (becoming) annonce une évolution durable des conditions sur la période indiquée ; TEMPO annonce une variation temporaire.","","Cours BIA");
+Q("I","Dans un METAR, la mention « VRB03KT » indique :",["un vent de 30 kt.", "un vent de direction variable de 3 kt.", "un vent du nord de 3 kt.", "une visibilité de 3 km."],1,
+ "VRB vient de « variable ».",
+ "VRB03KT : direction variable, vitesse de 3 kt. Un vent aussi faible n'a pas de direction stable.","","Cours BIA");
+Q("I","À Orly, un METAR indique « 20/13 Q1024 ». Que représentent ces valeurs ?",["Plafond 2000 ft, visibilité 1300 m.", "Température 20 °C, point de rosée 13 °C, QNH 1024 hPa.", "Vent 20 kt, rafales 13 kt, visibilité 1024 m.", "Température 13 °C, point de rosée 20 °C, QFE 1024."],1,
+ "Le premier nombre est supérieur au second (température > point de rosée).",
+ "La température est toujours donnée avant le point de rosée : 20 °C et 13 °C. Q1024 indique un QNH de 1024 hPa.","","Cours BIA");
+Q("A","Un avion vole avec une pente de −3° et une incidence de 5°. Son assiette vaut :",["+2°.", "−8°.", "+8°.", "−2°."],0,
+ "Utilise la relation entre les trois angles : assiette = pente + incidence.",
+ "Assiette = pente + incidence = −3° + 5° = +2°. L'assiette est l'angle entre l'axe de l'avion et l'horizon, la pente celui de la trajectoire avec l'horizon, l'incidence celui de la corde avec le vent relatif.","","Cours BIA");
+Q("A","L'explication selon laquelle « deux particules d'air qui se séparent au bord d'attaque doivent se retrouver en même temps au bord de fuite » est :",["vraie pour tous les profils.", "fausse : rien n'impose aux particules de se retrouver en même temps.", "vraie uniquement pour les profils symétriques.", "vraie uniquement en supersonique."],1,
+ "Cette explication, longtemps enseignée, est aujourd'hui abandonnée.",
+ "Il est vrai que l'air accélère sur l'extrados, mais l'argument des temps de parcours égaux est faux. On comprend la portance par l'expérimentation en soufflerie, la simulation numérique et le théorème de Bernoulli.","","Cours BIA");
+Q("A","La soufflerie de Gustave Eiffel (1905, au Champ-de-Mars) est de type :",["sous vide.", "fermé : l'air tourne en circuit fermé.", "sans ventilateur.", "ouvert : l'air entre d'un côté et sort de l'autre."],3,
+ "La soufflerie à circuit fermé a été proposée quatre ans plus tard par Prandtl.",
+ "La soufflerie Eiffel est ouverte : collecteur, veine d'essai, diffuseur, ventilateur. Celle de Prandtl (1909, Göttingen) est à circuit fermé, ce qui permet d'augmenter la vitesse de l'air.","","Cours BIA");
+Q("A","Quel physicien allemand a proposé en 1909 une soufflerie à circuit fermé ?",["Ludwig Prandtl.", "Otto Lilienthal.", "Louis Blériot.", "Gustave Eiffel."],0,
+ "Il travaillait au centre de recherche aérodynamique de Göttingen.",
+ "Ludwig Prandtl a proposé en 1909 la soufflerie à circuit fermé. Les tourbillons de bout d'aile portent aussi son nom (tourbillons de Prandtl).","","Cours BIA");
+Q("A","Quand la masse volumique de l'air diminue (air chaud, altitude élevée), la portance d'une aile à vitesse et incidence constantes :",["diminue.", "devient infinie.", "ne change pas.", "augmente."],0,
+ "La portance est proportionnelle à ρ dans la formule ½ρV²SCz.",
+ "Plus il fait chaud et plus la pression est basse, plus l'air est léger et moins l'aile porte. Un décollage par temps chaud ou sur un terrain en altitude demande donc une distance plus longue.","","Cours BIA");
+Q("A","La traînée totale d'un avion est la somme de :",["la portance et du poids.", "la traînée de profil et de la traînée induite.", "la traction et du poids.", "la finesse et de la vitesse."],1,
+ "L'une vient de la forme de l'aile, l'autre de la différence de pression entre intrados et extrados.",
+ "Traînée de l'avion = traînée de profil + traînée induite. La traînée induite vient des tourbillons marginaux de bout d'aile ; elle est d'autant plus forte que l'avion est lourd, lent et que l'allongement de l'aile est faible.","","Cours BIA");
+Q("A","Les tourbillons de bout d'aile (traînée induite) sont d'autant plus forts que l'avion est :",["léger et rapide.", "lourd et lent.", "rapide, quel que soit son poids.", "petit, mais jamais lourd."],1,
+ "À grande incidence, la différence de pression entre intrados et extrados est importante.",
+ "Les tourbillons sont plus intenses quand l'avion est lourd, vole lentement et que son allongement est faible. Ils engendrent aussi la turbulence de sillage, dangereuse pour les avions qui suivent.","","Cours BIA");
+Q("A","Un avion décroche à 100 km/h en vol rectiligne. Quelle est sa vitesse de décrochage dans une ressource à un facteur de charge de 4 ?",["400 km/h.", "100 km/h.", "200 km/h.", "141 km/h."],2,
+ "Vs(n) = Vs(n=1) × √n.",
+ "√4 = 2 : la vitesse de décrochage double et vaut 200 km/h. Tirer brutalement sur le manche à vitesse modérée peut ainsi provoquer un décrochage.","","Cours BIA");
+Q("B","En virage à altitude constante avec 60° d'inclinaison, le facteur de charge vaut :",["4.", "2.", "1.", "1,41."],1,
+ "n = 1/cos φ.",
+ "n = 1/cos 60° = 2. La vitesse de décrochage augmente d'environ 40 %. À 30° : n ≈ 1,15 ; à 45° : n ≈ 1,41.","","Cours BIA");
+Q("B","En virage, la vitesse de décrochage augmente d'environ combien à 60° d'inclinaison ?",["+4 %.", "+40 %.", "+10 %.", "+100 %."],1,
+ "Elle est multipliée par √n, avec n = 2 à 60°.",
+ "À 30°, 45° et 60° d'inclinaison, la vitesse de décrochage augmente respectivement d'environ 10 %, 20 % et 40 %. Il faut donc limiter l'inclinaison à basse vitesse.","","Cours BIA");
+Q("B","En vol dos stabilisé, le facteur de charge vaut :",["−1.", "0.", "+1.", "+2."],0,
+ "Les occupants sont poussés vers le haut du siège, vers la verrière.",
+ "En vol dos, n = −1 : l'avion subit une fois son poids en sens inverse. Il faut un avion capable de supporter des facteurs de charge négatifs.","","Cours BIA");
+Q("B","Un facteur de charge positif important a pour effet physiologique principal de :",["améliorer la vision nocturne.", "faire monter le sang vers la tête.", "faire descendre le sang vers les jambes, avec un risque de voile gris puis de perte de connaissance.", "augmenter la pression artérielle de façon sûre."],2,
+ "Le sang est « plus lourd » sous accélération.",
+ "Sous facteur de charge positif, le sang descend vers le bas du corps et le cerveau est moins bien irrigué : voile gris, puis noir, puis perte de connaissance. Un humain équipé supporte au maximum environ 9 g (avions de chasse).","","Cours BIA");
+Q("B","À quoi servent les volets (flaps) à l'atterrissage ?",["À augmenter la portance à faible vitesse, ce qui permet de voler plus lentement et de réduire les distances.", "À augmenter la vitesse de décrochage.", "À freiner les roues.", "À diminuer la traînée."],0,
+ "Ils augmentent la portance mais aussi la traînée.",
+ "Les volets sortis augmentent la portance (et la traînée) : on peut voler plus lentement, la vitesse de décrochage diminue et les distances de décollage et d'atterrissage sont réduites. Sans volets, la distance d'atterrissage augmente d'au moins 30 %.","","Cours BIA");
+Q("B","Sur l'anémomètre, la limite haute de l'arc blanc correspond à :",["la vitesse maximale à ne jamais dépasser.", "la vitesse de décrochage sans volets.", "la vitesse maximale volets sortis (VFE).", "la vitesse de croisière."],2,
+ "L'arc blanc concerne l'utilisation des volets.",
+ "L'arc blanc va de VS0 (décrochage volets pleins sortis, limite basse) à VFE (Velocity Flaps Extended : vitesse maximale volets sortis, limite haute).","","Cours BIA");
+Q("B","Les aérofreins permettent notamment :",["de réduire la masse de l'avion.", "d'augmenter la portance.", "d'augmenter la traînée et de diminuer la portance.", "d'augmenter la vitesse en palier."],2,
+ "Ils servent à descendre sans prendre de vitesse et à faire peser l'avion sur ses roues à l'atterrissage.",
+ "Les aérofreins et spoilers augmentent fortement la traînée et diminuent légèrement la portance. En détruisant la portance, ils font transiter plus de poids sur les roues et rendent les freins plus efficaces.","","Cours BIA");
+Q("B","Pour passer du palier à une montée à vitesse constante, le pilote doit :",["augmenter l'assiette seulement.", "augmenter l'assiette et la puissance.", "diminuer l'assiette et la puissance.", "diminuer seulement la puissance."],1,
+ "Une composante du poids s'oppose désormais à la traction.",
+ "En montée, une composante du poids parallèle à la trajectoire ralentit l'avion : pour garder la vitesse il faut augmenter la traction (puissance) et tirer sur le manche (assiette).","","Cours BIA");
+Q("B","En montée stabilisée, la portance de l'aile est, par rapport au palier :",["plus forte.", "nulle dans tous les cas.", "plus faible.", "identique."],2,
+ "Imagine un avion qui monte à la verticale.",
+ "En montée, une partie du poids est reprise par la traction : la portance est inférieure au poids (portance = poids × cos de la pente). Dans le cas extrême de la montée à la verticale, la portance est nulle.","","Cours BIA");
+Q("B","Au décollage face au vent, quand l'avion prend de l'altitude et que le vent augmente avec la hauteur (gradient de vent), sa vitesse par rapport à l'air :",["devient nulle.", "reste constante.", "augmente.", "diminue."],2,
+ "L'avion garde sa vitesse sol par inertie, mais le vent relatif augmente.",
+ "Face au vent, plus l'avion s'élève, plus le vent est fort : la vitesse air augmente. À l'atterrissage, c'est l'inverse : en descendant, le vent faiblit et la vitesse air diminue, d'où une majoration de la vitesse d'approche en cas de fort vent.","","Cours BIA");
+Q("B","Pour une approche avec un vent de face de 20 kt, on majore la vitesse d'approche de (Vface − 10) / 2. La majoration est de :",["0 kt.", "5 kt.", "10 kt.", "20 kt."],1,
+ "Applique la formule : (20 − 10) / 2.",
+ "(20 − 10) / 2 = 5 kt. Cette majoration évite que la vitesse air passe sous 1,3 fois la vitesse de décrochage à cause du gradient de vent.","","Cours BIA");
+Q("B","Pour une hélice qui tourne à droite (vue du pilote), le souffle hélicoïdal à fort régime tend à faire partir l'avion :",["vers la droite.", "vers la gauche (lacet à gauche).", "vers le haut.", "vers le bas."],1,
+ "L'air est entraîné en rotation et vient frapper la dérive.",
+ "Le souffle hélicoïdal pousse sur la dérive vers la droite, ce qui fait lacer l'avion vers la gauche. Il est très visible au décollage, à plein régime : il faut le compenser aux palonniers.","","Cours BIA");
+Q("B","À une augmentation de puissance, un avion dont le moteur est à hauteur du centre de gravité réagit en général :",["en roulis à gauche.", "sans réaction.", "à piquer.", "à cabrer."],3,
+ "Le souffle de l'hélice accroît la portance de l'empennage de profondeur.",
+ "L'accroissement de puissance fait cabrer l'avion. Selon la hauteur du moteur par rapport au centre de gravité, l'effet peut être amplifié ou contrarié.","","Cours BIA");
+Q("B","Le centre de gravité d'un avion doit se trouver :",["en arrière du foyer.", "en avant du foyer.", "à l'extrémité de l'aile.", "exactement sur la queue."],1,
+ "Le vol est instable et dangereux si le poids est trop en arrière.",
+ "G doit rester en avant du foyer : plus G est en avant, plus l'avion est stable (mais difficile à arrondir) ; plus G est en arrière, plus l'avion est maniable, jusqu'à l'instabilité si G dépasse le foyer. Le pilote vérifie le centrage avant chaque vol.","","Cours BIA");
+Q("C","Quel élément améliore la stabilité latérale (en roulis) d'un avion ?",["Une hélice plus lourde.", "Un empennage de profondeur plus grand.", "Une dérive plus petite.", "Un dièdre positif."],3,
+ "C'est l'angle entre le plan des ailes et l'horizontale.",
+ "Après une inclinaison, l'avion glisse du côté bas ; l'aile basse reçoit plus de vent relatif et se redresse. Le dièdre positif accentue cet effet.","","Cours BIA");
+Q("C","Quel élément améliore la stabilité de route (en lacet) d'un avion ?",["La flèche positive des ailes (et la dérive).", "Les volets.", "L'envergure uniquement.", "Le dièdre uniquement."],0,
+ "L'aile « au vent » reçoit le vent relatif de plus face et génère plus de traînée.",
+ "La stabilité de route vient de l'effet girouette des surfaces verticales (fuselage, dérive) et de la flèche positive de l'aile : l'aile au vent traîne plus et ramène le nez dans le vent.","","Cours BIA");
+Q("C","En virage stabilisé à inclinaison constante, l'aile extérieure au virage :",["va moins vite que l'aile intérieure.", "va plus vite et tend à augmenter l'inclinaison de l'avion.", "porte moins que l'aile intérieure.", "n'a aucun effet sur l'inclinaison."],1,
+ "Elle parcourt un cercle plus grand dans le même temps.",
+ "L'aile extérieure va plus vite : sa portance est plus forte et l'avion tend à s'incliner davantage (roulis induit). Le pilote compense par une légère action sur les ailerons dans le sens opposé au virage.","","Cours BIA");
+Q("C","Sur un avion sans ailerons (ULM 2 axes, modèle réduit), comment s'incline-t-on en virage ?",["Grâce aux volets.", "On ne peut pas virer.", "Par un moteur plus puissant.", "Par une action en lacet, qui provoque un roulis induit."],3,
+ "Le dérapage diminue la portance d'une des ailes.",
+ "Une action en lacet crée un dérapage : une aile reçoit moins d'air, perd de la portance, et l'avion s'incline du côté de l'action. C'est le roulis induit par le lacet.","","Cours BIA");
+Q("B","Un avion de finesse 10 vole à 2000 m d'altitude. En air calme, il peut parcourir en plané au maximum :",["10 km.", "20 km.", "2 km.", "200 km."],1,
+ "Distance = finesse × hauteur.",
+ "Finesse = D/H, donc D = H × finesse = 2000 m × 10 = 20 km.","","Cours BIA");
+Q("B","Si le poids d'un planeur augmente (ballast d'eau), la vitesse de finesse maximale :",["reste identique.", "devient nulle.", "diminue.", "augmente, tandis que la finesse maximale reste la même."],3,
+ "L'incidence de finesse maximale ne dépend que du profil.",
+ "La finesse maximale est atteinte pour une incidence fixe. Un avion plus lourd doit voler plus vite pour garder cette incidence : la vitesse de finesse max augmente mais la finesse ne change pas. Les planeurs de compétition emportent de l'eau pour aller plus vite.","","Cours BIA");
+Q("D","En atmosphère standard, 1000 m³ d'enveloppe de montgolfière permettent d'emporter environ :",["10 000 kg.", "100 kg.", "1 000 kg.", "10 kg."],1,
+ "C'est l'écart de masse entre l'air déplacé et l'air chaud contenu dans l'enveloppe.",
+ "Une montgolfière de 10 000 m³ avec de l'air chaud à 1,100 kg/m³ dans un air à 1,225 kg/m³ porte 10 000 × (1,225 − 1,100) = 1250 kg environ : l'ordre de grandeur est 100 kg pour 1000 m³.","","Cours BIA");
+Q("D","Pour une montgolfière, plus l'air extérieur est chaud :",["plus la force aérostatique est importante.", "moins la force aérostatique est importante.", "plus la charge utile augmente.", "plus la montgolfière monte vite."],1,
+ "Ce qui compte, c'est la différence de température entre l'intérieur et l'extérieur.",
+ "Fa = k (Tint − Text) : la force aérostatique dépend de l'écart de température entre l'air du ballon et l'air ambiant. Si l'air extérieur est plus chaud, l'écart est plus petit.","","Cours BIA");
+Q("D","Pour faire descendre une montgolfière, le pilote :",["ferme la soupape.", "laisse l'air du ballon se refroidir ou ouvre la soupape située au sommet de l'enveloppe.", "allume plus fort le brûleur.", "lâche le ballast d'eau."],1,
+ "Il faut diminuer la force aérostatique.",
+ "Refroidir l'air ou renouveler l'air en ouvrant la soupape augmente sa masse volumique : la force aérostatique diminue et le ballon descend.","","Cours BIA");
+Q("E","À l'équilibre sur une orbite circulaire, un satellite est soumis à deux forces qui se compensent :",["la traction et la résistance de l'air.", "la gravité (attraction de la Terre) et la force centrifuge.", "la portance et la traînée.", "la poussée d'Archimède et le poids."],1,
+ "Le satellite tombe en permanence vers la Terre sans jamais la rejoindre.",
+ "À l'équilibre, l'attraction gravitationnelle de la Terre est égale à la force centrifuge. À une altitude donnée correspond donc une vitesse bien définie.","","Cours BIA");
+Q("E","Le point d'une orbite elliptique le plus proche de la Terre s'appelle :",["le zénith.", "la tropopause.", "l'apogée.", "le périgée."],3,
+ "Le point le plus éloigné est l'apogée.",
+ "Sur une orbite elliptique, la Terre occupe l'un des foyers : périgée = point le plus proche, apogée = point le plus éloigné.","","Cours BIA");
+Q("E","Pourquoi lance-t-on les fusées vers l'est et près de l'équateur ?",["Parce que l'air y est plus froid.", "Parce qu'il n'y a pas de nuages.", "Pour profiter de la vitesse de rotation de la Terre.", "Pour éviter la gravité."],2,
+ "Comme un lanceur de javelot qui prend de l'élan.",
+ "La Terre tourne vers l'est, à vitesse maximale à l'équateur (nulle aux pôles). Un lancement vers l'est près de l'équateur ajoute cette vitesse d'entraînement à celle de la fusée.","","Cours BIA");
+Q("E","À l'injection sur orbite, si la vitesse du satellite est trop forte, il :",["tombe sur la Terre.", "s'immobilise.", "se rapproche et s'installe sur une orbite inférieure.", "s'éloigne de la Terre et s'installe sur une orbite supérieure."],3,
+ "À une vitesse donnée correspond une altitude d'équilibre.",
+ "À la bonne vitesse, le satellite est en équilibre. Trop lent, il se rapproche de la Terre (orbite inférieure) ; trop rapide, il s'éloigne (orbite supérieure).","","Cours BIA");
+Q("E","Pourquoi doit-on régulièrement fournir de l'énergie à un satellite en orbite basse ?",["Pour compenser la gravité de la Lune.", "Parce que la Terre le repousse.", "Pour compenser la légère traînée due aux rares particules d'air qu'il rencontre.", "Pour éviter qu'il fonde."],2,
+ "L'espace n'est pas totalement vide à ces altitudes.",
+ "Le milieu spatial contient encore quelques particules : leur frottement ralentit peu à peu le satellite. Des propulseurs compensent cette perte de vitesse ; quand le carburant manque, la durée de vie du satellite est atteinte.","","Cours BIA");
+Q("E","Les satellites géostationnaires en fin de vie sont placés :",["sur une orbite « cimetière » plus haute (vers 36 300 km).", "sur l'orbite de la Lune.", "sur l'orbite basse pour brûler.", "au sol."],0,
+ "On les écarte de l'orbite utile avec le peu de carburant restant.",
+ "Les satellites géostationnaires, à environ 35 786 km, sont poussés en fin de vie sur une orbite « cimetière » ou « poubelle » un peu plus haute (vers 36 300 km) pour ne pas gêner les autres.","","Cours BIA");
+Q("E","Les satellites « défilants » (orbites héliosynchrones) évoluent typiquement :",["à 1 million de km.", "à 100 m du sol.", "à 36 000 km d'altitude, avec une période de 24 h.", "à 500 à 1600 km d'altitude, avec une période de 90 à 120 minutes."],3,
+ "Ils survolent presque les pôles et défilent au-dessus des points de la Terre.",
+ "Les orbites héliosynchrones sont des orbites circulaires proches de l'orbite polaire (inclinaison d'environ 87°), à 500–1600 km d'altitude, avec une période de 90 à 120 min.","","Cours BIA");
+Q("P","Quelles inventions de Léonard de Vinci (XVIe siècle), restées à l'état de projet, annoncent l'hélicoptère et le parachute ?",["Une grande vis aérienne et une toile en pyramide.", "Une fusée et un satellite.", "Un ballon à hydrogène et un dirigeable.", "Un moteur à réaction et un siège éjectable."],0,
+ "Ses dessins montrent un appareil à vis et une toile tendue sur un cadre.",
+ "Léonard de Vinci a dessiné une « vis aérienne » (ancêtre de l'hélicoptère) et un parachute. Faute de moyens techniques à l'époque, ces idées sont restées au stade de projet.","","Cours BIA");
+Q("P","Qui sont les premiers passagers d'un vol en ballon, le 19 septembre 1783 à Versailles, devant Louis XVI ?",["Deux chiens et un chat.", "Un coq, un mouton et un canard.", "Un singe et un perroquet.", "Un cheval et un mouton."],1,
+ "Les frères Montgolfier voulaient d'abord vérifier que la vie était possible en altitude.",
+ "La montgolfière emporte un coq, un mouton et un canard, à 600 m d'altitude environ sur 3,5 km. Le premier vol d'humains aura lieu le 21 novembre 1783, avec Pilâtre de Rozier et le marquis d'Arlandes.","","Cours BIA");
+Q("P","Qui réalise la première traversée de la Manche en ballon, le 7 janvier 1785 ?",["Blanchard et Jeffries.", "Pilâtre de Rozier et d'Arlandes.", "Garnerin et Nadar.", "Montgolfier et Charles."],0,
+ "Un Français et un Américain ont fait le voyage ensemble.",
+ "Jean-Pierre Blanchard et John Jeffries traversent la Manche en ballon à gaz le 7 janvier 1785.","","Cours BIA");
+Q("P","Quel ingénieur français a conçu en 1914 un ballon captif de forme ovale, stabilisé par trois lobes à l'arrière, plus stable que les ballons sphériques ?",["Albert Caquot.", "Clément Ader.", "Henri Giffard.", "Louis Breguet."],0,
+ "Ce ballon « saucisse » porte son nom.",
+ "Albert Caquot a constaté en 1914 l'instabilité des ballons sphériques d'observation et conçu le ballon « Caquot », ovale et stabilisé par trois lobes à l'arrière.","","Cours BIA");
+Q("P","Quelles forces Georges Cayley met-il en évidence dès 1799 ?",["Vitesse, accélération et énergie.", "Gravité uniquement.", "Portance uniquement.", "Portance, traînée, poussée (traction) et poids."],3,
+ "Ce sont les quatre forces qui s'appliquent sur un avion en vol.",
+ "Georges Cayley identifie dès 1799 les forces aérodynamiques d'un vol : portance, traînée, poussée et poids. Il met au point un aéronef à ailes monoplan fixes avec stabilisateur, sans copier les ailes battantes.","","Cours BIA");
+Q("P","Otto Lilienthal est connu pour :",["avoir inventé le parachute.", "avoir traversé l'Atlantique en ballon.", "avoir franchi le mur du son.", "ses quelque 2000 vols planés entre 1891 et 1896, qui lui ont coûté la vie."],3,
+ "Il s'élançait du haut d'une colline avec ses planeurs.",
+ "Otto Lilienthal (1848-1896) réalise environ 2000 vols planés en se jetant d'une colline, et meurt en 1896 lors d'un de ses vols.","","Cours BIA");
+Q("P","Pendant la Première Guerre mondiale, la vitesse des avions a été environ :",["divisée par 2.", "multipliée par 2.", "multipliée par 10.", "inchangée."],1,
+ "Les besoins militaires ont accéléré le progrès technique.",
+ "Du fait des développements pour l'usage militaire (observation, bombardement, chasse), la vitesse des avions a été multipliée par 2 pendant la guerre de 14-18.","","Cours BIA");
+Q("P","Quel biplan français de 1917 devient célèbre après la guerre grâce à Mermoz, Daurat, Saint-Exupéry et Guillaumet ?",["Le Breguet 14.", "Le Dewoitine D-520.", "Le Spad XIII.", "Le Nieuport XVII."],0,
+ "Il fut utilisé sur les lignes aériennes Latécoère.",
+ "Le Breguet 14 (1917) était le biplace le plus rapide de son époque. Reconverti au transport du courrier, il est resté associé aux pilotes de la Ligne et de l'Aéropostale.","","Cours BIA");
+Q("P","À Clermont-Ferrand (Aulnat) a été créée :",["le premier aéroport pour hydravions.", "la première soufflerie.", "la première école de pilotage.", "la première piste aéronautique « en dur » du monde."],3,
+ "La région est celle du pneu.",
+ "C'est à Clermont-Ferrand, au pays du pneu, que fut créée la première piste « en dur » du monde, qui donnera l'aéroport d'Aulnat.","","Cours BIA");
+Q("P","Le Bourget, créé en 1915 pour les besoins de la guerre, est inauguré comme premier aéroport parisien en :",["1960.", "1919.", "1939.", "1903."],1,
+ "Peu après la fin de la Grande Guerre.",
+ "Le Bourget, créé en 1915, est inauguré en 1919 comme premier aéroport parisien.","","Cours BIA");
+Q("P","Qu'est-il arrivé à Henri Guillaumet le 12 juin 1930 ?",["Il traverse l'Atlantique sud.", "Il bat le record d'altitude.", "Il disparaît en Méditerranée.", "Son Potez 25 s'écrase dans les Andes et il marche pendant 5 jours et 4 nuits pour s'en sortir."],3,
+ "Un exploit de survie dans la montagne.",
+ "Pilote de l'Aéropostale, Guillaumet survit à un accident dans la cordillère des Andes en marchant 5 jours et 4 nuits dans la montagne. Il est abattu en 1940 au large de la Tunisie.","","Cours BIA");
+Q("P","Sur quel appareil Jean Mermoz disparaît-il le 7 décembre 1936 ?",["Le Breguet 19 « Point d'Interrogation ».", "Le Spirit of St. Louis.", "Le Lockheed Vega.", "L'hydravion Latécoère 300 « Croix-du-Sud »."],3,
+ "Il disparaît dans l'Atlantique lors d'un vol Dakar-Natal.",
+ "Jean Mermoz disparaît dans l'Atlantique aux commandes de l'hydravion quadrimoteur Latécoère 300 « Croix-du-Sud », en 1936, lors d'un vol Dakar-Natal.","","Cours BIA");
+Q("P","Sur quel avion Antoine de Saint-Exupéry disparaît-il en mission de guerre le 31 juillet 1944, au large de Marseille ?",["Un Lockheed P-38 Lightning.", "Un Breguet 14.", "Un Potez 25.", "Un Spitfire."],0,
+ "Un chasseur bimoteur américain à double fuselage.",
+ "Saint-Exupéry disparaît le 31 juillet 1944 au large de Marseille aux commandes d'un Lockheed P-38 « Lightning » lors d'une mission de reconnaissance.","","Cours BIA");
+Q("P","En 1919, Alcock et Brown réalisent :",["le premier vol autour du monde.", "la première traversée de l'Atlantique sud.", "la première traversée de la Manche.", "la première traversée de l'Atlantique nord sans escale, de Terre-Neuve à l'Irlande."],3,
+ "Ils volaient sur un bombardier bimoteur Vickers Vimy.",
+ "John Alcock et Arthur Whitten Brown relient Terre-Neuve à l'Irlande (Clifden) sur un Vickers Vimy, en 1919. Lindbergh fera la traversée en solitaire en 1927.","","Cours BIA");
+Q("P","Quel est le nom de l'avion de Nungesser et Coli, qui ont disparu en mai 1927 en tentant Paris–New York ?",["« L'Oiseau Blanc ».", "« Croix-du-Sud ».", "« Spirit of St. Louis ».", "« Point d'Interrogation »."],0,
+ "Un nom d'oiseau, de couleur claire.",
+ "Charles Nungesser et François Coli décollent du Bourget le 8 mai 1927 sur « L'Oiseau Blanc » et disparaissent. Deux semaines plus tard, Lindbergh réussit New York–Paris.","","Cours BIA");
+Q("P","Quels aviateurs réussissent Paris–New York en 1930 sur le Breguet 19 « Point d'Interrogation » ?",["Mermoz et Guillaumet.", "Nungesser et Coli.", "Costes et Bellonte.", "Alcock et Brown."],2,
+ "Ils réussissent la traversée dans le sens Est-Ouest le 1er septembre 1930.",
+ "Dieudonné Costes et Maurice Bellonte rejoignent New York depuis Paris-Le Bourget le 1er septembre 1930.","","Cours BIA");
+Q("P","Que fut le Dornier Do X (1930) ?",["Un planeur de record.", "Un avion supersonique.", "Un hydravion allemand à 12 moteurs, le plus grand avion du monde à son époque.", "Un chasseur de la Première Guerre mondiale."],2,
+ "Il a marqué les esprits par sa taille.",
+ "Le Dornier Do X est un hydravion civil allemand de 1930, équipé de 12 moteurs, alors de loin le plus grand avion du monde.","","Cours BIA");
+Q("P","Quel avion américain de 1933 est considéré comme le premier avion de transport moderne, entièrement métallique, de 10 passagers ?",["Le Fokker F.VII.", "Le Douglas DC-3.", "Le Boeing 707.", "Le Boeing 247."],3,
+ "Il précède le DC-2 puis le DC-3.",
+ "Le Boeing 247 est le premier avion de transport moderne : métallique, 10 passagers, 1200 km à 300 km/h. Le Douglas DC-3 (1935) en sera le prolongement légendaire.","","Cours BIA");
+Q("P","Le Douglas DC-3 (1935), surnommé « Dakota », emporte environ :",["5 passagers.", "400 passagers.", "25 passagers.", "150 passagers."],2,
+ "Avion légendaire, tout métal, qui a transporté des millions de passagers.",
+ "Le DC-3 emporte environ 25 passagers sur 3200 km à 330 km/h : c'est un avion légendaire utilisé par l'aviation civile et militaire.","","Cours BIA");
+Q("P","Quelle date marque l'indépendance de l'armée de l'Air française, devenue armée à part entière ?",["Le 11 novembre 1918.", "Le 14 juillet 1789.", "Le 8 mai 1945.", "Le 2 juillet 1934."],3,
+ "Auparavant, l'aéronautique militaire dépendait de l'armée de Terre.",
+ "La loi du 8 décembre 1922 avait érigé l'aéronautique militaire en « arme spéciale ». L'armée de l'Air devient une armée à part entière et indépendante le 2 juillet 1934.","","Cours BIA");
+Q("P","Quel chasseur français de 1939, équipé d'un moteur Hispano 12Y de 940 ch, est le meilleur appareil français de la bataille de France (mai-juin 1940) ?",["Le Dewoitine D-520.", "Le Spitfire.", "Le Morane 406.", "Le Messerschmitt Bf 109."],0,
+ "Il vole à environ 540 km/h.",
+ "Le Dewoitine D-520 (1939) atteint environ 540 km/h. Le Morane 406 (1938) vole à 490 km/h. Face à eux, le Messerschmitt Bf 109 allemand dépasse 600 km/h.","","Cours BIA");
+Q("P","Quel pilote français, auteur du livre « Le Grand Cirque », a combattu dans la bataille d'Angleterre ?",["Jean Mermoz.", "Georges Guynemer.", "Pierre Clostermann.", "Roland Garros."],2,
+ "Il raconte ses aventures de pilote de chasse.",
+ "Pierre Clostermann, célèbre pilote de chasse français ayant survécu à la guerre, a raconté ses combats dans « Le Grand Cirque ».","","Cours BIA");
+Q("P","Quel célèbre chasseur japonais, très performant, a donné du fil à retordre aux pilotes américains dans le Pacifique ?",["Le Stuka.", "Le Mitsubishi A6M « Zero ».", "Le Hurricane.", "Le Spitfire."],1,
+ "Son nom évoque un chiffre.",
+ "Le Mitsubishi « Zero » a dominé les premiers combats aériens du Pacifique. Les batailles de Midway et de la mer de Corail ont opposé des flottes de porte-avions américaines et japonaises.","","Cours BIA");
+Q("P","Quel bombardier lourd américain a largué les bombes atomiques sur Hiroshima (6 août 1945) et Nagasaki (9 août 1945) ?",["Le Boeing B-29 « Superfortress ».", "Le Mirage IV.", "Le Boeing B-52.", "Le Messerschmitt Me 262."],0,
+ "C'est l'avion qui dominait tous les autres à la fin de la guerre.",
+ "Le B-29 Superfortress a largué les deux bombes atomiques, ce qui a conduit le Japon à signer la paix.","","Cours BIA");
+Q("P","Quel avion est le premier avion à réaction de l'aviation civile, avec un premier vol le 27 juillet 1949 ?",["Le Boeing 707.", "La Caravelle.", "Le Concorde.", "Le De Havilland DH 106 Comet."],3,
+ "Avion britannique de 1949.",
+ "Le Comet est le premier avion de ligne à réaction de l'histoire : 4 turboréacteurs intégrés dans l'aile. La Caravelle française (1958) et le Boeing 707 (1957) suivront.","","Cours BIA");
+Q("P","Quel avion à hélices fut le premier à traverser régulièrement l'Atlantique sans escale à partir de 1946 ?",["Le Douglas DC-3.", "Le Lockheed L-749 Constellation.", "Le Boeing 247.", "Le Vickers Viscount."],1,
+ "Quadrimoteur à hélices de Lockheed.",
+ "Le Lockheed Constellation (1946), quadrimoteur à hélices de 40 passagers environ, est le premier avion à effectuer régulièrement la traversée transatlantique sans escale.","","Cours BIA");
+Q("P","Quel avion à turbopropulseurs britannique (1948) fut l'un des plus grands succès commerciaux de son temps ?",["Le Harrier.", "Le Vickers Viscount.", "Le Spitfire.", "Le Concorde."],1,
+ "Il est pionnier des avions moyen-courriers à turbopropulseurs.",
+ "Le Vickers Viscount est un moyen-courrier britannique à turbopropulseurs, pionnier du genre et grand succès commercial.","","Cours BIA");
+Q("P","Le SO 6000 « Triton » est :",["le premier avion à réaction français, dont le premier vol date du 11 novembre 1946.", "un hélicoptère de 1950.", "un hydravion de 1930.", "un chasseur de la Grande Guerre."],0,
+ "Premier vol à Orléans-Bricy en 1946.",
+ "Le SO 6000 Triton a effectué son premier vol le 11 novembre 1946 à Orléans-Bricy. Cinq prototypes ont été essayés en vol.","","Cours BIA");
+Q("P","Le Centre d'essais en vol (CEV) est inauguré en 1945 à :",["Brétigny.", "Kourou.", "Le Bourget.", "Toulouse-Blagnac."],0,
+ "On y essaie prototypes d'avions militaires, équipements et parachutes.",
+ "Le CEV de Brétigny ouvre officiellement le 1er août 1945 pour tester les prototypes d'avions militaires, leurs équipements et les parachutes.","","Cours BIA");
+Q("P","Le Dassault Mirage IV est :",["un planeur.", "un hélicoptère de transport.", "un bombardier stratégique nucléaire volant à Mach 2, premier vecteur aérien de la bombe nucléaire française.", "un avion de ligne."],2,
+ "Il date de 1962.",
+ "Le Mirage IV (1962) est un bombardier stratégique français volant à Mach 2, premier vecteur aérien de l'arme nucléaire française. Le Mirage III C (1961) est un chasseur à aile delta volant lui aussi à Mach 2.","","Cours BIA");
+Q("P","Quel avion à décollage vertical britannique apparaît en 1969 ?",["Le Hawker Harrier.", "Le Spitfire.", "Le Mirage III.", "Le Mig-21."],0,
+ "C'est un avion d'attaque à poussée vectorielle.",
+ "Le Hawker Harrier (1969, Royaume-Uni) est un avion d'attaque à décollage vertical, à la technologie peu courante.","","Cours BIA");
+Q("P","Le premier vol du Concorde a lieu :",["le 2 mars 1969 à Toulouse-Blagnac, avec André Turcat aux commandes.", "le 21 juillet 1969 à Cap Canaveral.", "en 1957 à Londres.", "le 1er janvier 1990."],0,
+ "Il précède de quelques mois son premier vol supersonique du 1er octobre 1969.",
+ "André Turcat, pilote d'essai, effectue le premier vol du Concorde le 2 mars 1969 à Toulouse-Blagnac, puis le premier vol supersonique le 1er octobre 1969.","","Cours BIA");
+Q("P","Le Tupolev 144, premier vol en 1968, est :",["un hélicoptère.", "un avion à décollage vertical.", "l'équivalent soviétique supersonique du Concorde.", "un chasseur de la guerre de Corée."],2,
+ "Il a volé avant le Concorde.",
+ "Le Tupolev Tu-144 est le concurrent soviétique du Concorde, avion de transport supersonique volant pour la première fois en 1968.","","Cours BIA");
+Q("P","Quel appareil franco-allemand d'attaque dont le premier déploiement en opérations date de 2009 en Afghanistan ?",["L'Apache AH-64.", "L'hélicoptère Tigre.", "Le Mi-28.", "Le Rafale."],1,
+ "Il vole depuis 1991.",
+ "L'hélicoptère de combat Tigre (Airbus Helicopters) a effectué son premier vol en 1991 et son premier déploiement en opérations en 2009, en Afghanistan.","","Cours BIA");
+Q("P","Quel avion de combat européen, concurrent du Rafale, est entré en service en 2004 ?",["L'Eurofighter Typhoon.", "Le Mirage 2000.", "Le Harrier.", "Le Mig-21."],0,
+ "Premier vol en 1994.",
+ "L'Eurofighter Typhoon a volé pour la première fois le 27 mars 1994 et est entré en service en 2004. Le Rafale français est entré en service en 2001.","","Cours BIA");
+Q("P","Le premier vol commercial de l'Airbus A380, entre Singapour et Sydney, a lieu en :",["avril 2005.", "juin 2020.", "mars 1969.", "octobre 2007."],3,
+ "Son premier vol d'essai a eu lieu en 2005.",
+ "L'A380 vole pour la première fois en 2005 et son premier vol commercial a lieu le 25 octobre 2007 entre Singapour et Sydney. Sa production est arrêtée en 2021.","","Cours BIA");
+Q("P","L'ATR 42 est un avion de transport régional :",["sans moteur.", "à moteur à piston.", "à réacteurs seuls.", "à turbopropulseurs."],3,
+ "Il porte des hélices.",
+ "L'ATR 42 est un avion régional à turbopropulseurs, premier vol le 16 août 1984, mis en service le 9 décembre 1985.","","Cours BIA");
+Q("P","L'Autrichien Felix Baumgartner a franchi le mur du son en :",["avion, en 1947.", "fusée, en 1961.", "chute libre, le 14 octobre 2012.", "ballon, en 1783."],2,
+ "Il a sauté d'un ballon à très haute altitude.",
+ "Le 14 octobre 2012, Felix Baumgartner franchit le mur du son en chute libre, battant le record du monde de vitesse en chute libre et le record du saut le plus haut.","","Cours BIA");
+Q("P","Quel ministre met en place en 1936 l'« aviation populaire », ancêtre du BIA ?",["Louis Blériot, ministre de la Défense.", "Jean Mermoz, ministre de l'Air.", "Charles de Gaulle.", "Jean Zay, ministre de l'Éducation nationale."],3,
+ "Un ministre du Front populaire.",
+ "L'« aviation populaire » est mise en place en 1936 par le ministre de l'Éducation nationale Jean Zay. Elle devient le brevet élémentaire des sports aériens (BESA) en 1955, ancêtre du BIA.","","Cours BIA");
+Q("Q","Quel pionnier américain met au point en 1926 l'un des premiers prototypes de fusée à ergols liquides ?",["Wernher von Braun.", "Robert Goddard.", "Neil Armstrong.", "Sergueï Korolev."],1,
+ "Il est considéré comme un précurseur de l'astronautique.",
+ "Robert Goddard fait voler en 1926 un des premiers prototypes de fusée à ergols liquides. Le V2 allemand suivra en 1942.","","Cours BIA");
+Q("Q","Quelle fusée-sonde est le premier lanceur français, développé en 1952 ?",["Ariane 1.", "Véronique.", "Diamant.", "Europa."],1,
+ "Une fusée sonde au nom de femme.",
+ "Véronique est le premier lanceur français (1952). En 1965, la fusée Diamant A, à trois étages, met en orbite le satellite Astérix et fait de la France la troisième puissance spatiale.","","Cours BIA");
+Q("Q","Qui est le fondateur du programme spatial soviétique, ingénieur à l'origine des fusées russes ?",["Youri Gagarine.", "Valentina Terechkova.", "Robert Goddard.", "Sergueï Korolev."],3,
+ "C'est lui qui conçoit la fusée R-7 de Spoutnik.",
+ "Sergueï Korolev est l'ingénieur à l'origine du programme spatial soviétique : Spoutnik 1 (4 octobre 1957, fusée R-7), Gagarine (1961).","","Cours BIA");
+Q("Q","Quel Américain réalise trois révolutions autour de la Terre à bord de Mercury-Atlas 6, le 20 février 1962 ?",["John Glenn.", "Neil Armstrong.", "Alan Shepard.", "Buzz Aldrin."],0,
+ "Il est le premier Américain en orbite.",
+ "John Glenn est le premier Américain en orbite (3 révolutions, 20 février 1962). Alan Shepard avait été en 1961 le premier Américain dans l'espace, lors d'un vol suborbital.","","Cours BIA");
+Q("Q","Quelle fusée a lancé tous les vaisseaux du programme Gemini ?",["Saturn V.", "Soyouz.", "Titan.", "Ariane."],2,
+ "Elle dérive d'un missile balistique.",
+ "Les vaisseaux Gemini ont été lancés par la fusée Titan, dérivée d'un missile balistique et utilisée de 1959 à 2005.","","Cours BIA");
+Q("Q","Quelle est la première fusée de lancement européenne, développée dans les années 1960 et abandonnée après des échecs ?",["Europa.", "Véronique.", "Diamant.", "Ariane 1."],0,
+ "Son nom est celui du continent.",
+ "Europa est le premier projet de lanceur européen : après 5 lancements infructueux entre 1967 et 1970, Europa II échoue le 5 novembre 1971 et le projet est arrêté. Ariane 1 décolle de Kourou le 24 décembre 1979.","","Cours BIA");
+Q("Q","Ariane 1 décolle pour la première fois le 24 décembre 1979 depuis :",["Toulouse.", "Kourou, en Guyane.", "Cap Canaveral.", "Baïkonour."],1,
+ "Le centre spatial guyanais est proche de l'équateur.",
+ "Kourou, en Guyane française, est proche de l'équateur : la rotation de la Terre y aide les lancements vers l'est.","","Cours BIA");
+Q("Q","La mission Apollo-Soyouz de 1975 est :",["la première mission sur la Lune.", "le premier vol d'un homme dans l'espace.", "la première mission spatiale conjointe entre l'URSS et les États-Unis.", "le premier vol d'une navette."],2,
+ "Deux superpuissances rivales coopèrent pour la première fois.",
+ "En 1975, un vaisseau Apollo et un Soyouz s'amarrent en orbite : première mission spatiale conjointe entre l'Union soviétique et les États-Unis. En 1996, la navette américaine rejoint la station russe Mir.","","Cours BIA");
+Q("Q","Combien de satellites compose la constellation GPS (Navstar) ?",["24.", "240.", "3.", "2400."],0,
+ "Il en faut au moins quatre en vue pour calculer sa position.",
+ "La constellation GPS compte 24 satellites. Le système européen équivalent s'appelle Galileo.","","Cours BIA");
+Q("Q","Que s'est-il passé le 28 janvier 1986 ?",["Ariane 1 a décollé.", "La navette Challenger a explosé au décollage, tuant ses 7 membres d'équipage.", "Gagarine est allé dans l'espace.", "Apollo 11 s'est posé sur la Lune."],1,
+ "C'est la première grande catastrophe des navettes américaines.",
+ "Challenger explose peu après son décollage le 28 janvier 1986. Une seconde navette, Columbia, sera perdue en 2003. Le dernier vol d'une navette américaine a lieu le 8 juillet 2011.","","Cours BIA");
+Q("Q","La station spatiale Mir (URSS puis Russie) a été exploitée environ :",["exactement 5 ans.", "trois fois plus longtemps que prévu.", "pas du tout.", "moins d'un an."],1,
+ "Prévue pour 5 ans.",
+ "Mir, conçue pour fonctionner 5 ans, a été exploitée trois fois plus longtemps. Son maintien en orbite était très coûteux. L'ISS l'a remplacée et est occupée en permanence depuis 2000.","","Cours BIA");
+Q("Q","Qui est la première Française à voyager dans l'espace, en 1996 à bord de la station Mir ?",["Jean-Loup Chrétien.", "Valentina Terechkova.", "Claudie Haigneré.", "Sophie Adenot."],2,
+ "Elle repart en 2001 à bord de l'ISS.",
+ "Claudie Haigneré est la première Française dans l'espace en 1996 (Mir, 16 jours) et repart en 2001 vers l'ISS. Jean-Loup Chrétien fut en 1982 le premier Français dans l'espace.","","Cours BIA");
+Q("Q","Le 21 décembre 2015, SpaceX réalise l'exploit de :",["lancer le télescope Hubble.", "placer un satellite sur la Lune.", "poser un homme sur Mars.", "faire atterrir le premier étage d'une fusée Falcon 9 ayant voyagé dans l'espace."],3,
+ "La réutilisation des fusées fait baisser le coût des lancements.",
+ "SpaceX réussit le 21 décembre 2015 l'atterrissage du premier étage d'un Falcon 9. SpaceX déploie depuis 2019 le réseau de télécommunications Starlink et développe le lanceur super lourd Starship, entièrement réutilisable.","","Cours BIA");
+Q("Q","Quelle sonde survole « Ultima Thulé » le 1er janvier 2019 ?",["Pioneer 10.", "New Horizons.", "Voyager 2.", "Rosetta."],1,
+ "Elle avait déjà survolé Pluton.",
+ "New Horizons, partie en 2006 pour survoler Pluton, survole le 1er janvier 2019 l'objet Ultima Thulé, découvert en 2014 par le télescope Hubble.","","Cours BIA");
+Q("Q","Quelle mission spatiale de la NASA, lancée le 2 avril 2026 d'après le cours, a pour objectif de faire faire le tour de la Lune à des humains ?",["Mercury-Atlas 6.", "Artemis II.", "Gemini 4.", "Apollo 11."],1,
+ "Elle porte le nom de la jumelle d'Apollon dans la mythologie.",
+ "Artemis II emmène des astronautes autour de la Lune, plus loin de la Terre que quiconque auparavant. Elle prépare le retour de l'homme sur la Lune.","","Cours BIA");
+Q("Q","En 1966, quelle sonde soviétique réalise le premier atterrissage en douceur sur un autre corps céleste ?",["Voyager 2.", "Pioneer 10.", "Luna 9.", "Mariner 2."],2,
+ "Elle se pose sur la Lune.",
+ "Luna 9 se pose en douceur sur la Lune en 1966. Luna 3 avait photographié la face cachée de la Lune en 1959 ; Mars 3 est le premier atterrissage en douceur sur Mars en 1971 ; Voyager 2 survole Uranus et Neptune en 1977.","","Cours BIA");
+Q("S","« Wheel chocks » désigne :",["les freins.", "le train avant.", "les cales de roues.", "les phares d'atterrissage."],2,
+ "Ce sont des objets que l'on place devant et derrière les roues d'un avion au parking.",
+ "Wheel chocks = cales de roues, placées pour empêcher l'avion de bouger au sol. Brake = frein, nose gear = train avant.","","Cours BIA");
+Q("S","Dans le circuit d'aérodrome, « abeam » signifie :",["au travers (par le travers de l'aérodrome).", "derrière.", "devant.", "au-dessus."],0,
+ "Se dit d'un point situé à 90° de la direction suivie.",
+ "Abeam = par le travers. « Abeam the tower » : l'avion est au travers de la tour. Overhead = à la verticale.","","Cours BIA");
+Q("S","« Overhead the airfield » signifie :",["loin du terrain.", "derrière le terrain.", "à gauche du terrain.", "à la verticale du terrain."],3,
+ "Overhead évoque ce qui est au-dessus de la tête.",
+ "Overhead = verticale. On annonce « overhead » avant une intégration dans le circuit.","","Cours BIA");
+Q("S","Dans un circuit d'aérodrome, le tronçon « downwind » est :",["l'étape de base.", "la finale.", "la branche vent arrière.", "la montée initiale."],2,
+ "Il est parallèle à la piste, dans le sens inverse de l'atterrissage.",
+ "Downwind = branche vent arrière (tronçon parallèle à la piste), puis base leg = étape de base, final = finale. Attention : downwind désigne le tronçon du circuit, tandis que tailwind est la composante de vent arrière.","","Cours BIA");
+Q("S","« Base leg » désigne :",["l'étape de base du circuit.", "la base militaire.", "la base des nuages.", "la jambe de train."],0,
+ "Entre le vent arrière et la finale.",
+ "Dans le circuit : montée initiale (initial climb), vent traversier (crosswind leg), vent arrière (downwind), étape de base (base leg), finale (final).","","Cours BIA");
+Q("S","« Traffic, two o'clock, three hundred feet below » signifie :",["trafic à 2 heures de vol, à 300 ft au-dessus.", "le trafic arrive dans 2 minutes.", "trafic à votre 2 heures, 300 ft plus bas.", "trafic à 3 h, à 200 ft."],2,
+ "Le contrôleur décrit la position avec l'image d'une horloge.",
+ "Les heures de l'horloge indiquent la direction relative du trafic (12 h = devant, 3 h = à droite, 9 h = à gauche) ; below = plus bas, above = plus haut.","","Cours BIA");
+Q("S","Que signifie « apron » ?",["le hangar.", "la piste.", "le tablier d'un pont.", "l'aire de stationnement (parking)."],3,
+ "C'est là qu'on gare les avions.",
+ "Apron (ou ramp) = aire de trafic où sont garés les avions. « Taxi to the apron » = roulez jusqu'à l'aire de stationnement.","","Cours BIA");
+Q("S","« Hang glider » signifie :",["parapente.", "deltaplane.", "ULM.", "planeur."],1,
+ "Le pilote est suspendu sous une aile en forme de delta.",
+ "Hang glider = deltaplane. Paraglider = parapente. Glider = planeur. Ultralight = ULM.","","Cours BIA");
+Q("S","« Wind shear » signifie :",["cisaillement de vent.", "vent de travers.", "rafale.", "vent de face."],0,
+ "Il s'agit d'une brusque variation du vent sur une courte distance.",
+ "Wind shear = cisaillement de vent, variation brutale de vitesse ou de direction. Headwind = vent de face ; crosswind = vent de travers ; gust = rafale.","","Cours BIA");
+Q("S","« Dew point » se traduit par :",["point de rosée.", "point de passage.", "point de départ.", "point d'attente."],0,
+ "C'est la température à laquelle l'air est saturé.",
+ "Dew point = point de rosée. Un METAR donne la température et le point de rosée, par exemple « 20/13 ».","","Cours BIA");
+Q("S","« Hail » désigne :",["la brume.", "la grêle.", "la pluie.", "la rosée."],1,
+ "Précipitation solide qui tombe des cumulonimbus.",
+ "Hail = grêle, rain = pluie, snow = neige, mist = brume, fog = brouillard, shower = averse.","","Cours BIA");
+Q("S","« Mist » signifie :",["pluie.", "brume.", "verglas.", "brouillard."],1,
+ "C'est plus léger que fog.",
+ "Mist = brume (visibilité de 1 à 5 km) ; fog = brouillard (visibilité inférieure à 1 km).","","Cours BIA");
+Q("S","« Bird hazard » signifie :",["risque aviaire.", "mauvais temps.", "aire d'oiseaux protégés.", "chasse interdite."],0,
+ "Il s'agit d'un danger pour les avions près des aérodromes.",
+ "Bird hazard = risque aviaire (collision avec des oiseaux). L'ATIS peut l'annoncer.","","Cours BIA");
+Q("S","« Cleared for take-off, runway one two » signifie :",["décollage terminé, piste 12.", "prêt au décollage, piste 21.", "autorisé au décollage, piste 12.", "demande de décollage, piste 12."],2,
+ "Le mot clé est « cleared ».",
+ "Cleared for take-off = autorisé au décollage. La piste est énoncée chiffre par chiffre : « one two ».","","Cours BIA");
+Q("S","Que demande « line up and wait, runway one two » ?",["De décoller immédiatement.", "De s'aligner sur la piste 12 et d'attendre.", "De quitter la piste 12.", "De se garer."],1,
+ "L'avion entre sur la piste mais n'a pas encore l'autorisation de décoller.",
+ "Line up and wait = alignez-vous et attendez. Il ne faut pas décoller : l'autorisation de décollage (cleared for take-off) viendra ensuite.","","Cours BIA");
+Q("S","« Runway vacated » est une annonce faite par le pilote qui :",["a quitté la piste après l'atterrissage.", "est en courte finale.", "va décoller.", "est en panne."],0,
+ "On le dit pour libérer la piste au suivant.",
+ "Runway vacated = piste dégagée. Le pilote l'annonce quand l'avion a dépassé le point d'attente après l'atterrissage.","","Cours BIA");
+Q("S","« Expect a right turn after take-off » signifie :",["virage serré interdit.", "le décollage est annulé.", "tournez à gauche tout de suite.", "prévoyez un virage à droite après le décollage."],3,
+ "« Expect » annonce une instruction à venir.",
+ "Expect = prévoyez / attendez-vous à. Right = droite, left = gauche.","","Cours BIA");
+Q("S","« Contact Paris on one two six decimal one » signifie :",["appelez le 1261.", "contactez Paris sur 126,1.", "contactez Paris à 12 h 61.", "Paris se trouve à 126 km."],1,
+ "« Decimal » se dit pour la virgule.",
+ "Decimal = virgule : 126,1 MHz. Les chiffres se disent un à un en anglais aéronautique.","","Cours BIA");
+Q("S","« Tailwind » signifie :",["cisaillement.", "vent de face.", "vent arrière (composante dans le dos).", "vent traversier."],2,
+ "Se dit du vent qui pousse l'avion par l'arrière.",
+ "Tailwind = vent arrière, headwind = vent de face, crosswind = vent de travers. À ne pas confondre avec « downwind » = tronçon du circuit.","","Cours BIA");
+Q("S","Un pilote français obtient le niveau 4 de maîtrise de l'anglais (FCL.055). Ce niveau est valable :",["1 an.", "4 ans.", "toute la vie.", "6 ans."],1,
+ "Le niveau 6 est le seul qui est valable à vie.",
+ "Niveau 4 : 4 ans ; niveau 5 : 6 ans ; niveau 6 : à vie. En dessous du niveau 4, le pilote ne peut pas voyager à l'étranger.","","Cours BIA");
+Q("S","L'épreuve facultative d'anglais du BIA comporte :",["20 questions en une demi-heure.", "un oral de 15 minutes.", "50 questions en 2 heures.", "5 questions en 10 minutes."],0,
+ "Elle n'apporte des points que si la note dépasse 10/20.",
+ "L'épreuve d'anglais est facultative, dure une demi-heure et comporte 20 questions. Seuls les points au-dessus de 10/20 comptent en bonus.","","Cours BIA");
+Q("S","« Right hand circuit » signifie :",["circuit électrique de droite.", "circuit de piste en main droite.", "droit de passage.", "tour de piste à droite uniquement la nuit."],1,
+ "Les virages du circuit se font à droite.",
+ "Right-hand circuit = circuit main droite (tous les virages à droite), left-hand circuit = main gauche.","","Cours BIA");
+Q("S","« Short final » désigne :",["la courte finale.", "la dernière phrase.", "la piste courte.", "l'étape de base."],0,
+ "Phase juste avant l'atterrissage.",
+ "Short final = courte finale (les derniers instants avant le toucher). « Final » désigne la finale.","","Cours BIA");
 var cnt={};
 RAW.forEach(function(r){cnt[r.k]=(cnt[r.k]||0)+1;r.id=r.k+"-"+(cnt[r.k]<10?"0":"")+cnt[r.k];});
 var BY={};RAW.forEach(function(r){BY[r.id]=r;if(r.f)FIG[r.id]=r.f;});
@@ -4486,7 +5003,7 @@ function home(){NB=0;
     h("div",{class:"bar"},h("i",{style:"width:"+pct(all.ok,all.n)+"%"})),
     examBtn,searchBox(),h("div",{class:"row",style:"margin-top:12px"},errBtn),
     blocks,
-    h("p",{class:"note"},"Les questions des thèmes 1 à 5 combinent des questions originales et des questions des annales officielles du BIA (2015 à 2025, repérées par « BIA 20xx » au-dessus de l'énoncé ; le signe ✓ indique que la réponse a été vérifiée avec le corrigé officiel du ministère). Chaque série propose en priorité les questions que tu n'as pas encore maîtrisées. Pour approfondir : manuel BIA. Ta progression est enregistrée sur cet appareil : va dans « Ma progression » pour la voir séance après séance et récupérer ton code de sauvegarde."),
+    h("p",{class:"note"},"Les questions des thèmes 1 à 5 combinent des questions originales, des questions tirées des cours BIA (repérées par « Cours BIA ») et des questions des annales officielles du BIA (2015 à 2025, repérées par « BIA 20xx » au-dessus de l'énoncé ; le signe ✓ indique que la réponse a été vérifiée avec le corrigé officiel du ministère). Chaque série propose en priorité les questions que tu n'as pas encore maîtrisées. Pour approfondir : manuel BIA. Ta progression est enregistrée sur cet appareil : va dans « Ma progression » pour la voir séance après séance et récupérer ton code de sauvegarde."),
     h("div",{style:"margin-top:18px"},resetBtn)
   );
 }
