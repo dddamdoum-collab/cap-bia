@@ -4788,7 +4788,7 @@ function flLoad(){var d={coins:0,rec:0,n:0,type:"wood",ups:{wood:flZ(),paper:flZ
   d.up=d.ups[d.type];d.up.k=d.type;return d;}
 function flSave(d){try{localStorage.setItem(FLK(),JSON.stringify({coins:d.coins,rec:d.rec,n:d.n,type:d.type,ups:d.ups}));}catch(e){}}
 var FLUP=[["w","Ailes","Ailes plus longues et plus fines à chaque niveau : l'avion perd moins d'altitude (bandes rouges dès le niv. 2, ailerons relevés dès le niv. 4)."],["p","Hélice","Hélice au nez : plus grande, avec plus de pales à chaque niveau. Elle aide à garder la vitesse."],["l","Catapulte","Plateforme plus haute, plus d'élastiques et lancement plus puissant."],["r","Réacteur","Vitesse maximale +20 km/h par niveau (tuyère et flamme bleue de plus en plus grandes)."],["c","Carlingue","Carlingue renforcée : chaque niveau réduit de 12 % les dégâts d'un choc (bandes d'acier, nez blindé, rivets, patins)."]];
-function flCost(l){return [100,250,700,1200,2000][Math.min(4,l)];}
+function flCost(l){return [100,500,1000,2000,5000][Math.min(4,l)];}
 function flMenu(msg){NB=0;PG.on=false;FL=null;clearInterval(timer);timer=null;ses=null;window.scrollTo(0,0);
   if(!gamesOK()){home();return;}
   var d=flLoad();
