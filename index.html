@@ -5106,7 +5106,7 @@ function flAskLayout(){var F=FL,c=FLCTX,W=720,H=1280,T=F.th2||(F.th2=flTheme()),
   if(F.qSel<0){if(F.hintOn){L.hbox={y:y,h:L.hl.length*32+28};y+=L.hbox.h+14;}else{L.hbtn={x:px+pad,y:y,w:iw,h:62};y+=62+16;}}
   else if(F.hintOn){L.hbox={y:y,h:L.hl.length*32+28};y+=L.hbox.h+14;}
   L.rects=[];L.opts.forEach(function(o,i){L.rects.push({x:px+pad,y:y,w:iw,h:o.h});y+=o.h+16;});
-  c.font="600 25px "+T.body;L.fl=flLines(c,F.qSel<0?"Touche la bonne réponse (ou A, B, C)":(F.qSel===F.qa.ok?"Bravo ! Boost ×2 pendant "+(F.hintUsed?2:3)+" s. Touche l'écran pour continuer.":"Raté (+25 % de dégâts, −5 km/h) : la bonne réponse est en vert. Touche l'écran pour continuer."),iw);
+  c.font="600 25px "+T.body;L.fl=flLines(c,F.qSel<0?"Touche la bonne réponse (ou A, B, C)":(F.qSel===F.qa.ok?"Bravo ! Boost ×2 pendant "+3+" s. Touche l'écran pour continuer.":"Raté (+25 % de dégâts, −5 km/h) : la bonne réponse est en vert. Touche l'écran pour continuer."),iw);
   y+=4;L.fy=y+26;y+=L.fl.length*32+pad-6;L.ph=y;L.px=px;L.pw=pw;L.py=Math.max(70,Math.round((H-y)/2));
   var dy=L.py;L.rects.forEach(function(r){r.y+=dy;});if(L.hbtn)L.hbtn.y+=dy;if(L.hbox)L.hbox.y+=dy;L.fy+=dy;L.qy=dy+pad+46+34-4;c.restore();F.qL=L;}
 function flAsk(){var F=FL,r=FLQ[Math.floor(Math.random()*FLQ.length)],wr=shuffle([0,1,2,3].filter(function(i){return i!==r.a;})).slice(0,2),ops=shuffle([r.a].concat(wr));
@@ -5114,7 +5114,7 @@ function flAsk(){var F=FL,r=FLQ[Math.floor(Math.random()*FLQ.length)],wr=shuffle
 function flHint(){var F=FL;if(!F||F.ph!=="ask"||F.qSel>=0||F.hintOn)return;F.hintOn=true;F.hintUsed=true;flAskLayout();}
 function flAnswer(i){var F=FL;if(!F||F.ph!=="ask"||F.qSel>=0||i<0||i>2)return;F.qSel=i;F.qTimer=4;F.gTot++;if(i===F.qa.ok){F.gOk++;F.gCoins+=30;}else{F.dmg=Math.min(100,F.dmg+25);F.dmgAsk=1;}flAskLayout();}
 function flResume(){var F=FL,good=F.qSel===F.qa.ok;F.ph="fly";F.inv=good?2:1;F.qT=5;F.last=performance.now();
-  if(good){F.boostX=F.hintUsed?2:3;F.fx=.9;F.flash="BONNE RÉPONSE · VITESSE ×2";}else{F.v=Math.max(10.5*3.6,F.v-5);F.badT=1.4;F.flash="MAUVAISE RÉPONSE · +25 % DÉGÂTS · −5 KM/H";}F.flashT=1.6;if(F.dmg>=100){flEnd("Avion détruit : trop de dégâts. Renforce la carlingue et ramasse les kits de réparation.");FL.flash="AVION DÉTRUIT";}}
+  if(good){F.boostX=3;F.fx=.9;F.flash="BONNE RÉPONSE · VITESSE ×2";}else{F.v=Math.max(10.5*3.6,F.v-5);F.badT=1.4;F.flash="MAUVAISE RÉPONSE · +25 % DÉGÂTS · −5 KM/H";}F.flashT=1.6;if(F.dmg>=100){flEnd("Avion détruit : trop de dégâts. Renforce la carlingue et ramasse les kits de réparation.");FL.flash="AVION DÉTRUIT";}}
 function flAskDraw(c,W,H,F){var T=F.th2,L=F.qL;if(!L)return;c.save();c.fillStyle="rgba(20,12,4,.45)";c.fillRect(0,0,W,H);
   var BR="#6b4a2b",INK="#2b1d10";
   c.fillStyle="rgba(0,0,0,.28)";rr(c,L.px+8,L.py+12,L.pw,L.ph,30);c.fill();
@@ -5122,7 +5122,7 @@ function flAskDraw(c,W,H,F){var T=F.th2,L=F.qL;if(!L)return;c.save();c.fillStyle
   c.fillStyle="#ffc93c";c.lineWidth=5;rr(c,L.px+22,L.py-6,330,46,22);c.fill();c.stroke();
   c.textAlign="left";c.fillStyle=INK;c.font="700 26px "+T.disp;c.fillText("QUESTION · JEU EN PAUSE",L.px+40,L.py+27);
   c.fillStyle=INK;c.font="700 34px "+T.body;L.ql.forEach(function(t,i){c.fillText(t,L.px+28,L.qy+i*42);});
-  if(L.hbtn){var b=L.hbtn;c.fillStyle="rgba(0,0,0,.2)";rr(c,b.x+4,b.y+6,b.w,b.h,18);c.fill();c.fillStyle="#ffe08a";c.strokeStyle=BR;c.lineWidth=5;rr(c,b.x,b.y,b.w,b.h,18);c.fill();c.stroke();c.fillStyle=INK;c.font="700 26px "+T.body;c.textAlign="center";c.fillText("Indice (le boost ne durera que 2 s)",b.x+b.w/2,b.y+b.h/2+9);c.textAlign="left";}
+  if(L.hbtn){var b=L.hbtn;c.fillStyle="rgba(0,0,0,.2)";rr(c,b.x+4,b.y+6,b.w,b.h,18);c.fill();c.fillStyle="#ffe08a";c.strokeStyle=BR;c.lineWidth=5;rr(c,b.x,b.y,b.w,b.h,18);c.fill();c.stroke();c.fillStyle=INK;c.font="700 26px "+T.body;c.textAlign="center";c.fillText("Indice (sans pénalité)",b.x+b.w/2,b.y+b.h/2+9);c.textAlign="left";}
   if(L.hbox){var hb=L.hbox;c.fillStyle="#ffe9a6";c.strokeStyle="#c79a2e";c.lineWidth=4;rr(c,L.px+28,hb.y,L.pw-56,hb.h,16);c.fill();c.stroke();c.fillStyle=INK;c.font="italic 600 26px "+T.body;L.hl.forEach(function(t,i){c.fillText(t,L.px+44,hb.y+14+26+i*32-4);});}
   F.qa.o.forEach(function(oi,i){var r=L.rects[i],sel=F.qSel>=0,isOk=i===F.qa.ok,fill="#cfe8ff",st="#3a7bd5",tx=INK,bd="#ffc93c";
     if(sel){if(isOk){fill="#d6f7d0";st="#2e9e47";bd="#58d36b";}else if(i===F.qSel){fill="#ffd9d4";st="#d9453b";bd="#ff8a7e";}else{fill="#f3ecd8";st="#cdbf9e";tx="#8a7a62";bd="#e6d9b5";}}
