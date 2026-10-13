@@ -4822,10 +4822,15 @@ function loadD(){
     var id=uid(),q={};Object.keys(o1.q).forEach(function(k){var s=o1.q[k];q[k]={ok:!!s.ok,tries:s.tries||1,first:!!s.ok};});
     D.profiles[id]={id:id,name:o1.name||"Élève",cls:"",created:Date.now(),q:q,hist:[]};D.cur=id;saveD();}}}catch(e){}
 }
-function saveD(){try{localStorage.setItem(KEY,JSON.stringify(D));}catch(e){}if(window.__capSync)window.__capSync();}
+var GID="invite";
+function isGuest(){var p=D.profiles[D.cur];return !!(p&&p.guest);}
+function guestHas(){var g=D.profiles[GID];return !!(g&&(Object.keys(g.q).length||g.hist.length));}
+function startGuest(){D.profiles[GID]={id:GID,name:"Invité",cls:"",guest:true,created:Date.now(),q:{},hist:[]};D.cur=GID;}
+function takeGuest(p){var g=D.profiles[GID];if(g&&p!==g){mergeInto(p,g);}delete D.profiles[GID];}
+function saveD(){try{var g=D.profiles[GID],o=D;if(g){var ps={};Object.keys(D.profiles).forEach(function(k){if(k!==GID)ps[k]=D.profiles[k];});o=Object.assign({},D,{profiles:ps,cur:D.cur===GID?null:D.cur});}localStorage.setItem(KEY,JSON.stringify(o));}catch(e){}if(window.__capSync&&!isGuest())window.__capSync();}
 function uid(){return Math.random().toString(36).slice(2,6)+Date.now().toString(36).slice(-4);}
 function P(){return D.profiles[D.cur];}
-loadD();
+loadD();delete D.profiles[GID];if(D.cur===GID)D.cur=null;
 
 function h(tag,props){
   var e=document.createElement(tag),k,v,i,kids=Array.prototype.slice.call(arguments,2);
@@ -4908,9 +4913,9 @@ function copyText(ta,btn,okLabel){
 function topbar(active){
   var p=P();
   return h("div",{class:"tb"},
-    h("button",{class:"chip",type:"button",onclick:function(){if(ACC.on)account();else profiles();},"aria-label":ACC.on?"Mon compte":"Changer de profil"},
+    h("button",{class:"chip",type:"button",onclick:function(){if(p.guest)guestAsk(false);else if(ACC.on)account();else profiles();},"aria-label":p.guest?"S'enregistrer":ACC.on?"Mon compte":"Changer de profil"},
       h("span",{class:"av"},(p.name||"?").charAt(0).toUpperCase()),
-      h("span",null,h("b",null,p.name),h("small",null,(p.cls?p.cls+" · ":"")+(ACC.on?"mon compte":"changer de profil"))),ACC.on&&ACC.nrep>0?h("span",{class:"dot","aria-label":ACC.nrep+" réponse(s) à tes signalements"},String(ACC.nrep)):null),
+      h("span",null,h("b",null,p.name),h("small",null,p.guest?"non enregistré · s'enregistrer":(p.cls?p.cls+" · ":"")+(ACC.on?"mon compte":"changer de profil"))),ACC.on&&ACC.nrep>0?h("span",{class:"dot","aria-label":ACC.nrep+" réponse(s) à tes signalements"},String(ACC.nrep)):null),
     h("div",{class:"tabs",role:"navigation"},
       h("button",{class:"tab",type:"button","aria-current":active==="home"?"page":null,onclick:home},"S'entraîner"),
       h("button",{class:"tab",type:"button","aria-current":active==="prog"?"page":null,onclick:progress},"Ma progression"),
@@ -4941,7 +4946,7 @@ function profiles(msg){NB=1;
   var err=h("p",{class:"msg",role:"status"},msg||"");
   function create(){
     var n=nameIn.value.trim();if(!n){err.textContent="Écris ton prénom pour créer ton profil.";nameIn.focus();return;}
-    var id=uid();D.profiles[id]={id:id,name:n,cls:clsSel.value,created:Date.now(),q:{},hist:[]};D.cur=id;saveD();home();}
+    var id=uid();D.profiles[id]={id:id,name:n,cls:clsSel.value,created:Date.now(),q:{},hist:[]};takeGuest(D.profiles[id]);D.cur=id;saveD();home();}
   nameIn.addEventListener("keydown",function(e){if(e.key==="Enter")create();});
   var ta=h("textarea",{class:"codebox","aria-label":"Code de sauvegarde à restaurer",placeholder:"Colle ici ton code CAPBIA1-…"});
   show(
@@ -4999,6 +5004,7 @@ function home(){NB=0;
     h("h1",null,"Cap BIA"),
     h("p",{class:"lead"},"Salut "+p.name+". "+TOT+" questions réparties sur les 5 thèmes du programme, plus une option anglais. Chaque question propose un indice avant de répondre, puis un point de cours avec un schéma."),
     msg,
+    p.guest?h("div",{class:"note",style:"border:1.5px solid var(--accent);background:var(--accent-soft);border-radius:10px;padding:10px 14px"},"Mode invité : ta progression n'est pas enregistrée. ",h("button",{class:"link",type:"button",onclick:function(){guestAsk(false);}},"S'enregistrer pour la garder")):null,
     h("div",{class:"total"},h("b",null,all.ok+" / "+all.n),h("span",null,"questions maîtrisées (dernière réponse juste)")),
     h("div",{class:"bar"},h("i",{style:"width:"+pct(all.ok,all.n)+"%"})),
     examBtn,searchBox(),h("div",{class:"row",style:"margin-top:12px"},errBtn),
@@ -6127,7 +6133,7 @@ function accEnter(s,remote){
   p.name=accName(s);
   if(remote){s.cls=remote.cls||"";s.tch=remote.tch||"";accSave();
     if(remote.wipe){p.q={};p.hist=[];remote=null;fsPatch(fsUrl(),{wipe:{integerValue:"0"}},["wipe"]).catch(function(){});}}
-  mergeInto(p,remote&&remote.prog);D.cur=id;saveD();}
+  mergeInto(p,remote&&remote.prog);takeGuest(p);D.cur=id;saveD();}
 function accClear(){TD.cl=null;TD.cur=null;TD.st=null;TD.sel=null;ACC.teacher=false;ACC.admin=false;ACC.cn=undefined;
   if(ACC.s){delete D.profiles[ACC.s.uid];}
   D.cur=null;saveD();ACC.s=null;ACC.id=null;ACC.exp=0;accSave();}
@@ -6518,7 +6524,7 @@ function account(msg){accDel=false;
     h("p",null,h("button",{class:"link",type:"button",onclick:privacy},"Confidentialité")));}
 function accBoot(){
   accLoad();
-  if(!ACC.s){accScreen("in");return;}
+  if(!ACC.s){startGuest();home();return;}
   var have=!!D.profiles[ACC.s.uid];ACC.teacher=!!ACC.s.tc;ACC.admin=!!ACC.s.ad;
   function bg(){return accPull().then(function(r){
       if(r){ACC.s.prenom=r.prenom||ACC.s.prenom;ACC.s.nom3=r.nom3||ACC.s.nom3;accEnter(ACC.s,r);}
@@ -6580,7 +6586,26 @@ function openLook(){
   document.body.append(lookOpen);document.addEventListener("keydown",lookKey);
   var f=grid.querySelector("[aria-checked=true]");if(f)f.focus();}
 (function(){var b=h("button",{id:"lookbtn",class:"lookbtn",type:"button",onclick:openLook,"aria-haspopup":"dialog","aria-label":"Apparence : couleur de fond et papier peint",title:"Apparence"});b.innerHTML='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-1 2-2s-.5-1.6-.5-2.5c0-1 .8-1.5 1.8-1.5H18a3 3 0 0 0 3-3c0-5-4-9-9-9z"/><circle cx="7.5" cy="11" r="1.1"/><circle cx="10.5" cy="7" r="1.1"/><circle cx="15" cy="7.5" r="1.1"/></svg>';document.body.append(b);applyLook();})();
-function boot(){if(ACC.on){var q=new URLSearchParams(location.search);if(q.get("oobCode")&&!window.__noAct){window.__noAct=1;accAction(q);return;}accBoot();}else if(location.hash==="#enseignant")teacher();else if(P())home();else profiles();}
+/* ---------- mode invité : proposition de s'enregistrer ---------- */
+var gLast=0;
+function guestAsk(leaving){
+  if(document.getElementById("gmod"))return;
+  var g=D.profiles[GID];if(!g)return;gLast=Date.now();
+  var n=0;Object.keys(g.q).forEach(function(k){if(g.q[k].ok)n++;});
+  var prev=document.activeElement;
+  function close(){var m=document.getElementById("gmod");if(m)m.remove();document.removeEventListener("keydown",key,true);if(prev&&prev.focus)try{prev.focus();}catch(e){}}
+  function key(e){if(e.key==="Escape")close();}
+  var go=h("button",{class:"btn",type:"button",onclick:function(){close();if(ACC.on)accScreen("up");else profiles();}},"S'enregistrer");
+  var box=h("div",{role:"dialog","aria-modal":"true","aria-labelledby":"gmt",style:"background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;max-width:420px;width:100%;padding:22px;box-shadow:0 12px 40px rgba(0,0,0,.4)"},
+    h("h2",{id:"gmt",style:"margin:0 0 8px;font-family:var(--display)"},leaving?"Avant de partir…":"Garde ta progression"),
+    h("p",{style:"margin:0 0 16px;line-height:1.5"},"Tu t'entraînes en mode invité : "+(n?n+" question"+(n>1?"s":"")+" maîtrisée"+(n>1?"s":"")+", ":"")+"ta progression n'est pas enregistrée et sera perdue si tu quittes le site. Crée ton compte pour la garder et la retrouver quand tu reviens."),
+    h("div",{class:"row"},go,h("button",{class:"btn ghost",type:"button",onclick:close},"Continuer sans enregistrer")));
+  var ov=h("div",{id:"gmod",style:"position:fixed;inset:0;z-index:9999;background:rgba(5,12,22,.6);display:flex;align-items:center;justify-content:center;padding:16px"},box);
+  ov.addEventListener("click",function(e){if(e.target===ov)close();});
+  document.addEventListener("keydown",key,true);document.body.appendChild(ov);go.focus();}
+window.addEventListener("beforeunload",function(e){if(isGuest()&&guestHas()){e.preventDefault();e.returnValue="";}});
+document.addEventListener("mouseout",function(e){if(!e.relatedTarget&&e.clientY<=0&&isGuest()&&guestHas()&&Date.now()-gLast>300000)guestAsk(true);});
+function boot(){if(ACC.on){var q=new URLSearchParams(location.search);if(q.get("oobCode")&&!window.__noAct){window.__noAct=1;accAction(q);return;}accBoot();}else if(location.hash==="#enseignant")teacher();else if(P())home();else if(Object.keys(D.profiles).length)profiles();else{startGuest();home();}}
 window.addEventListener("hashchange",function(){if(!ACC.on&&location.hash==="#enseignant")teacher();});
 boot();
 })();
