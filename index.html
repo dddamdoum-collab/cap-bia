@@ -4972,9 +4972,9 @@ function lvlSection(p){var i=curLvl(p),n=okTotal(p),nx=LVL[i+1];
 function topbar(active){
   var p=P();setTimeout(function(){var a=document.querySelector(".tabs [aria-current=page]");if(a&&a.offsetLeft>a.parentNode.clientWidth*0.6)a.parentNode.scrollLeft=a.offsetLeft-40;},0);
   return h("div",{class:"tb"},h("div",{class:"tbl"},
-    h("button",{class:"chip",type:"button",onclick:function(){if(p.guest)guestAsk(false);else if(ACC.on)account();else profiles();},"aria-label":p.guest?"S'enregistrer":ACC.on?"Mon compte":"Changer de profil"},
+    h("button",{class:"chip",type:"button",onclick:function(){if(p.guest)guestAsk(false);else if(ACC.on)account();else profiles();},"aria-label":p.guest?(ACC.on?"Se connecter ou s'enregistrer":"S'enregistrer"):ACC.on?"Mon compte":"Changer de profil"},
       h("span",{class:"av"},(p.name||"?").charAt(0).toUpperCase()),
-      h("span",null,h("b",null,p.name),h("small",null,p.guest?"non enregistré · s'enregistrer":(p.cls?p.cls+" · ":"")+(ACC.on?"mon compte":"changer de profil"))),ACC.on&&ACC.nrep>0?h("span",{class:"dot","aria-label":ACC.nrep+" réponse(s) à tes signalements"},String(ACC.nrep)):null),lvlBadge(p)),
+      h("span",null,h("b",null,p.name),h("small",null,p.guest?(ACC.on?"se connecter · s'enregistrer":"non enregistré · s'enregistrer"):(p.cls?p.cls+" · ":"")+(ACC.on?"mon compte":"changer de profil"))),ACC.on&&ACC.nrep>0?h("span",{class:"dot","aria-label":ACC.nrep+" réponse(s) à tes signalements"},String(ACC.nrep)):null),lvlBadge(p)),
     h("div",{class:"tabs",role:"navigation"},
       h("button",{class:"tab",type:"button","aria-current":active==="home"?"page":null,onclick:home},"S'entraîner"),
       h("button",{class:"tab",type:"button","aria-current":active==="prog"?"page":null,onclick:progress},"Ma progression"),
