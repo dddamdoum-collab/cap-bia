@@ -5999,6 +5999,9 @@ function renderQ(){
     if(ses.course||ses.locked)nodes.push(h("div",{class:"panel"},h("h3",null,"Point de cours"),h("p",null,r.s),figNode(id)));
     if(ses.locked)nodes.push(h("div",{class:"next"},h("button",{class:"btn",type:"button",onclick:next},ses.i+1<ses.ids.length?"Question suivante":"Voir le bilan")));
   }else{
+    nodes.push(h("div",{class:"aids"},
+      h("button",{class:"btn ghost",type:"button",onclick:function(){ses.course=!ses.course;renderQ();}},ses.course?"Masquer le point de cours":"Point de cours")));
+    if(ses.course)nodes.push(h("div",{class:"panel"},h("h3",null,"Point de cours"),h("p",null,r.s),figNode(id)));
     nodes.push(h("div",{class:"next"},h("button",{class:"btn",type:"button",disabled:ses.sel==null,onclick:next},ses.i+1<ses.ids.length?"Question suivante":"Terminer l'examen"),h("button",{class:"btn ghost",type:"button",onclick:skip},"Passer la question")));
   }
   show.apply(null,nodes);
