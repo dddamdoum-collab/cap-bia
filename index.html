@@ -6693,14 +6693,15 @@ function guestAsk(leaving){
   var prev=document.activeElement;
   function close(){var m=document.getElementById("gmod");if(m)m.remove();document.removeEventListener("keydown",key,true);if(prev&&prev.focus)try{prev.focus();}catch(e){}}
   function key(e){if(e.key==="Escape")close();}
-  var go=h("button",{class:"btn",type:"button",onclick:function(){close();if(ACC.on)accScreen("up");else profiles();}},"S'enregistrer");
+  var login=ACC.on?h("button",{class:"btn",type:"button",onclick:function(){close();accScreen("in");}},"Se connecter"):null;
+  var go=h("button",{class:"btn"+(login?" ghost":""),type:"button",onclick:function(){close();if(ACC.on)accScreen("up");else profiles();}},"S'enregistrer");
   var box=h("div",{role:"dialog","aria-modal":"true","aria-labelledby":"gmt",style:"background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:14px;max-width:420px;width:100%;padding:22px;box-shadow:0 12px 40px rgba(0,0,0,.4)"},
     h("h2",{id:"gmt",style:"margin:0 0 8px;font-family:var(--display)"},leaving?"Avant de partir…":"Garde ta progression"),
-    h("p",{style:"margin:0 0 16px;line-height:1.5"},"Tu t'entraînes en mode invité : "+(n?n+" question"+(n>1?"s":"")+" maîtrisée"+(n>1?"s":"")+", ":"")+"ta progression n'est pas enregistrée et sera perdue si tu quittes le site. Crée ton compte pour la garder et la retrouver quand tu reviens."),
-    h("div",{class:"row"},go,h("button",{class:"btn ghost",type:"button",onclick:close},"Continuer sans enregistrer")));
+    h("p",{style:"margin:0 0 16px;line-height:1.5"},"Tu t'entraînes en mode invité : "+(n?n+" question"+(n>1?"s":"")+" maîtrisée"+(n>1?"s":"")+", ":"")+"ta progression n'est pas enregistrée et sera perdue si tu quittes le site. "+(login?"Connecte-toi si tu as déjà un compte, ou crée-le":"Crée ton compte")+" pour la garder et la retrouver quand tu reviens."),
+    h("div",{class:"row"},login,go,h("button",{class:"btn ghost",type:"button",onclick:close},"Continuer sans enregistrer")));
   var ov=h("div",{id:"gmod",style:"position:fixed;inset:0;z-index:9999;background:rgba(5,12,22,.6);display:flex;align-items:center;justify-content:center;padding:16px"},box);
   ov.addEventListener("click",function(e){if(e.target===ov)close();});
-  document.addEventListener("keydown",key,true);document.body.appendChild(ov);go.focus();}
+  document.addEventListener("keydown",key,true);document.body.appendChild(ov);(login||go).focus();}
 window.addEventListener("beforeunload",function(e){if(isGuest()&&guestHas()){e.preventDefault();e.returnValue="";}});
 document.addEventListener("mouseout",function(e){if(!e.relatedTarget&&e.clientY<=0&&isGuest()&&guestHas()&&Date.now()-gLast>300000)guestAsk(true);});
 function boot(){if(ACC.on){var q=new URLSearchParams(location.search);if(q.get("oobCode")&&!window.__noAct){window.__noAct=1;accAction(q);return;}accBoot();}else if(location.hash==="#enseignant")teacher();else if(P())home();else if(Object.keys(D.profiles).length)profiles();else{startGuest();home();}}
