@@ -5031,6 +5031,7 @@ function profiles(msg){NB=1;
 /* ---------- accueil ---------- */
 var resetArmed=false;
 function idsOf(f){return RAW.filter(f).map(function(r){return r.id;});}
+function backBtn(){return h("div",{class:"top"},h("button",{class:"link",type:"button",onclick:function(){if(!P())startGuest();home();}},"← Retour à l'entraînement"));}
 function home(){NB=0;
   if(!P()){profiles();return;}
   clearInterval(timer);timer=null;ses=null;
@@ -6281,7 +6282,7 @@ function accScreen(mode,msg){NB=1;
   }
   [em.inp,pw.inp].forEach(function(i){i.addEventListener("keydown",function(e){if(e.key==="Enter"&&mode==="in")go.click();});});
   show(
-    h("div",{class:"eyebrow"},"Cap BIA"),
+    backBtn(),h("div",{class:"eyebrow"},"Cap BIA"),
     h("h1",null,mode==="up"?"Créer mon compte":"Connexion"),
     h("p",{class:"lead"},mode==="up"?"Ta progression sera enregistrée et tu la retrouveras sur n'importe quel appareil. Ton adresse e-mail sert uniquement à t'envoyer un lien si tu oublies ton mot de passe.":"Retrouve ta progression avec ton adresse e-mail et ton mot de passe."),
     accTabs(mode),
@@ -6316,13 +6317,13 @@ function accReset(pre){NB=1;
     go.disabled=true;err.textContent="";
     aj(IT+"sendOobCode?key="+encodeURIComponent(CFG.key),{requestType:"PASSWORD_RESET",email:mail}).then(ok,function(e){if(/EMAIL_NOT_FOUND/.test(String(e.message)))ok();else{go.disabled=false;err.textContent=accErr(e);}});
     function ok(){go.disabled=false;err.textContent="Si un compte existe avec cette adresse, un e-mail vient d'être envoyé avec un lien pour choisir un nouveau mot de passe. Pense à regarder dans les courriers indésirables.";}}},"Envoyer le lien");
-  show(h("div",{class:"eyebrow"},"Cap BIA"),h("h1",null,"Mot de passe oublié"),
+  show(backBtn(),h("div",{class:"eyebrow"},"Cap BIA"),h("h1",null,"Mot de passe oublié"),
     h("p",{class:"lead"},"Écris l'adresse e-mail de ton compte : tu recevras un lien pour choisir un nouveau mot de passe."),
     h("div",{class:"form acc"},em.el,go),err,
     h("p",null,h("button",{class:"link",type:"button",onclick:function(){accScreen("in");}},"← Retour à la connexion")));}
 function privacy(){
   window.scrollTo(0,0);
-  show(h("div",{class:"eyebrow"},"Cap BIA"),h("h1",null,"Confidentialité"),
+  show(backBtn(),h("div",{class:"eyebrow"},"Cap BIA"),h("h1",null,"Confidentialité"),
     h("p",null,"Pour créer un compte, on te demande ton prénom, les trois premières lettres de ton nom, une adresse e-mail et un mot de passe."),
     h("p",null,"L'adresse e-mail sert uniquement à t'envoyer un lien si tu oublies ton mot de passe. Le prénom et les trois lettres servent à te reconnaître. Ta progression (questions réussies, séances) est enregistrée pour que tu la retrouves sur tous tes appareils."),
     h("p",null,"Ces données sont stockées chez Google (Firebase) et ne sont ni vendues, ni utilisées pour de la publicité. Le site n'utilise aucun traceur. Ton professeur ne les utilise que pour t'aider à progresser."),
@@ -6603,7 +6604,7 @@ function account(msg){accDel=false;
   clearInterval(timer);timer=null;ses=null;window.scrollTo(0,0);
   var p=P();if(!p||!ACC.s){accScreen("in");return;}
   var st=stat(null,p),err=h("p",{class:"msg",role:"status"},msg||"");
-  show(h("div",{class:"eyebrow"},"Cap BIA"),h("h1",null,"Mon compte"),
+  show(backBtn(),h("div",{class:"eyebrow"},"Cap BIA"),h("h1",null,"Mon compte"),
     h("p",{class:"lead"},h("b",null,p.name),"  ·  "+st.ok+" / "+st.n+" questions maîtrisées"),
     h("p",null,"Ta progression est enregistrée automatiquement."),
     classBox(err),
