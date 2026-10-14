@@ -112,7 +112,17 @@ textarea{width:100%;min-height:150px;font:500 13px/1.5 var(--mono);padding:10px 
 .lvb{display:flex;align-items:center;gap:8px;border:0;background:none;padding:0;cursor:pointer;text-align:left;color:inherit;font:inherit}
 .lvb svg{width:78px;height:42px;flex:none;color:var(--ink)}
 .lvb b{display:block;font-size:13px;line-height:1.2}.lvb small{display:block;font:500 11px var(--mono);color:var(--muted)}
-@media (max-width:560px){.lvb span{display:none}.lvb svg{width:62px;height:34px}.tbl{padding-right:50px}}
+@media (max-width:560px){
+.tb{gap:4px;padding-bottom:0;margin-bottom:12px}
+.tbl{flex-wrap:nowrap;width:100%;gap:8px;padding-right:48px}
+.chip{flex:0 1 auto;min-width:0;min-height:40px;padding:3px 12px 3px 4px;gap:8px}
+.chip .av{width:30px;height:30px;font-size:14px}
+.chip>span{min-width:0}.chip b,.chip small{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal}
+.lvb{flex:none}.lvb span{display:none}.lvb svg{width:60px;height:33px}
+.tabs{width:100%;overflow-x:auto;flex-wrap:nowrap;gap:0;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin:0 -4px}
+.tabs::-webkit-scrollbar{display:none}
+.tabs{-webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent)}
+.tab{flex:none;min-height:38px;padding:6px 10px;white-space:nowrap;font-size:14px}}
 .lvcard{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
 .lvcard svg.big{width:220px;max-width:100%;height:auto;flex:none;color:var(--ink)}
 #palier{scroll-margin-top:130px}
@@ -4960,7 +4970,7 @@ function lvlSection(p){var i=curLvl(p),n=okTotal(p),nx=LVL[i+1];
         :h("p",{class:"delta",style:"margin:0"},"Dernier palier atteint : bravo, tu as atteint Mars !"))),
     h("div",{class:"lvgrid"},LVL.map(function(L,k){return h("figure",{class:k<=i?"":"lock"},lvlArt(k),h("figcaption",null,(k+1)+". "+L.s),h("small",null,"dès "+L.t));})));}
 function topbar(active){
-  var p=P();
+  var p=P();setTimeout(function(){var a=document.querySelector(".tabs [aria-current=page]");if(a&&a.offsetLeft>a.parentNode.clientWidth*0.6)a.parentNode.scrollLeft=a.offsetLeft-40;},0);
   return h("div",{class:"tb"},h("div",{class:"tbl"},
     h("button",{class:"chip",type:"button",onclick:function(){if(p.guest)guestAsk(false);else if(ACC.on)account();else profiles();},"aria-label":p.guest?"S'enregistrer":ACC.on?"Mon compte":"Changer de profil"},
       h("span",{class:"av"},(p.name||"?").charAt(0).toUpperCase()),
