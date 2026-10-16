@@ -676,9 +676,9 @@ function biaChecklist(i, reserve){
   const k = Object.keys(BOOSTS)[Math.floor(Math.random() * 5)];
   biaAsk('prevol', q => showQcm(q, `Check-list pré-vol · ${i + 1} / 3 · boost ${BOOSTS[k].name}`, ok => { reserve.push({k, part:!ok}); biaChecklist(i + 1, reserve); }));
 }
-if (BIA){ $('diffRow').style.display = 'flex'; document.querySelector('#ovStart h2').textContent = 'Raid en papier'; document.querySelector('#ovStart p').textContent = 'Trois questions de check-list avant de décoller, puis des cartes bonus en vol : chaque réponse compte dans ta progression.'; }
+if (BIA){ document.querySelector('#ovStart h2').textContent = 'Raid en papier'; document.querySelector('#ovStart p').textContent = 'Trois questions de check-list avant de décoller, puis des cartes bonus en vol : chaque réponse compte dans ta progression.'; }
 $('bGo').onclick = () => { AUD.unlock(); $('ovStart').classList.remove('on');
-  if (BIA){ CFG.diff = +$('dSel').value; CFG.pv = CFG.diff < .5 ? 4 : 3; CFG.tir = 2; MUS.start(); resetAll(); biaChecklist(0, []); return; }
+  if (BIA){ CFG.diff = .85; CFG.pv = 3; CFG.tir = 2; /* niveau 3e / lycée */ MUS.start(); resetAll(); biaChecklist(0, []); return; }
   takeOff(); };
 // messages du jeu
 addEventListener('message', ev => {
