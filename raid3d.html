@@ -181,7 +181,7 @@ const groundAt = (x, z) => T(-z) + side(x, -z);
 const CH_L = 60, CH_N = 6, CH_W = 200;
 const chunks = [];
 const cGrass = [new THREE.Color('#C3E2A6'), new THREE.Color('#B4D995'), new THREE.Color('#D3EAB4')], cTmp = new THREE.Color();
-function applyTheme(){ const g = GROUND[CFG.env] || GROUND.foret; g.forEach((c, i) => cGrass[i].set(c)); const T0 = CFG.theme; if (T0){ if (T0.bird) P.bird = T0.bird[1] || T0.bird[0] || P.bird; if (T0.bal) P.balloon = T0.bal; if (T0.pil) MAT.stone.color.set(T0.pil).lerp(new THREE.Color('#FFFFFF'), .45); } planeMat.color.set(CFG.col); }
+function applyTheme(){ const g = GROUND[CFG.env] || GROUND.foret; g.forEach((c, i) => cGrass[i].set(c)); const T0 = CFG.theme; if (T0){ if (T0.bird) P.bird = T0.bird[1] || T0.bird[0] || P.bird; if (T0.bal) P.balloon = T0.bal; if (T0.pil) MAT.stone.color.set(T0.pil).lerp(new THREE.Color('#FFFFFF'), .45); } paintPlane(EMBED && CFG.col ? CFG.col : '#474952'); }
 const terrainMat = new THREE.MeshToonMaterial({vertexColors:true, gradientMap:toonGrad});
 function buildChunk(ch, z0){ // z0 = bord avant (le plus proche) du tronçon
   ch.z0 = z0; const g = ch.mesh.geometry, p = g.attributes.position, col = g.attributes.color;
@@ -243,15 +243,23 @@ const clouds = [];
 for (let i = 0; i < 12; i++){ const g = new THREE.Group(); for (let k = 0; k < 4; k++){ const s = new THREE.Mesh(new THREE.IcosahedronGeometry(2 + Math.random() * 2, 0), cloudMat); s.position.set(k * 2.6 - 4, Math.random(), Math.random() * 2); g.add(s); } g.userData.dy = 22 + Math.random() * 16; g.position.set((Math.random() - .5) * 150, 0, -Math.random() * 260); scene.add(g); clouds.push(g); }
 
 // ================= avion en papier =================
+// chasseur origami noir et rouge (modélisé dans Blender : avion-origami-noir.blend)
+const JET = {v:[0.12,0.0,-1.0,1.25,0.0,0.62,1.2,0.0,0.9,-1.2,0.0,0.9,-1.25,0.0,0.62,-0.12,0.0,-1.0,0.12,0.0,-1.0,1.2,0.0,0.9,0.72,0.0,0.78,-0.72,0.0,0.78,-1.2,0.0,0.9,-0.12,0.0,-1.0,0.12,0.0,-1.0,0.72,0.0,0.78,0.18,0.0,0.35,-0.18,0.0,0.35,-0.72,0.0,0.78,-0.12,0.0,-1.0,0.18,0.0,0.35,0.72,0.0,0.78,0.6,0.0,1.25,-0.6,0.0,1.25,-0.72,0.0,0.78,-0.18,0.0,0.35,0.18,0.0,0.35,0.6,0.0,1.25,0.14,0.0,1.2,-0.14,0.0,1.2,-0.6,0.0,1.25,-0.18,0.0,0.35,0.16,0.012,-0.55,1.05,0.012,0.55,1.07,0.012,0.68,-1.07,0.012,0.68,-1.05,0.012,0.55,-0.16,0.012,-0.55,0.16,0.012,-0.55,1.07,0.012,0.68,0.18,0.012,-0.42,-0.18,0.012,-0.42,-1.07,0.012,0.68,-0.16,0.012,-0.55,0.2,0.02,-0.1,0.78,0.02,0.75,0.8,0.02,0.86,-0.8,0.02,0.86,-0.78,0.02,0.75,-0.2,0.02,-0.1,0.2,0.02,-0.1,0.8,0.02,0.86,0.22,0.02,0.01,-0.22,0.02,0.01,-0.8,0.02,0.86,-0.2,0.02,-0.1,0.72,0.015,0.75,0.66,0.015,1.28,0.55,0.015,1.36,-0.55,0.015,1.36,-0.66,0.015,1.28,-0.72,0.015,0.75,0.72,0.015,0.75,0.55,0.015,1.36,0.5,0.015,0.9,-0.5,0.015,0.9,-0.55,0.015,1.36,-0.72,0.015,0.75,-0.0,0.0,-1.85,0.06,0.0,-1.2,-0.0,0.07,-1.2,-0.0,0.07,-1.2,-0.06,0.0,-1.2,-0.0,0.0,-1.85,-0.0,0.07,-1.2,0.06,0.0,-1.2,-0.0,0.11,-0.4,-0.0,0.11,-0.4,-0.06,0.0,-1.2,-0.0,0.07,-1.2,0.06,0.0,-1.2,0.13,0.0,-0.4,-0.0,0.11,-0.4,-0.0,0.11,-0.4,-0.13,0.0,-0.4,-0.06,0.0,-1.2,-0.0,0.11,-0.4,0.13,0.0,-0.4,-0.0,0.13,0.6,-0.0,0.13,0.6,-0.13,0.0,-0.4,-0.0,0.11,-0.4,0.13,0.0,-0.4,0.17,0.01,0.6,-0.0,0.13,0.6,-0.0,0.13,0.6,-0.17,0.01,0.6,-0.13,0.0,-0.4,-0.0,0.13,0.6,0.17,0.01,0.6,-0.0,0.11,1.25,-0.0,0.11,1.25,-0.17,0.01,0.6,-0.0,0.13,0.6,0.17,0.01,0.6,0.2,0.01,1.25,-0.0,0.11,1.25,-0.0,0.11,1.25,-0.2,0.01,1.25,-0.17,0.01,0.6,-0.0,0.11,1.25,0.2,0.01,1.25,-0.0,0.03,1.32,-0.0,0.03,1.32,-0.2,0.01,1.25,-0.0,0.11,1.25,0.1,0.03,-0.75,0.2,0.05,0.9,0.3,0.05,0.9,-0.3,0.05,0.9,-0.2,0.05,0.9,-0.1,0.03,-0.75,0.1,0.03,-0.75,0.3,0.05,0.9,0.22,0.03,-0.2,-0.22,0.03,-0.2,-0.3,0.05,0.9,-0.1,0.03,-0.75,0.2,0.06,0.15,0.4,0.6,1.2,0.21,0.06,0.675,0.21,0.06,0.675,0.4,0.6,1.2,0.44,0.61,1.31,0.21,0.06,0.675,0.44,0.61,1.31,0.22,0.06,1.2,0.22,0.06,1.2,0.44,0.61,1.31,0.42,0.62,1.42,-0.21,0.06,0.675,-0.4,0.6,1.2,-0.2,0.06,0.15,-0.44,0.61,1.31,-0.4,0.6,1.2,-0.21,0.06,0.675,-0.22,0.06,1.2,-0.44,0.61,1.31,-0.21,0.06,0.675,-0.42,0.62,1.42,-0.44,0.61,1.31,-0.22,0.06,1.2], c:[0,0,0,0,0,0,1,1,1,1,2,2,2,2,1,1,1,1,2,2,2,2,3,3,0,0,0,0,3,3,3,3,0,0,0,0,2,2,2,2,2,2,3,3,2,2,3,3,2,2]};
+// teintes : 0 papier noir, 1 rouge sombre, 2 rouge vif, 3 papier noir clair
 function planeGeo(){
-  const v = [0,0,-1.7,  -1.4,.05,.9,  0,0,.9,   0,0,-1.7,  0,0,.9,  1.4,.05,.9,   0,0,-1.7,  0,-.38,.75,  0,0,.9,   0,0,-1.7,  0,0,.9,  0,-.38,.75];
-  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(v, 3)); g.computeVertexNormals(); return g;
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(JET.v, 3));
+  g.setAttribute('color', new THREE.Float32BufferAttribute(new Float32Array(JET.v.length), 3)); g.computeVertexNormals(); return g;
 }
-const planeMat = new THREE.MeshToonMaterial({color:'#FFFFFF', side:THREE.DoubleSide, gradientMap:toonGrad, transparent:true, opacity:1});
+function paintPlane(body){   // body = couleur du papier principal (noir par défaut, ou la couleur de l'avion choisi dans le jeu de maths)
+  const pal = [new THREE.Color(body), new THREE.Color('#A8101F'), new THREE.Color('#EE1730'), new THREE.Color(body).lerp(new THREE.Color('#FFFFFF'), .12)];
+  const a = planeMesh.geometry.attributes.color;
+  JET.c.forEach((k, t) => { for (let j = 0; j < 3; j++) a.setXYZ(t * 3 + j, pal[k].r, pal[k].g, pal[k].b); }); a.needsUpdate = true;
+}
+const planeMat = new THREE.MeshToonMaterial({color:'#FFFFFF', vertexColors:true, side:THREE.DoubleSide, gradientMap:toonGrad, transparent:true, opacity:1});
 const plane = new THREE.Group(); plane.scale.setScalar(1.25); scene.add(plane);
 const planeBody = new THREE.Group(); plane.add(planeBody);   // le corps porte le tonneau, le groupe porte la pente
-const planeMesh = new THREE.Mesh(planeGeo(), planeMat); planeMesh.castShadow = true; planeBody.add(planeMesh);
-const planeInk = new THREE.LineSegments(new THREE.EdgesGeometry(planeMesh.geometry, 1), new THREE.LineBasicMaterial({color:P.ink, transparent:true})); planeBody.add(planeInk);
+const planeMesh = new THREE.Mesh(planeGeo(), planeMat); planeMesh.castShadow = true; planeMesh.scale.setScalar(.85); planeMesh.position.z = -.15; planeBody.add(planeMesh);
+const planeInk = new THREE.LineSegments(new THREE.EdgesGeometry(planeMesh.geometry, 12), new THREE.LineBasicMaterial({color:'#0E0E12', transparent:true})); planeInk.scale.copy(planeMesh.scale); planeInk.position.copy(planeMesh.position); planeBody.add(planeInk); paintPlane('#474952');
 function blobTex(){ const c = document.createElement('canvas'); c.width = c.height = 64; const g = c.getContext('2d'), gr = g.createRadialGradient(32, 32, 2, 32, 32, 32); gr.addColorStop(0, 'rgba(60,70,90,.38)'); gr.addColorStop(1, 'rgba(60,70,90,0)'); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return new THREE.CanvasTexture(c); }
 const blob = new THREE.Mesh(new THREE.PlaneGeometry(3, 3), new THREE.MeshBasicMaterial({map:blobTex(), transparent:true, depthWrite:false})); scene.add(blob);
 const ring = new THREE.Mesh(new THREE.TorusGeometry(1.25, .07, 6, 30), new THREE.MeshBasicMaterial({color:'#FFD48A', transparent:true, opacity:0})); planeBody.add(ring);
@@ -711,15 +719,21 @@ function tick(dt){
   if (keys.ArrowUp || keys.KeyW) st.ty = clamp(st.ty + sp * dt, W.yMin, W.yMax);
   if (keys.ArrowDown || keys.KeyS) st.ty = clamp(st.ty - sp * dt, W.yMin, W.yMax);
   if ((keys.ShiftLeft || keys.ShiftRight) && !st.charging){ st.charging = true; st.charge = 0; }
-  const ox = st.x, rate = Math.min(1, dt * (st.roll > 0 ? 7 : 4.5 * (.85 + .05 * CFG.man)));
-  st.x += (st.tx - st.x) * rate; st.y += (st.ty - st.y) * rate; st.vx = (st.x - ox) / Math.max(dt, 1e-3);
+  { const kk = st.roll > 0 ? 170 : 78 + 7 * CFG.man, cc = 2 * .6 * Math.sqrt(kk), n = Math.ceil(dt / .008), h = dt / n;   // ressort : rapide, petit dépassement puis stabilisation
+    let ax = 0;
+    for (let i = 0; i < n; i++){ ax = kk * (st.tx - st.x) - cc * st.vx; st.vx += ax * h; st.x += st.vx * h;
+      const ay = kk * .8 * (st.ty - st.y) - cc * .9 * (st.vy || 0); st.vy = (st.vy || 0) + ay * h; st.y += st.vy * h; }
+    st.x = clamp(st.x, W.xMin - .4, W.xMax + .4); st.ax = ax; }
   const pz = PZ(), py = PY(), sl = slope(st.D);
   st.loop = Math.max(0, st.loop - dt);
   const lp = st.loop > 0 ? 1 - st.loop / .85 : 0;                         // avancement du looping (0 → 1)
   plane.position.set(st.x, py + Math.sin(lp * Math.PI) * 2.6, pz + Math.sin(lp * Math.PI * 2) * 1.6 * (lp < .5 ? 1 : 1));
   plane.rotation.x = Math.atan(sl) + clamp((st.ty - st.y) * .06, -.3, .3) + lp * Math.PI * 2;    // le nez suit la pente (+ tour complet pendant le looping)
   st.roll = Math.max(0, st.roll - dt);
-  planeBody.rotation.z = st.roll > 0 ? -st.rollDir * (1 - st.roll / .55) * Math.PI * 2 : clamp(-st.vx * .07, -.75, .75);   // inclinaison en virage
+  const bankT = clamp(-(st.vx * .1 + st.ax * .0045), -1.15, 1.15);           // l'accélération penche l'avion avant qu'il ne bouge
+  st.bank = (st.bank || 0) + (bankT - (st.bank || 0)) * Math.min(1, dt * 16);
+  planeBody.rotation.z = st.roll > 0 ? -st.rollDir * (1 - st.roll / .55) * Math.PI * 2 : st.bank;   // inclinaison en virage
+  planeBody.rotation.y = clamp(-st.vx * .03, -.3, .3);                           // le nez part dans le virage
   const gy = groundAt(st.x, pz); blob.position.set(st.x, gy + .05, pz); blob.rotation.set(-Math.PI / 2 + Math.atan(sl), 0, 0); blob.scale.setScalar(1 + (py - gy) * .12); blob.material.opacity = Math.max(0, 1 - (py - gy) / 12);
   // tir
   st.cd -= dt; if ((st.fireHeld || keys.Space) && st.cd <= 0){ fire(); st.cd = FIRE_CD(); }

@@ -1,5 +1,5 @@
 /* Cap BIA : fonctionne hors connexion après une première visite. */
-var CACHE="capbia-v3";
+var CACHE="capbia-v4";
 self.addEventListener("install",function(e){e.waitUntil(caches.open(CACHE).then(function(c){return c.addAll(["./","index.html","raid3d.html","config.js","manifest.webmanifest","icon-192.png"]);}).then(function(){return self.skipWaiting();}));});
 self.addEventListener("activate",function(e){e.waitUntil(caches.keys().then(function(k){return Promise.all(k.filter(function(n){return n!==CACHE;}).map(function(n){return caches.delete(n);}));}).then(function(){return self.clients.claim();}));});
 self.addEventListener("fetch",function(e){
