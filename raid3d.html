@@ -725,11 +725,18 @@ function tick(dt){
   if (keys.ArrowUp || keys.KeyW) st.ty = clamp(st.ty + sp * dt, W.yMin, W.yMax);
   if (keys.ArrowDown || keys.KeyS) st.ty = clamp(st.ty - sp * dt, W.yMin, W.yMax);
   if ((keys.ShiftLeft || keys.ShiftRight) && !st.charging){ st.charging = true; st.charge = 0; }
-  { const kk = st.roll > 0 ? 150 : 60 + 6 * CFG.man, cc = 2 * .68 * Math.sqrt(kk), n = Math.ceil(dt / .008), h = dt / n;   // ressort : rapide, petit dépassement puis stabilisation
+  { const hw = Math.tan(cam.fov * Math.PI / 360) * (CAMD + 1) * cam.aspect;        // demi-largeur visible à la distance de l'avion
+    const lim = Math.min(st.route === 'risque' ? 9.3 : 13, Math.max(5, (hw - 1.5) / (1 - CAMF)));
+    W.xMin = -lim; W.xMax = lim; st.tx = clamp(st.tx, -lim, lim);
+    W.yMin = .9 + Math.max(0, side(st.x, st.D));                                    // ne pas rentrer dans les collines au bord de la vallée
+    st.ty = Math.max(st.ty, W.yMin); }
+  { const VMAX = st.roll > 0 ? 26 : 11 + CFG.man;   // vitesse latérale maximale (unités / s)
+    const kk = st.roll > 0 ? 120 : 40 + 4 * CFG.man, cc = 2 * .7 * Math.sqrt(kk), n = Math.ceil(dt / .008), h = dt / n;   // ressort : rapide, petit dépassement puis stabilisation
     let ax = 0;
-    for (let i = 0; i < n; i++){ ax = kk * (st.tx - st.x) - cc * st.vx; st.vx += ax * h; st.x += st.vx * h;
+    for (let i = 0; i < n; i++){ ax = kk * (st.tx - st.x) - cc * st.vx; st.vx = clamp(st.vx + ax * h, -VMAX, VMAX); st.x += st.vx * h;
       const ay = kk * .8 * (st.ty - st.y) - cc * .9 * (st.vy || 0); st.vy = (st.vy || 0) + ay * h; st.y += st.vy * h; }
-    st.x = clamp(st.x, W.xMin - .4, W.xMax + .4); st.ax = ax; }
+    if (Math.abs(st.x) > W.xMax){ st.x = Math.sign(st.x) * W.xMax; if (Math.abs(st.vx) > 2){ st.vx = -st.vx * .35; shakeT = Math.max(shakeT, .08); } else st.vx = 0; }   // l'avion cogne le bord et rebondit
+    st.ax = ax; }
   const pz = PZ(), py = PY(), sl = slope(st.D);
   st.loop = Math.max(0, st.loop - dt);
   const lp = st.loop > 0 ? 1 - st.loop / .85 : 0;                         // avancement du looping (0 → 1)
@@ -851,13 +858,14 @@ function fx(dt){
 }
 const camPos = new THREE.Vector3(), camLook = new THREE.Vector3();
 // recul de la caméra (réglable : ?cam=13)
+const CAMF = .1;   // la caméra suit peu l'avion sur les côtés : il peut aller jusqu'aux bords de l'écran
 const CAMD = +(new URLSearchParams(location.search).get('cam')) || 11, CAMH = 2.8 + (CAMD - 8.6) * .24;
 function updCam(dt, snap = false){
   const sh = shakeT > 0 ? (Math.random() - .5) * .35 : 0; shakeT = Math.max(0, shakeT - dt);
   const pz = PZ();
   // la caméra suit le rail : elle regarde plus haut en montée, plus bas en descente
-  const want = new THREE.Vector3(st.x * .55 + sh, T(st.D - CAMD) + st.y * .5 + CAMH + sh, pz + CAMD);
-  const look = new THREE.Vector3(st.x * .7, T(st.D + 16) + st.y * .78 + .4, pz - 16);
+  const want = new THREE.Vector3(st.x * CAMF + sh, T(st.D - CAMD) + st.y * .5 + CAMH + sh, pz + CAMD);
+  const look = new THREE.Vector3(st.x * (CAMF + .08), T(st.D + 16) + st.y * .78 + .4, pz - 16);
   if (snap){ camPos.copy(want); camLook.copy(look); } else { const k = Math.min(1, dt * 6); camPos.lerp(want, k); camLook.lerp(look, k); camPos.z = want.z; camLook.z = look.z; }
   cam.position.copy(camPos); cam.lookAt(camLook);
   sun.position.set(st.x - 20, PY() + 30, pz + 10); sun.target.position.set(st.x, PY() - 5, pz - 10);
