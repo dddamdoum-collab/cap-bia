@@ -830,11 +830,13 @@ function fx(dt){
   for (let i = parts.length - 1; i >= 0; i--) if (parts[i].dead) parts.splice(i, 1);
 }
 const camPos = new THREE.Vector3(), camLook = new THREE.Vector3();
+// recul de la caméra (réglable : ?cam=13)
+const CAMD = +(new URLSearchParams(location.search).get('cam')) || 11, CAMH = 2.8 + (CAMD - 8.6) * .24;
 function updCam(dt, snap = false){
   const sh = shakeT > 0 ? (Math.random() - .5) * .35 : 0; shakeT = Math.max(0, shakeT - dt);
   const pz = PZ();
   // la caméra suit le rail : elle regarde plus haut en montée, plus bas en descente
-  const want = new THREE.Vector3(st.x * .55 + sh, T(st.D - 8.6) + st.y * .5 + 2.8 + sh, pz + 8.6);
+  const want = new THREE.Vector3(st.x * .55 + sh, T(st.D - CAMD) + st.y * .5 + CAMH + sh, pz + CAMD);
   const look = new THREE.Vector3(st.x * .7, T(st.D + 16) + st.y * .78 + .4, pz - 16);
   if (snap){ camPos.copy(want); camLook.copy(look); } else { const k = Math.min(1, dt * 6); camPos.lerp(want, k); camLook.lerp(look, k); camPos.z = want.z; camLook.z = look.z; }
   cam.position.copy(camPos); cam.lookAt(camLook);
