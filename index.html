@@ -5228,13 +5228,44 @@ function gamesPage(msg){NB=0;PG.on=false;clearInterval(timer);timer=null;ses=nul
   if(!gamesOK()){home();return;}
   show(h("div",{class:"eyebrow"},"Détente"),h("h1",null,"Jeux"),
     h("p",{class:"lead"},"Bravo : tu as répondu à plus de "+GMIN+" questions, la salle de jeux est ouverte. Les mots sont tous liés au programme du BIA."),
+    msg?h("p",{class:"delta",role:"status"},msg):null,
     h("div",{class:"gcards"},
+      h("button",{class:"gcard",type:"button",onclick:function(){raidStart();}},h("b",null,"Raid en papier (3D)"),h("span",null,"Pilote un avion en papier dans une vallée en relief, choisis ta route et plie le cerf-volant géant. Les cartes bonus sont des QCM du BIA qui comptent dans ta progression.")),
       h("button",{class:"gcard",type:"button",onclick:function(){penduStart();}},h("b",null,"Le pendu du gorille"),h("span",null,"Trouve le mot avant que le gorille n'atteigne le sommet de la tour. Des indices arrivent à chaque erreur.")),
       h("button",{class:"gcard",type:"button",onclick:function(){mfStart();}},h("b",null,"Mots fléchés"),h("span",null,"Des grilles à remplir : la flèche indique le sens de lecture de chaque mot.")),
       h("button",{class:"gcard",type:"button",onclick:function(){friseStart();}},h("b",null,"La frise du temps"),h("span",null,"Remets dans l'ordre les grandes dates de l'histoire de l'aviation et de l'espace.")),
       h("button",{class:"gcard",type:"button",onclick:function(){landStart();}},h("b",null,"L'atterrissage"),h("span",null,"Réponds à la tour de contrôle, règle le cap et l'altitude, et pose l'avion sur la piste.")),
       h("button",{class:"gcard",type:"button",onclick:function(){flMenu();}},h("b",null,"Vol libre"),h("span",null,"Lance ton avion en bois, plane le plus loin possible, évite le décrochage et traverse les portes des bonnes réponses."))),
     h("p",{class:"note"},"D'autres jeux arriveront bientôt."));}
+/* --- raid en papier (3D, page raid3d.html dans une fenêtre plein écran) --- */
+var RD=null;
+function raidPickQ(){var p=P(),pool=RAW.filter(function(r){return !r.f&&r.c&&r.c.length===4;}),
+  todo=pool.filter(function(r){var s=p.q[r.id];return !s||!s.ok;}),src=todo.length&&Math.random()<.75?todo:pool;
+  var r=src[Math.floor(Math.random()*src.length)];if(RD){var t=0;while(RD.used[r.id]&&t++<20)r=src[Math.floor(Math.random()*src.length)];RD.used[r.id]=1;}
+  var ord=shuffle([0,1,2,3]);return{id:r.id,q:r.q,c:ord.map(function(i){return r.c[i];}),a:ord.indexOf(r.a),h:r.h||"",s:r.s||"",sec:SEC[r.k]?SEC[r.k].t:""};}
+function raidStart(){
+  if(RD)return;NB=0;PG.on=false;clearInterval(timer);timer=null;ses=null;
+  var p=P();RD={n:0,ok:0,lv0:curLvl(p),used:{},h:null,fr:document.createElement("iframe")};
+  var f=RD.fr;f.src="raid3d.html?bia=1";f.title="Raid en papier";f.setAttribute("allow","autoplay; fullscreen");
+  f.style.cssText="position:fixed;inset:0;width:100vw;height:100vh;border:0;z-index:200;background:#cfe3f2";
+  document.body.appendChild(f);document.documentElement.style.overflow="hidden";
+  try{var el=document.documentElement;if(el.requestFullscreen&&!document.fullscreenElement&&matchMedia("(pointer:coarse)").matches)el.requestFullscreen().catch(function(){});}catch(e){}
+}
+function raidEnd(){
+  if(!RD)return;var r=RD;RD=null;try{r.fr.remove();}catch(e){}document.documentElement.style.overflow="";
+  try{if(document.fullscreenElement)document.exitFullscreen();}catch(e){}
+  var p=P(),up=curLvl(p)>r.lv0,m=r.n?"Raid en papier : "+r.ok+" bonne"+(r.ok>1?"s":"")+" réponse"+(r.ok>1?"s":"")+" sur "+r.n+", enregistrée"+(r.n>1?"s":"")+" dans ta progression.":"Raid en papier terminé.";
+  if(up)m+=" Nouveau palier débloqué : "+LVL[p.lv].n+" !";
+  gamesPage(m);
+}
+window.addEventListener("message",function(ev){
+  if(!RD||ev.source!==RD.fr.contentWindow)return;var d=ev.data||{},w=RD.fr.contentWindow;
+  if(d.type==="r3d-ask"){w.postMessage({type:"r3d-q",q:raidPickQ()},"*");}
+  else if(d.type==="r3d-qres"&&BY[d.id]){var p=P(),ok=!!d.ok;recordAnswer(d.id,ok);RD.n++;if(ok)RD.ok++;
+    if(!RD.h){RD.h={d:Date.now(),m:"r",k:null,l:"Jeu : raid en papier",ok:0,n:0,mt:0};p.hist.unshift(RD.h);if(p.hist.length>60)p.hist.length=60;}
+    RD.h.n++;if(ok)RD.h.ok++;RD.h.mt=mastered(p);saveD();}
+  else if(d.type==="r3d-end"){raidEnd();}
+});
 /* --- pendu --- */
 var PMAX=7;
 function gApe(){return '<g class="ape"><g class="legL"><rect x="-12" y="14" width="8" height="14" rx="4"/></g><g class="legR"><rect x="4" y="14" width="8" height="14" rx="4"/></g><ellipse cx="0" cy="0" rx="15" ry="19"/><g class="armL"><rect x="-27" y="-24" width="9" height="30" rx="4.5"/></g><g class="armR"><rect x="18" y="-24" width="9" height="30" rx="4.5"/></g><circle cx="0" cy="-24" r="10" class="hd"/><ellipse cx="0" cy="-22" rx="6.5" ry="5.5" class="fc"/><circle cx="-3" cy="-24" r="1.3" class="ey"/><circle cx="3" cy="-24" r="1.3" class="ey"/><rect x="-3" y="-19.5" width="6" height="1.6" rx=".8" class="ey"/></g>';}
